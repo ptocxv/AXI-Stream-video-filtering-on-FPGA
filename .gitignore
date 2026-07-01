@@ -1,0 +1,31 @@
+# Vivado tcl/log/jou files
+*.log
+*.jou
+*.str
+
+# Vivado directory structures
+.Xil/
+*/.Xil/
+.srcs/
+.gen/
+
+# Synthesis/Implementation outputs
+*.dcp
+*.run
+*.bit
+*.bin
+*.ltx
+
+# Project specific runs and ip directories
+*/ip/
+*/bd/*/hdl/
+*/bd/*/hw_handoff/
+*/bd/*/ip/
+*/bd/*/ipshared/
+*/bd/*/synth/
+*/bd/*/sim/
+
+# SDK/Vitis specific
+.metadata/
+.sdk/
+RemoteSystemsTempFiles/
