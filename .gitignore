@@ -1,31 +1,53 @@
-# Vivado tcl/log/jou files
+# Vivado logs / journals
 *.log
 *.jou
 *.str
 
-# Vivado directory structures
+# Vivado generated folders
+*.cache/
+*.hw/
+*.runs/
+*.sim/
+*.gen/
+*.ip_user_files/
+
+# Xilinx temp
 .Xil/
 */.Xil/
-.srcs/
-.gen/
+
+# Simulation outputs
+xsim.dir/
+*/xsim.dir/
+*.wdb
+*.vcd
+*.fst
+*.pb
+
+# XSIM scripts/generated files
+compile.bat
+elaborate.bat
+simulate.bat
+xvlog.pb
+xelab.pb
+xsim*.jou
+xsim*.log
 
 # Synthesis/Implementation outputs
 *.dcp
-*.run
 *.bit
 *.bin
 *.ltx
 
-# Project specific runs and ip directories
-*/ip/
-*/bd/*/hdl/
-*/bd/*/hw_handoff/
-*/bd/*/ip/
-*/bd/*/ipshared/
-*/bd/*/synth/
-*/bd/*/sim/
-
-# SDK/Vitis specific
+# Vitis/SDK
 .metadata/
 .sdk/
 RemoteSystemsTempFiles/
+
+# Editor/OS
+.vscode/
+.idea/
+.DS_Store
+Thumbs.db
+
+# Optional custom build folder
+build/
