@@ -40,7 +40,7 @@ module grayscale_TB();
     logic m_axis_tlast;
 
     // DUT
-    grayscale dut (
+    axis_grayscale dut (
         .clk(clk),
         .rst(rst),
 

@@ -45,9 +45,11 @@
     <Option Name="SimulatorGccVersionActiveHdl" Val="9.3.0"/>
     <Option Name="BoardPart" Val="tul.com.tw:pynq-z2:part0:1.0"/>
     <Option Name="BoardPartRepoPaths" Val="C:/Users/Lenovo/AppData/Roaming/Xilinx/Vivado/2025.1/xhub/board_store/xilinx_board_store"/>
+    <Option Name="SourceMgmtMode" Val="None"/>
     <Option Name="ActiveSimSet" Val="sim_1"/>
     <Option Name="DefaultLib" Val="xil_defaultlib"/>
     <Option Name="ProjectType" Val="Default"/>
+    <Option Name="IPRepoPath" Val="$PPRDIR/../../../verilog_vivado/DDC_Basics/vivado-library-master"/>
     <Option Name="IPOutputRepo" Val="$PCACHEDIR/ip"/>
     <Option Name="IPDefaultOutputPath" Val="$PGENDIR/sources_1"/>
     <Option Name="IPCachePermission" Val="read"/>
@@ -91,24 +93,29 @@
   <FileSets Version="1" Minor="32">
     <FileSet Name="sources_1" Type="DesignSrcs" RelSrcDir="$PSRCDIR/sources_1" RelGenDir="$PGENDIR/sources_1">
       <Filter Type="Srcs"/>
-      <File Path="$PSRCDIR/sources_1/new/grayscale.sv">
+      <File Path="$PSRCDIR/sources_1/bd/processing_core/processing_core.bd">
         <FileInfo>
           <Attr Name="UsedIn" Val="synthesis"/>
           <Attr Name="UsedIn" Val="implementation"/>
           <Attr Name="UsedIn" Val="simulation"/>
         </FileInfo>
       </File>
-      <File Path="$PSRCDIR/sources_1/new/sobel.sv">
+      <File Path="$PSRCDIR/sources_1/new/axis_sobel.v">
         <FileInfo>
-          <Attr Name="AutoDisabled" Val="1"/>
           <Attr Name="UsedIn" Val="synthesis"/>
           <Attr Name="UsedIn" Val="implementation"/>
           <Attr Name="UsedIn" Val="simulation"/>
         </FileInfo>
       </File>
-      <File Path="$PSRCDIR/sources_1/new/window_3x3_generator.sv">
+      <File Path="$PSRCDIR/sources_1/new/axis_window_3x3_generator.v">
         <FileInfo>
-          <Attr Name="AutoDisabled" Val="1"/>
+          <Attr Name="UsedIn" Val="synthesis"/>
+          <Attr Name="UsedIn" Val="implementation"/>
+          <Attr Name="UsedIn" Val="simulation"/>
+        </FileInfo>
+      </File>
+      <File Path="$PSRCDIR/sources_1/new/axis_grayscale.v">
+        <FileInfo>
           <Attr Name="UsedIn" Val="synthesis"/>
           <Attr Name="UsedIn" Val="implementation"/>
           <Attr Name="UsedIn" Val="simulation"/>
@@ -116,8 +123,7 @@
       </File>
       <Config>
         <Option Name="DesignMode" Val="RTL"/>
-        <Option Name="TopModule" Val="grayscale"/>
-        <Option Name="TopAutoSet" Val="TRUE"/>
+        <Option Name="TopModule" Val="axis_grayscale"/>
       </Config>
     </FileSet>
     <FileSet Name="constrs_1" Type="Constrs" RelSrcDir="$PSRCDIR/constrs_1" RelGenDir="$PGENDIR/constrs_1">
@@ -127,6 +133,7 @@
       </Config>
     </FileSet>
     <FileSet Name="sim_1" Type="SimulationSrcs" RelSrcDir="$PSRCDIR/sim_1" RelGenDir="$PGENDIR/sim_1">
+      <Filter Type="Srcs"/>
       <File Path="$PSRCDIR/sim_1/new/window_3x3_generator_TB.sv">
         <FileInfo>
           <Attr Name="UsedIn" Val="synthesis"/>
@@ -136,7 +143,6 @@
       </File>
       <File Path="$PSRCDIR/sim_1/new/sobel_TB.sv">
         <FileInfo>
-          <Attr Name="AutoDisabled" Val="1"/>
           <Attr Name="UsedIn" Val="synthesis"/>
           <Attr Name="UsedIn" Val="implementation"/>
           <Attr Name="UsedIn" Val="simulation"/>
@@ -144,7 +150,6 @@
       </File>
       <File Path="$PSRCDIR/sim_1/new/grayscale_TB.sv">
         <FileInfo>
-          <Attr Name="AutoDisabled" Val="1"/>
           <Attr Name="UsedIn" Val="synthesis"/>
           <Attr Name="UsedIn" Val="implementation"/>
           <Attr Name="UsedIn" Val="simulation"/>
@@ -196,9 +201,7 @@
   <Runs Version="1" Minor="22">
     <Run Id="synth_1" Type="Ft3:Synth" SrcSet="sources_1" Part="xc7z020clg400-1" ConstrsSet="constrs_1" Description="Vivado Synthesis Defaults" AutoIncrementalCheckpoint="true" WriteIncrSynthDcp="false" State="current" IncludeInArchive="true" IsChild="false" AutoIncrementalDir="$PSRCDIR/utils_1/imports/synth_1" AutoRQSDir="$PSRCDIR/utils_1/imports/synth_1" ParallelReportGen="true">
       <Strategy Version="1" Minor="2">
-        <StratHandle Name="Vivado Synthesis Defaults" Flow="Vivado Synthesis 2025">
-          <Desc>Vivado Synthesis Defaults</Desc>
-        </StratHandle>
+        <StratHandle Name="Vivado Synthesis Defaults" Flow="Vivado Synthesis 2025"/>
         <Step Id="synth_design"/>
       </Strategy>
       <ReportStrategy Name="Vivado Synthesis Default Reports" Flow="Vivado Synthesis 2025"/>
@@ -207,9 +210,7 @@
     </Run>
     <Run Id="impl_1" Type="Ft2:EntireDesign" Part="xc7z020clg400-1" ConstrsSet="constrs_1" Description="Default settings for Implementation." AutoIncrementalCheckpoint="false" WriteIncrSynthDcp="false" State="current" SynthRun="synth_1" IncludeInArchive="true" IsChild="false" GenFullBitstream="true" AutoIncrementalDir="$PSRCDIR/utils_1/imports/impl_1" AutoRQSDir="$PSRCDIR/utils_1/imports/impl_1" ParallelReportGen="true">
       <Strategy Version="1" Minor="2">
-        <StratHandle Name="Vivado Implementation Defaults" Flow="Vivado Implementation 2025">
-          <Desc>Default settings for Implementation.</Desc>
-        </StratHandle>
+        <StratHandle Name="Vivado Implementation Defaults" Flow="Vivado Implementation 2025"/>
         <Step Id="init_design"/>
         <Step Id="opt_design"/>
         <Step Id="power_opt_design"/>

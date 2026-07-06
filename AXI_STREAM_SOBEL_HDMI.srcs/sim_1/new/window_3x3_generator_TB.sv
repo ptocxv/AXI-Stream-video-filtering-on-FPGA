@@ -46,7 +46,7 @@ module window_3x3_generator_TB;
     logic        m_axis_tready;
 
     // DUT
-    window_3x3_generator #(
+    axis_window_3x3_generator #(
         .FRAME_WIDTH(FRAME_WIDTH),
         .FRAME_HEIGHT(FRAME_HEIGHT)
     ) dut (

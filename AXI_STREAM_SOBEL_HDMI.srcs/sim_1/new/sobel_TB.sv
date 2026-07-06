@@ -40,7 +40,7 @@ module sobel_TB;
     logic        m_axis_tlast;
 
     // DUT
-    sobel dut (
+    axis_sobel dut (
         .clk(clk),
         .rst(rst),
 
