@@ -23,6 +23,9 @@ xsim.dir/
 *.fst
 *.pb
 
+# Generated processing-core test vectors
+ref/tb_data/*.txt
+
 # XSIM scripts/generated files
 compile.bat
 elaborate.bat
