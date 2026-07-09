@@ -1,6 +1,6 @@
 # AXI-Stream Sobel HDMI
 
-A real-time FPGA video processing project using an AXI-Stream-style architecture. The goal is to rebuild a previous coordinate-based Sobel/video design into a cleaner, more reusable streaming pipeline that can later adapt to real HDMI or camera input.
+A real-time FPGA video processing system that receives live HDMI input, converts the active video stream into an AXI-Stream-style pixel pipeline, applies grayscale conversion, 3×3 window generation, and Sobel edge detection, then outputs the processed edge-detected frames back to an HDMI monitor.
 
 ## System Overview
 
