@@ -1,9 +1,9 @@
 from pathlib import Path
 import random
 
-WIDTH = 640
-HEIGHT = 480
-SEED = 1102
+WIDTH = 1280
+HEIGHT = 720
+SEED = 11021
 
 # Output paths
 PROJECT_ROOT = Path(__file__).resolve().parents[1]

@@ -842,16 +842,16 @@
         "ports": [
           "clk_0",
           "axis_grayscale_0/clk",
-          "axis_window_3x3_gene_0/clk",
-          "axis_sobel_0/clk"
+          "axis_sobel_0/clk",
+          "axis_window_3x3_gene_0/clk"
         ]
       },
       "rst_0_1": {
         "ports": [
           "rst_0",
           "axis_grayscale_0/rst",
-          "axis_window_3x3_gene_0/rst",
-          "axis_sobel_0/rst"
+          "axis_sobel_0/rst",
+          "axis_window_3x3_gene_0/rst"
         ]
       }
     }

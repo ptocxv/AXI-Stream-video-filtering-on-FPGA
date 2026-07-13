@@ -21,8 +21,8 @@
 
 
 module axis_window_3x3_generator#(
-        parameter FRAME_WIDTH = 640,
-        parameter FRAME_HEIGHT = 480
+        parameter FRAME_WIDTH = 1280,
+        parameter FRAME_HEIGHT = 720
     )(
         input clk,
         input rst,
@@ -42,8 +42,8 @@ module axis_window_3x3_generator#(
         input m_axis_tready
     );
     
-    localparam COL_W = (FRAME_WIDTH  <= 1) ? 1 : $clog2(FRAME_WIDTH);
-    localparam ROW_W = (FRAME_HEIGHT <= 1) ? 1 : $clog2(FRAME_HEIGHT);
+    localparam COL_W = $clog2(FRAME_WIDTH);
+    localparam ROW_W = $clog2(FRAME_HEIGHT);
     
     // Line buffers
     // BRAM0 -> previous
