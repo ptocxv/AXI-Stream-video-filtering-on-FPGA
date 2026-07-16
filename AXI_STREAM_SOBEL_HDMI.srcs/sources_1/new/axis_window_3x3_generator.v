@@ -72,11 +72,7 @@ module axis_window_3x3_generator#(
     
     // Define new valid, user, last
     wire window_valid;
-    wire window_user;
-    wire window_last;
-    assign window_valid = rValid && (rRow >= 2) && (rCol >= 2); 
-    assign window_user = window_valid && (rRow == 2) && (rCol == 2); 
-    assign window_last = window_valid && rLast;
+    assign window_valid = rValid && (rRow >= 2) && (rCol >= 2);
     
     assign s_axis_tready = !m_axis_tvalid || m_axis_tready;
     
@@ -93,14 +89,19 @@ module axis_window_3x3_generator#(
             m_axis_tlast  <= 1'b0;
         end
         else if (s_axis_tready) begin
-            m_axis_tdata <= {
-                r00, r10, r20,
-                r01, r11, r21,
-                rr0, rr1, rr2
-            };
-            m_axis_tvalid <= window_valid;
-            m_axis_tuser <= window_user;
-            m_axis_tlast <= window_last;
+            if(window_valid) begin
+                m_axis_tdata <= {
+                    r00, r10, r20,
+                    r01, r11, r21,
+                    rr0, rr1, rr2
+                };
+            end
+            else begin
+                m_axis_tdata <= 72'd0;
+            end   
+            m_axis_tvalid <= rValid;
+            m_axis_tuser <= rUser & rValid;
+            m_axis_tlast <= rLast & rValid;
             
             if(rValid) begin // rValid = 1 only after input is accepted -> useful shifting happens
                 r00 <= r01; r01 <= rr0;

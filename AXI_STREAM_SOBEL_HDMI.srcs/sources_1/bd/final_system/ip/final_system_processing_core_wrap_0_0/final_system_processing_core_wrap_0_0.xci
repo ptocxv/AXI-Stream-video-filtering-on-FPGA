@@ -37,7 +37,7 @@
     "boundary": {
       "ports": {
         "clk_0": [ { "direction": "in" } ],
-        "m_axis_0_tdata": [ { "direction": "out", "size_left": "7", "size_right": "0" } ],
+        "m_axis_0_tdata": [ { "direction": "out", "size_left": "23", "size_right": "0" } ],
         "m_axis_0_tlast": [ { "direction": "out" } ],
         "m_axis_0_tready": [ { "direction": "in", "driver_value": "1" } ],
         "m_axis_0_tuser": [ { "direction": "out" } ],
@@ -55,7 +55,7 @@
           "abstraction_type": "xilinx.com:interface:axis_rtl:1.0",
           "mode": "master",
           "parameters": {
-            "TDATA_NUM_BYTES": [ { "value": "1", "value_src": "constant", "value_permission": "bd_and_user", "resolve_type": "generated", "format": "long", "is_ips_inferred": true, "is_static_object": false } ],
+            "TDATA_NUM_BYTES": [ { "value": "3", "value_src": "constant", "value_permission": "bd_and_user", "resolve_type": "generated", "format": "long", "is_ips_inferred": true, "is_static_object": false } ],
             "TDEST_WIDTH": [ { "value": "0", "value_src": "constant", "value_permission": "bd_and_user", "resolve_type": "generated", "format": "long", "is_ips_inferred": true, "is_static_object": false } ],
             "TID_WIDTH": [ { "value": "0", "value_src": "constant", "value_permission": "bd_and_user", "resolve_type": "generated", "format": "long", "is_ips_inferred": true, "is_static_object": false } ],
             "TUSER_WIDTH": [ { "value": "1", "value_src": "constant", "value_permission": "bd_and_user", "resolve_type": "generated", "format": "long", "is_ips_inferred": true, "is_static_object": false } ],

@@ -3,7 +3,7 @@ import random
 
 WIDTH = 1280
 HEIGHT = 720
-SEED = 11021
+SEED = 11022
 
 # Output paths
 PROJECT_ROOT = Path(__file__).resolve().parents[1]
@@ -104,20 +104,22 @@ with open(INPUT_FILE, "w") as f:
 # user: 1 only for the first valid output window
 # last: 1 for the last valid output of each output line
 
-num_outputs = (WIDTH - 2) * (HEIGHT - 2)
+num_outputs = WIDTH * HEIGHT
 
 with open(EXPECTED_FILE, "w") as f:
     f.write(f"{WIDTH} {HEIGHT} {num_outputs}\n")
 
-    for y in range(2, HEIGHT):
-        for x in range(2, WIDTH):
-            edge = sobel_at(y, x)
+    for y in range(HEIGHT):
+        for x in range(WIDTH):
+            if y >= 2 and x >= 2:
+                edge = sobel_at(y, x)
+            else:
+                edge = 0
 
-            user = 1 if (y == 2 and x == 2) else 0
+            user = 1 if (y == 0 and x == 0) else 0
             last = 1 if (x == WIDTH - 1) else 0
 
             f.write(f"{edge} {user} {last}\n")
-
 # ============================================================
 # Summary
 # ============================================================

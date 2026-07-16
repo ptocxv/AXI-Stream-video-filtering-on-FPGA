@@ -1,7 +1,7 @@
 {
   "design": {
     "design_info": {
-      "boundary_crc": "0x731D9CD1ED8C543D",
+      "boundary_crc": "0x149B43C3AFA5137F",
       "device": "xc7z020clg400-1",
       "gen_directory": "../../../../AXI_STREAM_SOBEL_HDMI.gen/sources_1/bd/processing_core",
       "name": "processing_core",
@@ -132,7 +132,7 @@
             "value_src": "default"
           },
           "TDATA_NUM_BYTES": {
-            "value": "1",
+            "value": "3",
             "value_src": "const_prop"
           },
           "TDEST_WIDTH": {
@@ -152,7 +152,7 @@
           "TDATA": {
             "physical_name": "m_axis_0_tdata",
             "direction": "O",
-            "left": "7",
+            "left": "23",
             "right": "0"
           },
           "TLAST": {
@@ -603,7 +603,7 @@
             "vlnv": "xilinx.com:interface:axis_rtl:1.0",
             "parameters": {
               "TDATA_NUM_BYTES": {
-                "value": "1",
+                "value": "3",
                 "value_src": "constant"
               },
               "TDEST_WIDTH": {
@@ -643,7 +643,7 @@
               "TDATA": {
                 "physical_name": "m_axis_tdata",
                 "direction": "O",
-                "left": "7",
+                "left": "23",
                 "right": "0"
               },
               "TLAST": {
@@ -842,16 +842,16 @@
         "ports": [
           "clk_0",
           "axis_grayscale_0/clk",
-          "axis_sobel_0/clk",
-          "axis_window_3x3_gene_0/clk"
+          "axis_window_3x3_gene_0/clk",
+          "axis_sobel_0/clk"
         ]
       },
       "rst_0_1": {
         "ports": [
           "rst_0",
           "axis_grayscale_0/rst",
-          "axis_sobel_0/rst",
-          "axis_window_3x3_gene_0/rst"
+          "axis_window_3x3_gene_0/rst",
+          "axis_sobel_0/rst"
         ]
       }
     }

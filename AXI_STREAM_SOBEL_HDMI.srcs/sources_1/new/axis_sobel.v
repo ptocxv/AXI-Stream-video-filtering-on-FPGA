@@ -34,7 +34,7 @@ module axis_sobel(
     output s_axis_tready,
     
     // down stream / as-master side
-    output reg [7:0] m_axis_tdata,
+    output reg [23:0] m_axis_tdata,
     output reg m_axis_tvalid,
     output reg m_axis_tuser,
     output reg m_axis_tlast,
@@ -96,13 +96,13 @@ module axis_sobel(
     //output register
     always @(posedge clk) begin
         if(rst) begin
-            m_axis_tdata <= 8'h00;
+            m_axis_tdata <= 24'd0;
             m_axis_tvalid <= 1'b0;
             m_axis_tuser <= 1'b0;
             m_axis_tlast <= 1'b0;
         end
         else if (s_axis_tready) begin
-            m_axis_tdata <= edge_mag;
+            m_axis_tdata <= {edge_mag, edge_mag, edge_mag};
             m_axis_tvalid <= s_axis_tvalid;
             m_axis_tuser <= s_axis_tuser;
             m_axis_tlast <= s_axis_tlast;
