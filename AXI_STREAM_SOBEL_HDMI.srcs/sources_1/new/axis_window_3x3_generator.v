@@ -77,7 +77,7 @@ module axis_window_3x3_generator#(
     assign s_axis_tready = !m_axis_tvalid || m_axis_tready;
     
     always @(posedge clk) begin
-        if(rst) begin
+        if(!rst) begin
             cntH <= 0; cntV <= 0;
             rr0 <= 8'd0; rr1 <= 8'd0; rr2 <= 8'd0;
             rCol <= 0; rRow <= 0;
@@ -133,7 +133,7 @@ module axis_window_3x3_generator#(
                     if(s_axis_tlast) cntH <= 0; // if the frame has width 1 -> after tuser, the column keeps being 0
                     else cntH <= 1; // after tuser, moves to the next column
                 end
-                else if(s_axis_tlast) begin
+                else if(s_axis_tlast || cntH == FRAME_WIDTH - 1) begin
                     cntH <= 0; // after reaching last, moves to next line at first column
                     cntV <= cntV + 1; // move to next line
                 end
@@ -145,8 +145,6 @@ module axis_window_3x3_generator#(
                 rValid <= 1'b0;
                 rUser <= 1'b0;
                 rLast <= 1'b0;
-                rr0 <= 8'd0; rr1 <= 8'd0; rr2 <= 8'd0;
-                rCol <= 0; rRow <= 0;
             end
         end
     end

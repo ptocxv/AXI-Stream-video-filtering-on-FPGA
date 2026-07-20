@@ -1,13 +1,14 @@
 {
   "design": {
     "design_info": {
-      "boundary_crc": "0x149B43C3AFA5137F",
+      "boundary_crc": "0xDAE444D7A46682D6",
       "device": "xc7z020clg400-1",
       "gen_directory": "../../../../AXI_STREAM_SOBEL_HDMI.gen/sources_1/bd/processing_core",
       "name": "processing_core",
       "rev_ctrl_bd_flag": "RevCtrlBdOff",
       "synth_flow_mode": "Hierarchical",
-      "tool_version": "2025.1"
+      "tool_version": "2025.1",
+      "validated": "true"
     },
     "design_tree": {
       "axis_grayscale_0": "",
@@ -174,14 +175,47 @@
       }
     },
     "ports": {
-      "clk_0": {
+      "clk": {
         "type": "clk",
-        "direction": "I"
+        "direction": "I",
+        "parameters": {
+          "ASSOCIATED_BUSIF": {
+            "value": "s_axis_0:m_axis_0",
+            "value_src": "default"
+          },
+          "ASSOCIATED_RESET": {
+            "value": "rst_n"
+          },
+          "CLK_DOMAIN": {
+            "value": "processing_core_clk_0",
+            "value_src": "default"
+          },
+          "FREQ_HZ": {
+            "value": "100000000",
+            "value_src": "default"
+          },
+          "FREQ_TOLERANCE_HZ": {
+            "value": "0",
+            "value_src": "default"
+          },
+          "INSERT_VIP": {
+            "value": "0",
+            "value_src": "default"
+          },
+          "PHASE": {
+            "value": "0.0",
+            "value_src": "default"
+          }
+        }
       },
-      "rst_0": {
+      "rst_n": {
         "type": "rst",
         "direction": "I",
         "parameters": {
+          "INSERT_VIP": {
+            "value": "0",
+            "value_src": "default"
+          },
           "POLARITY": {
             "value": "ACTIVE_HIGH"
           }
@@ -238,6 +272,10 @@
               "HAS_TLAST": {
                 "value": "1",
                 "value_src": "constant"
+              },
+              "CLK_DOMAIN": {
+                "value": "processing_core_clk_0",
+                "value_src": "default_prop"
               }
             },
             "port_maps": {
@@ -301,6 +339,14 @@
               "HAS_TLAST": {
                 "value": "1",
                 "value_src": "constant"
+              },
+              "CLK_DOMAIN": {
+                "value": "processing_core_clk_0",
+                "value_src": "default_prop"
+              },
+              "LAYERED_METADATA": {
+                "value": "undef",
+                "value_src": "user_prop"
               }
             },
             "port_maps": {
@@ -341,6 +387,10 @@
               "ASSOCIATED_RESET": {
                 "value": "rst",
                 "value_src": "constant"
+              },
+              "CLK_DOMAIN": {
+                "value": "processing_core_clk_0",
+                "value_src": "default_prop"
               }
             }
           },
@@ -789,18 +839,18 @@
       },
       "clk_0_1": {
         "ports": [
-          "clk_0",
+          "clk",
+          "axis_grayscale_0/clk",
           "axis_sobel_0/clk",
-          "axis_window_3x3_gene_0/clk",
-          "axis_grayscale_0/clk"
+          "axis_window_3x3_gene_0/clk"
         ]
       },
       "rst_0_1": {
         "ports": [
-          "rst_0",
+          "rst_n",
+          "axis_grayscale_0/rst",
           "axis_sobel_0/rst",
-          "axis_window_3x3_gene_0/rst",
-          "axis_grayscale_0/rst"
+          "axis_window_3x3_gene_0/rst"
         ]
       }
     }

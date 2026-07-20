@@ -1,7 +1,7 @@
 {
   "design": {
     "design_info": {
-      "boundary_crc": "0x5C23058F10CFC40D",
+      "boundary_crc": "0x5C23058FB93C00A5",
       "device": "xc7z020clg400-1",
       "gen_directory": "../../../../AXI_STREAM_SOBEL_HDMI.gen/sources_1/bd/final_system",
       "name": "final_system",
@@ -19,7 +19,6 @@
       "v_vid_in_axi4s_0": "",
       "xlconstant_1_val1": "",
       "xlconstant_0_val0": "",
-      "util_vector_logic_0": "",
       "v_tc_0": "",
       "xlconstant_2_val1": ""
     },
@@ -91,6 +90,10 @@
         "type": "clk",
         "direction": "I",
         "parameters": {
+          "ASSOCIATED_RESET": {
+            "value": "rst",
+            "value_src": "default"
+          },
           "CLK_DOMAIN": {
             "value": "final_system_TMDS_Clk_n_0",
             "value_src": "default"
@@ -272,6 +275,10 @@
               "HAS_TLAST": {
                 "value": "1",
                 "value_src": "constant"
+              },
+              "CLK_DOMAIN": {
+                "value": "final_system_dvi2rgb_0_0_PixelClk",
+                "value_src": "default_prop"
               }
             },
             "port_maps": {
@@ -335,6 +342,10 @@
               "HAS_TLAST": {
                 "value": "1",
                 "value_src": "constant"
+              },
+              "CLK_DOMAIN": {
+                "value": "final_system_dvi2rgb_0_0_PixelClk",
+                "value_src": "default_prop"
               }
             },
             "port_maps": {
@@ -364,16 +375,13 @@
           }
         },
         "ports": {
-          "clk_0": {
+          "clk": {
+            "type": "clk",
             "direction": "I",
             "parameters": {
-              "FREQ_HZ": {
-                "value": "100000000",
-                "value_src": "default_prop"
-              },
-              "PHASE": {
-                "value": "0.0",
-                "value_src": "default_prop"
+              "ASSOCIATED_BUSIF": {
+                "value": "m_axis_0:s_axis_0",
+                "value_src": "constant"
               },
               "CLK_DOMAIN": {
                 "value": "final_system_dvi2rgb_0_0_PixelClk",
@@ -381,16 +389,13 @@
               }
             }
           },
-          "rst_0": {
+          "rst_n": {
+            "type": "rst",
             "direction": "I",
             "parameters": {
-              "PortType": {
-                "value": "undef",
-                "value_src": "ip_prop"
-              },
-              "PortType.PROP_SRC": {
-                "value": "false",
-                "value_src": "ip_prop"
+              "POLARITY": {
+                "value": "ACTIVE_LOW",
+                "value_src": "constant"
               }
             }
           }
@@ -415,6 +420,9 @@
           },
           "kEmulateDDC": {
             "value": "true"
+          },
+          "kRstActiveHigh": {
+            "value": "false"
           }
         }
       },
@@ -431,6 +439,9 @@
           },
           "kGenerateSerialClk": {
             "value": "true"
+          },
+          "kRstActiveHigh": {
+            "value": "false"
           }
         }
       },
@@ -514,22 +525,6 @@
           }
         }
       },
-      "util_vector_logic_0": {
-        "vlnv": "xilinx.com:ip:util_vector_logic:2.0",
-        "ip_revision": "5",
-        "xci_name": "final_system_util_vector_logic_0_0",
-        "xci_path": "ip\\final_system_util_vector_logic_0_0\\final_system_util_vector_logic_0_0.xci",
-        "inst_hier_path": "util_vector_logic_0",
-        "has_run_ip_tcl": "true",
-        "parameters": {
-          "C_OPERATION": {
-            "value": "not"
-          },
-          "C_SIZE": {
-            "value": "1"
-          }
-        }
-      },
       "v_tc_0": {
         "vlnv": "xilinx.com:ip:v_tc:6.2",
         "ip_revision": "10",
@@ -591,16 +586,6 @@
           "dvi2rgb_0/TMDS_Data_p"
         ]
       },
-      "aRst_0_1": {
-        "ports": [
-          "rst",
-          "dvi2rgb_0/aRst",
-          "dvi2rgb_0/pRst",
-          "rgb2dvi_0/aRst",
-          "util_vector_logic_0/Op1",
-          "processing_core_wrap_0/rst_0"
-        ]
-      },
       "clk_in1_0_1": {
         "ports": [
           "clk",
@@ -620,7 +605,7 @@
           "v_vid_in_axi4s_0/aclk",
           "v_tc_0/clk",
           "v_axi4s_vid_out_0/aclk",
-          "processing_core_wrap_0/clk_0"
+          "processing_core_wrap_0/clk"
         ]
       },
       "dvi2rgb_0_vid_pData": {
@@ -701,12 +686,15 @@
           "TMDS_Data_p_1"
         ]
       },
-      "util_vector_logic_0_Res": {
+      "rst_1": {
         "ports": [
-          "util_vector_logic_0/Res",
+          "rst",
           "v_vid_in_axi4s_0/aresetn",
+          "dvi2rgb_0/aRst_n",
+          "v_tc_0/resetn",
           "v_axi4s_vid_out_0/aresetn",
-          "v_tc_0/resetn"
+          "rgb2dvi_0/aRst_n",
+          "processing_core_wrap_0/rst_n"
         ]
       },
       "v_axi4s_vid_out_0_s_axis_video_tready": {

@@ -57,7 +57,6 @@ module axis_sobel(
     assign p12 = s_axis_tdata [15:8];
     assign p22 = s_axis_tdata [7:0];
     
-    
     // sobel calculation
     wire signed [11:0] gx;
     wire signed [11:0] gy;
@@ -67,7 +66,6 @@ module axis_sobel(
     wire [12:0] mag;
 
     wire [7:0] edge_mag;
-
     
     // Gx = - p00 + p02 - 2p10 + 2p12 - p20 + p22
     assign gx = -$signed({4'h0, p00})
@@ -95,7 +93,7 @@ module axis_sobel(
     assign s_axis_tready = !m_axis_tvalid || m_axis_tready;
     //output register
     always @(posedge clk) begin
-        if(rst) begin
+        if(!rst) begin
             m_axis_tdata <= 24'd0;
             m_axis_tvalid <= 1'b0;
             m_axis_tuser <= 1'b0;
