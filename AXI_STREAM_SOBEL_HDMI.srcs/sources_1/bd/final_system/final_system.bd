@@ -539,6 +539,9 @@
           "SYNC_EN": {
             "value": "false"
           },
+          "VIDEO_MODE": {
+            "value": "720p"
+          },
           "enable_detection": {
             "value": "false"
           }

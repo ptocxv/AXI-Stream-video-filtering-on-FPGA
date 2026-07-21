@@ -1,75 +1,75 @@
 {
    "ActiveEmotionalView":"Default View",
-   "Default View_ScaleFactor":"0.469325",
-   "Default View_TopLeft":"-190,-138",
+   "Default View_ScaleFactor":"0.938653",
+   "Default View_TopLeft":"-189,3",
    "ExpandedHierarchyInLayout":"",
    "guistr":"# # String gsaved with Nlview 7.8.0 2024-04-26 e1825d835c VDI=44 GEI=38 GUI=JA:21.0
 #  -string -flagsOSRD
-preplace port DDC_0 -pg 1 -lvl 7 -x 2230 -y 160 -defaultsOSRD
-preplace port port-id_TMDS_Clk_p_0 -pg 1 -lvl 0 -x 0 -y 90 -defaultsOSRD
-preplace port port-id_TMDS_Clk_n_0 -pg 1 -lvl 0 -x 0 -y 110 -defaultsOSRD
-preplace port port-id_TMDS_Clk_p_1 -pg 1 -lvl 7 -x 2230 -y 380 -defaultsOSRD
-preplace port port-id_TMDS_Clk_n_1 -pg 1 -lvl 7 -x 2230 -y 400 -defaultsOSRD
-preplace port port-id_clk -pg 1 -lvl 0 -x 0 -y 210 -defaultsOSRD
-preplace port port-id_rst -pg 1 -lvl 0 -x 0 -y 270 -defaultsOSRD
-preplace portBus TMDS_Data_p_0 -pg 1 -lvl 0 -x 0 -y 130 -defaultsOSRD
-preplace portBus TMDS_Data_n_0 -pg 1 -lvl 0 -x 0 -y 150 -defaultsOSRD
-preplace portBus TMDS_Data_p_1 -pg 1 -lvl 7 -x 2230 -y 420 -defaultsOSRD
-preplace portBus TMDS_Data_n_1 -pg 1 -lvl 7 -x 2230 -y 440 -defaultsOSRD
-preplace portBus hdmi_rx_hpd -pg 1 -lvl 7 -x 2230 -y 560 -defaultsOSRD
+preplace port DDC_0 -pg 1 -lvl 7 -x 2290 -y 160 -defaultsOSRD
+preplace port port-id_TMDS_Clk_p_0 -pg 1 -lvl 0 -x -10 -y 60 -defaultsOSRD
+preplace port port-id_TMDS_Clk_n_0 -pg 1 -lvl 0 -x -10 -y 90 -defaultsOSRD
+preplace port port-id_TMDS_Clk_p_1 -pg 1 -lvl 7 -x 2290 -y 350 -defaultsOSRD
+preplace port port-id_TMDS_Clk_n_1 -pg 1 -lvl 7 -x 2290 -y 380 -defaultsOSRD
+preplace port port-id_clk -pg 1 -lvl 0 -x -10 -y 210 -defaultsOSRD
+preplace port port-id_rst -pg 1 -lvl 0 -x -10 -y 270 -defaultsOSRD
+preplace portBus TMDS_Data_p_0 -pg 1 -lvl 0 -x -10 -y 120 -defaultsOSRD
+preplace portBus TMDS_Data_n_0 -pg 1 -lvl 0 -x -10 -y 150 -defaultsOSRD
+preplace portBus TMDS_Data_p_1 -pg 1 -lvl 7 -x 2290 -y 410 -defaultsOSRD
+preplace portBus TMDS_Data_n_1 -pg 1 -lvl 7 -x 2290 -y 440 -defaultsOSRD
+preplace portBus hdmi_rx_hpd -pg 1 -lvl 7 -x 2290 -y 560 -defaultsOSRD
 preplace inst processing_core_wrap_0 -pg 1 -lvl 4 -x 1220 -y 310 -defaultsOSRD
 preplace inst dvi2rgb_0 -pg 1 -lvl 2 -x 390 -y 140 -defaultsOSRD
-preplace inst rgb2dvi_0 -pg 1 -lvl 6 -x 2050 -y 400 -defaultsOSRD
+preplace inst rgb2dvi_0 -pg 1 -lvl 6 -x 2100 -y 400 -defaultsOSRD
 preplace inst clk_wiz_0 -pg 1 -lvl 1 -x 120 -y 210 -defaultsOSRD
-preplace inst v_axi4s_vid_out_0 -pg 1 -lvl 5 -x 1680 -y 430 -defaultsOSRD
-preplace inst v_vid_in_axi4s_0 -pg 1 -lvl 3 -x 790 -y 330 -defaultsOSRD
+preplace inst v_axi4s_vid_out_0 -pg 1 -lvl 5 -x 1710 -y 430 -defaultsOSRD
+preplace inst v_vid_in_axi4s_0 -pg 1 -lvl 3 -x 800 -y 330 -defaultsOSRD
 preplace inst xlconstant_1_val1 -pg 1 -lvl 2 -x 390 -y 440 -defaultsOSRD
 preplace inst xlconstant_0_val0 -pg 1 -lvl 2 -x 390 -y 340 -defaultsOSRD
 preplace inst v_tc_0 -pg 1 -lvl 4 -x 1220 -y 570 -defaultsOSRD
-preplace inst xlconstant_2_val1 -pg 1 -lvl 6 -x 2050 -y 560 -defaultsOSRD
-preplace netloc TMDS_Clk_n_0_1 1 0 2 NJ 110 NJ
-preplace netloc TMDS_Clk_p_0_1 1 0 2 NJ 90 NJ
+preplace inst xlconstant_2_val1 -pg 1 -lvl 6 -x 2100 -y 560 -defaultsOSRD
+preplace netloc TMDS_Clk_n_0_1 1 0 2 NJ 90 220J
+preplace netloc TMDS_Clk_p_0_1 1 0 2 NJ 60 230J
 preplace netloc TMDS_Data_n_0_1 1 0 2 NJ 150 NJ
-preplace netloc TMDS_Data_p_0_1 1 0 2 NJ 130 NJ
+preplace netloc TMDS_Data_p_0_1 1 0 2 NJ 120 230J
 preplace netloc clk_in1_0_1 1 0 1 NJ 210
 preplace netloc clk_wiz_0_clk_200MHz 1 1 1 220J 170n
-preplace netloc dvi2rgb_0_PixelClk 1 2 4 560 490 1010 440 1440 660 1890
-preplace netloc dvi2rgb_0_vid_pData 1 2 1 610 80n
-preplace netloc dvi2rgb_0_vid_pHSync 1 2 1 600 100n
-preplace netloc dvi2rgb_0_vid_pVDE 1 2 1 590 140n
-preplace netloc dvi2rgb_0_vid_pVSync 1 2 1 580 120n
+preplace netloc dvi2rgb_0_PixelClk 1 2 4 570 490 1020 440 1470 660 1920
+preplace netloc dvi2rgb_0_vid_pData 1 2 1 620 80n
+preplace netloc dvi2rgb_0_vid_pHSync 1 2 1 610 100n
+preplace netloc dvi2rgb_0_vid_pVDE 1 2 1 600 140n
+preplace netloc dvi2rgb_0_vid_pVSync 1 2 1 590 120n
 preplace netloc processing_core_wrap_0_m_axis_0_tdata 1 4 1 N 280
 preplace netloc processing_core_wrap_0_m_axis_0_tlast 1 4 1 N 300
-preplace netloc processing_core_wrap_0_m_axis_0_tuser 1 4 1 1430 320n
-preplace netloc processing_core_wrap_0_m_axis_0_tvalid 1 4 1 1420 340n
-preplace netloc processing_core_wrap_0_s_axis_0_tready 1 3 1 970 300n
-preplace netloc rgb2dvi_0_TMDS_Clk_n 1 6 1 NJ 400
-preplace netloc rgb2dvi_0_TMDS_Clk_p 1 6 1 NJ 380
+preplace netloc processing_core_wrap_0_m_axis_0_tuser 1 4 1 1420 320n
+preplace netloc processing_core_wrap_0_m_axis_0_tvalid 1 4 1 1410 340n
+preplace netloc processing_core_wrap_0_s_axis_0_tready 1 3 1 980 300n
+preplace netloc rgb2dvi_0_TMDS_Clk_n 1 6 1 2270J 380n
+preplace netloc rgb2dvi_0_TMDS_Clk_p 1 6 1 2260J 350n
 preplace netloc rgb2dvi_0_TMDS_Data_n 1 6 1 NJ 440
-preplace netloc rgb2dvi_0_TMDS_Data_p 1 6 1 NJ 420
-preplace netloc v_axi4s_vid_out_0_s_axis_video_tready 1 4 1 1440 320n
-preplace netloc v_axi4s_vid_out_0_sof_state_out 1 3 3 1020 700 NJ 700 1860
-preplace netloc v_axi4s_vid_out_0_vid_active_video 1 5 1 1890 340n
+preplace netloc rgb2dvi_0_TMDS_Data_p 1 6 1 2260J 410n
+preplace netloc rst_1 1 0 6 NJ 270 230 280 560 500 1010 690 1530 670 1910
+preplace netloc v_axi4s_vid_out_0_s_axis_video_tready 1 4 1 1430 320n
+preplace netloc v_axi4s_vid_out_0_sof_state_out 1 3 3 1030 700 NJ 700 1890
+preplace netloc v_axi4s_vid_out_0_vid_active_video 1 5 1 1920 340n
 preplace netloc v_axi4s_vid_out_0_vid_data 1 5 1 N 360
 preplace netloc v_axi4s_vid_out_0_vid_hsync 1 5 1 N 380
 preplace netloc v_axi4s_vid_out_0_vid_vsync 1 5 1 N 400
-preplace netloc v_axi4s_vid_out_0_vtg_ce 1 3 3 1010 710 NJ 710 1870
-preplace netloc v_tc_0_active_video_out 1 4 1 1420 400n
-preplace netloc v_tc_0_hblank_out 1 4 1 1450 440n
-preplace netloc v_tc_0_hsync_out 1 4 1 1460 460n
-preplace netloc v_tc_0_vblank_out 1 4 1 1480 480n
-preplace netloc v_tc_0_vsync_out 1 4 1 1490 500n
+preplace netloc v_axi4s_vid_out_0_vtg_ce 1 3 3 1020 710 NJ 710 1900
+preplace netloc v_tc_0_active_video_out 1 4 1 1410 400n
+preplace netloc v_tc_0_hblank_out 1 4 1 1480 440n
+preplace netloc v_tc_0_hsync_out 1 4 1 1490 460n
+preplace netloc v_tc_0_vblank_out 1 4 1 1510 480n
+preplace netloc v_tc_0_vsync_out 1 4 1 1520 500n
 preplace netloc v_vid_in_axi4s_0_m_axis_video_tdata 1 3 1 N 260
 preplace netloc v_vid_in_axi4s_0_m_axis_video_tlast 1 3 1 N 280
-preplace netloc v_vid_in_axi4s_0_m_axis_video_tuser 1 3 1 980 300n
-preplace netloc v_vid_in_axi4s_0_m_axis_video_tvalid 1 3 1 990 320n
-preplace netloc xlconstant_0_dout 1 2 3 570 170 NJ 170 1470
-preplace netloc xlconstant_1_dout 1 2 3 610 510 1020 450 1430
+preplace netloc v_vid_in_axi4s_0_m_axis_video_tuser 1 3 1 990 300n
+preplace netloc v_vid_in_axi4s_0_m_axis_video_tvalid 1 3 1 1000 320n
+preplace netloc xlconstant_0_dout 1 2 3 580 170 NJ 170 1500
+preplace netloc xlconstant_1_dout 1 2 3 620 510 1030 450 1460
 preplace netloc xlconstant_2_val1_dout 1 6 1 NJ 560
-preplace netloc rst_1 1 0 6 NJ 270 230 280 550 500 1000 690 1500 670 1880
 preplace netloc dvi2rgb_0_DDC 1 2 5 NJ 160 NJ 160 NJ 160 NJ 160 NJ
-levelinfo -pg 1 0 120 390 790 1220 1680 2050 2230
-pagesize -pg 1 -db -bbox -sgen -190 0 2420 720
+levelinfo -pg 1 -10 120 390 800 1220 1710 2100 2290
+pagesize -pg 1 -db -bbox -sgen -190 0 2470 720
 "
 }
 0
