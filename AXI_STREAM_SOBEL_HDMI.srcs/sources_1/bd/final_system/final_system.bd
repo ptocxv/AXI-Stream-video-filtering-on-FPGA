@@ -682,8 +682,8 @@
           "v_axi4s_vid_out_0/aresetn",
           "rgb2dvi_0/aRst_n",
           "v_tc_0/resetn",
-          "processing_core_wrap_0/rst_n",
-          "dvi2rgb_0/aRst_n"
+          "dvi2rgb_0/aRst_n",
+          "processing_core_wrap_0/rst_n"
         ]
       },
       "v_axi4s_vid_out_0_s_axis_video_tready": {

@@ -61,12 +61,13 @@ module axis_sobel(
     wire signed [11:0] gx;
     wire signed [11:0] gy;
 
-    wire [11:0] abs_gx;
-    wire [11:0] abs_gy;
+    reg [11:0] abs_gx;
+    reg [11:0] abs_gy;
     reg [12:0] mag;
 
     wire [7:0] edge_mag;
-    reg rValid, rUser, rLast;
+    reg rValid1, rUser1, rLast1;
+    reg rValid2, rUser2, rLast2;
     
     // Gx = - p00 + p02 - 2p10 + 2p12 - p20 + p22
     assign gx = -$signed({4'h0, p00})
@@ -83,9 +84,6 @@ module axis_sobel(
          + $signed({4'h0, p20})
          + ($signed({4'h0, p21}) <<< 1)
          + $signed({4'h0, p22});
-
-    assign abs_gx = (gx < 0) ? -gx : gx;
-    assign abs_gy = (gy < 0) ? -gy : gy;
     
     //saturation
     assign edge_mag = (mag > 13'd255) ? 8'd255 : mag[7:0];
@@ -95,12 +93,19 @@ module axis_sobel(
     always @(posedge clk) begin
         if(!rst) begin
             //pipeline stage 1
-            mag <= 8'd0;
-            rUser <= 1'b0;
-            rValid <= 1'b0;
-            rLast <= 1'b0;
-
+            abs_gx <= 12'd0;
+            abs_gy <= 12'd0;
+            rUser1 <= 1'b0;
+            rValid1 <= 1'b0;
+            rLast1 <= 1'b0;
+            
             //pipeline stage 2
+            mag <= 8'd0;
+            rUser1 <= 1'b0;
+            rValid1 <= 1'b0;
+            rLast1 <= 1'b0;
+
+            //pipeline stage 3
             m_axis_tdata <= 24'd0;
             m_axis_tvalid <= 1'b0;
             m_axis_tuser <= 1'b0;
@@ -108,16 +113,23 @@ module axis_sobel(
         end
         else if (s_axis_tready) begin
             //pipeline stage 1
+            abs_gx <= (gx < 0) ? -gx : gx;
+            abs_gy <= (gy < 0) ? -gy : gy;
+            rValid1 <= s_axis_tvalid;
+            rUser1 <= s_axis_tuser;
+            rLast1 <= s_axis_tlast;
+            
+            //pipeline stage 2
             mag <= abs_gx + abs_gy;
-            rValid <= s_axis_tvalid;
-            rUser <= s_axis_tuser;
-            rLast <= s_axis_tlast;
+            rValid2 <= rValid1;
+            rUser2 <= rUser1;
+            rLast2 <= rLast1;
             
             //pipeline stage 2
             m_axis_tdata <= {edge_mag, edge_mag, edge_mag};
-            m_axis_tvalid <= rValid;
-            m_axis_tuser <= rUser;
-            m_axis_tlast <= rLast;
+            m_axis_tvalid <= rValid2;
+            m_axis_tuser <= rUser2;
+            m_axis_tlast <= rLast2;
         end
     end
     
