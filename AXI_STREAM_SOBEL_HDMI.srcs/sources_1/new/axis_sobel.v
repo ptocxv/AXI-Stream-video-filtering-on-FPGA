@@ -58,9 +58,13 @@ module axis_sobel(
     assign p22 = s_axis_tdata [7:0];
     
     // sobel calculation
-    wire signed [11:0] gx;
-    wire signed [11:0] gy;
-
+    reg signed [11:0] gx;
+    reg signed [11:0] gy;
+    reg signed [11:0] rgx0;
+    reg signed [11:0] rgx2;
+    reg signed [11:0] rgy0;
+    reg signed [11:0] rgy2;
+    
     reg [11:0] abs_gx;
     reg [11:0] abs_gy;
     reg [12:0] mag;
@@ -68,22 +72,6 @@ module axis_sobel(
     wire [7:0] edge_mag;
     reg rValid1, rUser1, rLast1;
     reg rValid2, rUser2, rLast2;
-    
-    // Gx = - p00 + p02 - 2p10 + 2p12 - p20 + p22
-    assign gx = -$signed({4'h0, p00})
-         + $signed({4'h0, p02})
-         - ($signed({4'h0, p10}) <<< 1)
-         + ($signed({4'h0, p12}) <<< 1)
-         - $signed({4'h0, p20})
-         + $signed({4'h0, p22});
-
-    // Gy = - p00 - 2p01 - p02 + p20 + 2p21 + p22
-    assign gy = -$signed({4'h0, p00})
-         - ($signed({4'h0, p01}) <<< 1)
-         - $signed({4'h0, p02})
-         + $signed({4'h0, p20})
-         + ($signed({4'h0, p21}) <<< 1)
-         + $signed({4'h0, p22});
     
     //saturation
     assign edge_mag = (mag > 13'd255) ? 8'd255 : mag[7:0];
@@ -112,20 +100,37 @@ module axis_sobel(
             m_axis_tlast <= 1'b0;
         end
         else if (s_axis_tready) begin
-            //pipeline stage 1
+            
+            rgx0 <= -$signed({4'h0, p00})
+                 - ($signed({4'h0, p10}) <<< 1)
+                 - $signed({4'h0, p20});
+            rgx2 <= + $signed({4'h0, p02})
+                 + ($signed({4'h0, p12}) <<< 1)
+                 + $signed({4'h0, p22});
+            gx <= rgx0 + rgx2;
+            
+            rgy0 <= -$signed({4'h0, p00})
+             - ($signed({4'h0, p01}) <<< 1)
+             - $signed({4'h0, p02});
+            rgy2 <= + $signed({4'h0, p20})
+             + ($signed({4'h0, p21}) <<< 1)
+             + $signed({4'h0, p22});
+            gy <= rgy0 + rgy2;
+            
+            //pipeline stage 2
             abs_gx <= (gx < 0) ? -gx : gx;
             abs_gy <= (gy < 0) ? -gy : gy;
             rValid1 <= s_axis_tvalid;
             rUser1 <= s_axis_tuser;
             rLast1 <= s_axis_tlast;
             
-            //pipeline stage 2
+            //pipeline stage 3
             mag <= abs_gx + abs_gy;
             rValid2 <= rValid1;
             rUser2 <= rUser1;
             rLast2 <= rLast1;
             
-            //pipeline stage 2
+            //pipeline stage 4
             m_axis_tdata <= {edge_mag, edge_mag, edge_mag};
             m_axis_tvalid <= rValid2;
             m_axis_tuser <= rUser2;
