@@ -24,8 +24,8 @@ module processing_core_TB;
     // ------------------------------------------------------------
     // Clock / reset
     // ------------------------------------------------------------
-    logic clk_0;
-    logic rst_0;
+    logic clk;
+    logic rst_n;
 
     // ------------------------------------------------------------
     // Input AXI-style stream to processing core
@@ -39,7 +39,7 @@ module processing_core_TB;
     // ------------------------------------------------------------
     // Output AXI-style stream from processing core
     // ------------------------------------------------------------
-    logic [7:0]  m_axis_0_tdata;
+    logic [23:0]  m_axis_0_tdata;
     logic        m_axis_0_tvalid;
     logic        m_axis_0_tready;
     logic        m_axis_0_tuser;
@@ -49,7 +49,7 @@ module processing_core_TB;
     // DUT
     // ------------------------------------------------------------
     processing_core_wrapper dut (
-        .clk_0(clk_0),
+        .clk(clk),
 
         .s_axis_0_tdata(s_axis_0_tdata),
         .s_axis_0_tlast(s_axis_0_tlast),
@@ -63,15 +63,15 @@ module processing_core_TB;
         .m_axis_0_tuser(m_axis_0_tuser),
         .m_axis_0_tvalid(m_axis_0_tvalid),
 
-        .rst_0(rst_0)
+        .rst_n(rst_n)
     );
 
     // ------------------------------------------------------------
     // Clock generation: 100 MHz simulation clock
     // ------------------------------------------------------------
     initial begin
-        clk_0 = 1'b0;
-        forever #5 clk_0 = ~clk_0;
+        clk = 1'b0;
+        forever #5 clk = ~clk;
     end
 
     // ------------------------------------------------------------
@@ -101,10 +101,10 @@ module processing_core_TB;
 
             m_axis_0_tready <= 1'b1;
 
-            rst_0 <= 1'b1;
-            repeat (8) @(posedge clk_0);
-            rst_0 <= 1'b0;
-            repeat (4) @(posedge clk_0);
+            rst_n <= 1'b0;
+            repeat (8) @(posedge clk);
+            rst_n <= 1'b1;
+            repeat (4) @(posedge clk);
         end
     endtask
 
@@ -117,14 +117,14 @@ module processing_core_TB;
         input logic        last
     );
         begin
-            @(negedge clk_0);
+            @(negedge clk);
             s_axis_0_tdata  <= rgb;
             s_axis_0_tvalid <= 1'b1;
             s_axis_0_tuser  <= user;
             s_axis_0_tlast  <= last;
 
             do begin
-                @(posedge clk_0);
+                @(posedge clk);
             end while (!(s_axis_0_tvalid && s_axis_0_tready));
         end
     endtask
@@ -134,7 +134,7 @@ module processing_core_TB;
     // ------------------------------------------------------------
     task automatic stop_input();
         begin
-            @(negedge clk_0);
+            @(negedge clk);
             s_axis_0_tdata  <= 24'd0;
             s_axis_0_tvalid <= 1'b0;
             s_axis_0_tuser  <= 1'b0;
@@ -145,20 +145,20 @@ module processing_core_TB;
     // ------------------------------------------------------------
     // Output monitor / checker
     // ------------------------------------------------------------
-    always @(posedge clk_0) begin
+    always @(posedge clk) begin
         #1;
 
-        if (!rst_0 && m_axis_0_tvalid && m_axis_0_tready) begin
+        if (rst_n && m_axis_0_tvalid && m_axis_0_tready) begin
             exp_t exp;
 
             if (exp_q.size() == 0) begin
                 $error("[FAIL] Unexpected output: edge=%0d user=%0b last=%0b at time=%0t",
-                       m_axis_0_tdata, m_axis_0_tuser, m_axis_0_tlast, $time);
+                       m_axis_0_tdata[7:0], m_axis_0_tuser, m_axis_0_tlast, $time);
                 fail_count++;
             end else begin
                 exp = exp_q.pop_front();
 
-                if (m_axis_0_tdata !== exp.edge_mag ||
+                if (m_axis_0_tdata[7:0] !== exp.edge_mag ||
                     m_axis_0_tuser !== exp.user ||
                     m_axis_0_tlast !== exp.last) begin
 
@@ -167,7 +167,7 @@ module processing_core_TB;
                     $display("       Expected: edge=%0d user=%0b last=%0b",
                              exp.edge_mag, exp.user, exp.last);
                     $display("       Got     : edge=%0d user=%0b last=%0b",
-                             m_axis_0_tdata, m_axis_0_tuser, m_axis_0_tlast);
+                             m_axis_0_tdata[7:0], m_axis_0_tuser, m_axis_0_tlast);
                     fail_count++;
                 end else begin
                     pass_count++;
@@ -175,7 +175,7 @@ module processing_core_TB;
                     // Avoid printing hundreds of thousands of lines.
                     if (output_count < 10 || (output_count % 50000) == 0) begin
                         $display("[PASS] output_count=%0d edge=%0d user=%0b last=%0b",
-                                 output_count, m_axis_0_tdata,
+                                 output_count, m_axis_0_tdata[7:0],
                                  m_axis_0_tuser, m_axis_0_tlast);
                     end
                 end
@@ -194,11 +194,11 @@ module processing_core_TB;
             timeout = 0;
 
             while (exp_q.size() != 0 && timeout < timeout_cycles) begin
-                @(posedge clk_0);
+                @(posedge clk);
                 timeout++;
             end
 
-            repeat (20) @(posedge clk_0);
+            repeat (20) @(posedge clk);
 
             if (exp_q.size() != 0) begin
                 $error("[FAIL] Expected queue not empty after timeout, remaining=%0d",
@@ -348,7 +348,7 @@ module processing_core_TB;
     // ------------------------------------------------------------
     // Main full-core Python-reference test
     // ------------------------------------------------------------
-    task automatic test_python_reference_640x480();
+    task automatic test_python_reference();
         int width;
         int height;
         int num_outputs;
@@ -362,16 +362,8 @@ module processing_core_TB;
 
             load_expected_file(width, height, num_outputs);
 
-            if (width != 640 || height != 480) begin
-                $fatal(1,
-                       "[FAIL] Test vector size is %0dx%0d, but current wrapper is expected to be 640x480",
-                       width, height);
-            end
-
             drive_input_file(width, height);
 
-            // 640x480 input = 307200 cycles of input.
-            // Expected output = 638x478 = 304964 outputs.
             // This timeout is intentionally large.
             wait_for_outputs_to_drain(2_000_000);
 
@@ -394,12 +386,12 @@ module processing_core_TB;
 
         m_axis_0_tready = 1'b1;
 
-        rst_0 = 1'b1;
-        repeat (3) @(posedge clk_0);
+        rst_n = 1'b0;
+        repeat (3) @(posedge clk);
 
-        test_python_reference_640x480();
+        test_python_reference();
 
-        repeat (50) @(posedge clk_0);
+        repeat (50) @(posedge clk);
 
         if (fail_count == 0) begin
             $display("========================================");

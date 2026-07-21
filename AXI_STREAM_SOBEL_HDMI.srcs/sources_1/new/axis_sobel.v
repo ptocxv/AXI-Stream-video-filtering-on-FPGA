@@ -63,9 +63,10 @@ module axis_sobel(
 
     wire [11:0] abs_gx;
     wire [11:0] abs_gy;
-    wire [12:0] mag;
+    reg [12:0] mag;
 
     wire [7:0] edge_mag;
+    reg rValid, rUser, rLast;
     
     // Gx = - p00 + p02 - 2p10 + 2p12 - p20 + p22
     assign gx = -$signed({4'h0, p00})
@@ -85,7 +86,6 @@ module axis_sobel(
 
     assign abs_gx = (gx < 0) ? -gx : gx;
     assign abs_gy = (gy < 0) ? -gy : gy;
-    assign mag = abs_gx + abs_gy;
     
     //saturation
     assign edge_mag = (mag > 13'd255) ? 8'd255 : mag[7:0];
@@ -94,16 +94,30 @@ module axis_sobel(
     //output register
     always @(posedge clk) begin
         if(!rst) begin
+            //pipeline stage 1
+            mag <= 8'd0;
+            rUser <= 1'b0;
+            rValid <= 1'b0;
+            rLast <= 1'b0;
+
+            //pipeline stage 2
             m_axis_tdata <= 24'd0;
             m_axis_tvalid <= 1'b0;
             m_axis_tuser <= 1'b0;
             m_axis_tlast <= 1'b0;
         end
         else if (s_axis_tready) begin
+            //pipeline stage 1
+            mag <= abs_gx + abs_gy;
+            rValid <= s_axis_tvalid;
+            rUser <= s_axis_tuser;
+            rLast <= s_axis_tlast;
+            
+            //pipeline stage 2
             m_axis_tdata <= {edge_mag, edge_mag, edge_mag};
-            m_axis_tvalid <= s_axis_tvalid;
-            m_axis_tuser <= s_axis_tuser;
-            m_axis_tlast <= s_axis_tlast;
+            m_axis_tvalid <= rValid;
+            m_axis_tuser <= rUser;
+            m_axis_tlast <= rLast;
         end
     end
     
