@@ -1,13 +1,14 @@
 {
   "design": {
     "design_info": {
-      "boundary_crc": "0x5C23058FB93C00A5",
+      "boundary_crc": "0x5C23058F9E7EED5C",
       "device": "xc7z020clg400-1",
       "gen_directory": "../../../../AXI_STREAM_SOBEL_HDMI.gen/sources_1/bd/final_system",
       "name": "final_system",
       "rev_ctrl_bd_flag": "RevCtrlBdOff",
       "synth_flow_mode": "Hierarchical",
-      "tool_version": "2025.1"
+      "tool_version": "2025.1",
+      "validated": "true"
     },
     "design_tree": {
       "processing_core_wrap_0": "",
@@ -57,11 +58,59 @@
     "ports": {
       "TMDS_Clk_p_0": {
         "type": "clk",
-        "direction": "I"
+        "direction": "I",
+        "parameters": {
+          "CLK_DOMAIN": {
+            "value": "final_system_TMDS_Clk_p_0",
+            "value_src": "default"
+          },
+          "FREQ_HZ": {
+            "value": "100000000",
+            "value_src": "default"
+          },
+          "FREQ_TOLERANCE_HZ": {
+            "value": "0",
+            "value_src": "default"
+          },
+          "INSERT_VIP": {
+            "value": "0",
+            "value_src": "default"
+          },
+          "PHASE": {
+            "value": "0.0",
+            "value_src": "default"
+          }
+        }
       },
       "TMDS_Clk_n_0": {
         "type": "clk",
-        "direction": "I"
+        "direction": "I",
+        "parameters": {
+          "ASSOCIATED_RESET": {
+            "value": "rst",
+            "value_src": "default"
+          },
+          "CLK_DOMAIN": {
+            "value": "final_system_TMDS_Clk_n_0",
+            "value_src": "default"
+          },
+          "FREQ_HZ": {
+            "value": "100000000",
+            "value_src": "default"
+          },
+          "FREQ_TOLERANCE_HZ": {
+            "value": "0",
+            "value_src": "default"
+          },
+          "INSERT_VIP": {
+            "value": "0",
+            "value_src": "default"
+          },
+          "PHASE": {
+            "value": "0.0",
+            "value_src": "default"
+          }
+        }
       },
       "TMDS_Data_p_0": {
         "direction": "I",
@@ -75,11 +124,47 @@
       },
       "TMDS_Clk_p_1": {
         "type": "clk",
-        "direction": "O"
+        "direction": "O",
+        "parameters": {
+          "FREQ_HZ": {
+            "value": "100000000",
+            "value_src": "default"
+          },
+          "FREQ_TOLERANCE_HZ": {
+            "value": "0",
+            "value_src": "default"
+          },
+          "INSERT_VIP": {
+            "value": "0",
+            "value_src": "default"
+          },
+          "PHASE": {
+            "value": "0.0",
+            "value_src": "default"
+          }
+        }
       },
       "TMDS_Clk_n_1": {
         "type": "clk",
-        "direction": "O"
+        "direction": "O",
+        "parameters": {
+          "FREQ_HZ": {
+            "value": "100000000",
+            "value_src": "default"
+          },
+          "FREQ_TOLERANCE_HZ": {
+            "value": "0",
+            "value_src": "default"
+          },
+          "INSERT_VIP": {
+            "value": "0",
+            "value_src": "default"
+          },
+          "PHASE": {
+            "value": "0.0",
+            "value_src": "default"
+          }
+        }
       },
       "TMDS_Data_p_1": {
         "direction": "O",
@@ -93,7 +178,29 @@
       },
       "clk": {
         "type": "clk",
-        "direction": "I"
+        "direction": "I",
+        "parameters": {
+          "CLK_DOMAIN": {
+            "value": "final_system_clk",
+            "value_src": "default"
+          },
+          "FREQ_HZ": {
+            "value": "100000000",
+            "value_src": "default"
+          },
+          "FREQ_TOLERANCE_HZ": {
+            "value": "0",
+            "value_src": "default"
+          },
+          "INSERT_VIP": {
+            "value": "0",
+            "value_src": "default"
+          },
+          "PHASE": {
+            "value": "0.0",
+            "value_src": "default"
+          }
+        }
       },
       "rst": {
         "direction": "I"
@@ -483,10 +590,10 @@
       "dvi2rgb_0_PixelClk": {
         "ports": [
           "dvi2rgb_0/PixelClk",
-          "rgb2dvi_0/PixelClk",
           "v_vid_in_axi4s_0/aclk",
-          "v_tc_0/clk",
           "v_axi4s_vid_out_0/aclk",
+          "rgb2dvi_0/PixelClk",
+          "v_tc_0/clk",
           "processing_core_wrap_0/clk"
         ]
       },
@@ -572,10 +679,10 @@
         "ports": [
           "rst",
           "v_vid_in_axi4s_0/aresetn",
-          "dvi2rgb_0/aRst_n",
-          "v_tc_0/resetn",
           "v_axi4s_vid_out_0/aresetn",
+          "dvi2rgb_0/aRst_n",
           "rgb2dvi_0/aRst_n",
+          "v_tc_0/resetn",
           "processing_core_wrap_0/rst_n"
         ]
       },
