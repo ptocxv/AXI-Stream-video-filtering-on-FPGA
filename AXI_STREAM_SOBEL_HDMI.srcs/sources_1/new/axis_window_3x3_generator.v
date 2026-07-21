@@ -21,8 +21,8 @@
 
 
 module axis_window_3x3_generator#(
-        parameter FRAME_WIDTH = 1280,
-        parameter FRAME_HEIGHT = 720
+        parameter FRAME_WIDTH = 1920,
+        parameter FRAME_HEIGHT = 1080
     )(
         input clk,
         input rst,

@@ -8,13 +8,13 @@
     "gen_directory": "../../../../../../AXI_STREAM_SOBEL_HDMI.gen/sources_1/bd/processing_core/ip/processing_core_axis_window_3x3_gene_0_0",
     "parameters": {
       "component_parameters": {
-        "FRAME_WIDTH": [ { "value": "1280", "resolve_type": "user", "format": "long", "usage": "all" } ],
-        "FRAME_HEIGHT": [ { "value": "720", "resolve_type": "user", "format": "long", "usage": "all" } ],
+        "FRAME_WIDTH": [ { "value": "1920", "resolve_type": "user", "format": "long", "usage": "all" } ],
+        "FRAME_HEIGHT": [ { "value": "1080", "resolve_type": "user", "format": "long", "usage": "all" } ],
         "Component_Name": [ { "value": "processing_core_axis_window_3x3_gene_0_0", "resolve_type": "user", "usage": "all" } ]
       },
       "model_parameters": {
-        "FRAME_WIDTH": [ { "value": "1280", "resolve_type": "generated", "format": "long", "usage": "all" } ],
-        "FRAME_HEIGHT": [ { "value": "720", "resolve_type": "generated", "format": "long", "usage": "all" } ]
+        "FRAME_WIDTH": [ { "value": "1920", "resolve_type": "generated", "format": "long", "usage": "all" } ],
+        "FRAME_HEIGHT": [ { "value": "1080", "resolve_type": "generated", "format": "long", "usage": "all" } ]
       },
       "project_parameters": {
         "ARCHITECTURE": [ { "value": "zynq" } ],

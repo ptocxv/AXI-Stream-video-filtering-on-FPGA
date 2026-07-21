@@ -413,10 +413,10 @@
             "value": "true"
           },
           "kClkRange": {
-            "value": "3"
+            "value": "1"
           },
           "kEdidFileName": {
-            "value": "dgl_720p_cea.data"
+            "value": "dgl_1080p_cea.data"
           },
           "kEmulateDDC": {
             "value": "true"
@@ -435,7 +435,7 @@
         "has_run_ip_tcl": "true",
         "parameters": {
           "kClkRange": {
-            "value": "3"
+            "value": "1"
           },
           "kGenerateSerialClk": {
             "value": "true"
@@ -538,6 +538,9 @@
           },
           "SYNC_EN": {
             "value": "false"
+          },
+          "VIDEO_MODE": {
+            "value": "1080p"
           },
           "enable_detection": {
             "value": "false"
