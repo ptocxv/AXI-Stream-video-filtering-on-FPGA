@@ -1,7 +1,7 @@
 {
    "ActiveEmotionalView":"Default View",
-   "Default View_ScaleFactor":"0.958496",
-   "Default View_TopLeft":"-118,-96",
+   "Default View_ScaleFactor":"1.22073",
+   "Default View_TopLeft":"-109,-120",
    "ExpandedHierarchyInLayout":"",
    "guistr":"# # String gsaved with Nlview 7.8.0 2024-04-26 e1825d835c VDI=44 GEI=38 GUI=JA:21.0
 #  -string -flagsOSRD
@@ -22,8 +22,8 @@ preplace netloc axis_window_3x3_gene_0_m_axis_tlast 1 2 1 N 130
 preplace netloc axis_window_3x3_gene_0_m_axis_tuser 1 2 1 N 150
 preplace netloc axis_window_3x3_gene_0_m_axis_tvalid 1 2 1 N 170
 preplace netloc axis_window_3x3_gene_0_s_axis_tready 1 1 1 N 170
-preplace netloc clk_0_1 1 0 3 10 10 320 270 690
-preplace netloc rst_0_1 1 0 3 10 230 330 280 700
+preplace netloc clk_0_1 1 0 3 20 10 320 270 690
+preplace netloc rst_0_1 1 0 3 20 230 330 280 700
 preplace netloc axis_sobel_0_m_axis 1 3 1 N 160
 preplace netloc s_axis_0_1 1 0 1 NJ 100
 levelinfo -pg 1 -10 160 510 870 1050
