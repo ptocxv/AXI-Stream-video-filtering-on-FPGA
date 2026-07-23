@@ -680,9 +680,9 @@
           "rst",
           "v_vid_in_axi4s_0/aresetn",
           "v_axi4s_vid_out_0/aresetn",
-          "dvi2rgb_0/aRst_n",
           "rgb2dvi_0/aRst_n",
           "v_tc_0/resetn",
+          "dvi2rgb_0/aRst_n",
           "processing_core_wrap_0/rst_n"
         ]
       },
