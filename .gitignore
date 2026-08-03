@@ -54,3 +54,6 @@ Thumbs.db
 
 # Optional custom build folder
 build/
+
+# Others
+**/nlviewcommon.logFile
