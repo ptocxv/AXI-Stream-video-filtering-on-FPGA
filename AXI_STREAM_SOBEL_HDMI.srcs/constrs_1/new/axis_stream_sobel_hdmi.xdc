@@ -31,7 +31,7 @@ create_clock -period 13.468 -name hdmi_rx_clk -waveform {0.000 6.734} [get_ports
 
 ##Switches
 
-#set_property -dict { PACKAGE_PIN M19   IOSTANDARD LVCMOS33 } [get_ports { SW1 }]; #IO_L7P_T1_AD2P_35 Sch=sw[1]
+set_property -dict { PACKAGE_PIN M19   IOSTANDARD LVCMOS33 } [get_ports { mode_sw[0] }]; #IO_L7P_T1_AD2P_35 Sch=sw[1]
 
 ##RGB LEDs
 

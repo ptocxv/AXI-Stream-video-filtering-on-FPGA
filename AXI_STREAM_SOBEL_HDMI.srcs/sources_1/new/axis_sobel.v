@@ -38,7 +38,9 @@ module axis_sobel(
     output reg m_axis_tvalid,
     output reg m_axis_tuser,
     output reg m_axis_tlast,
-    input m_axis_tready
+    input m_axis_tready,
+    
+    output reg [23:0] grayscale_data
     
     );
     
@@ -98,12 +100,14 @@ module axis_sobel(
             m_axis_tvalid <= 1'b0;
             m_axis_tuser <= 1'b0;
             m_axis_tlast <= 1'b0;
+            grayscale_data <= 24'd0;
         end
         else if (s_axis_tready) begin
             m_axis_tdata <= {edge_mag, edge_mag, edge_mag};
             m_axis_tvalid <= s_axis_tvalid;
             m_axis_tuser <= s_axis_tuser;
             m_axis_tlast <= s_axis_tlast;
+            grayscale_data <= {p11,p11,p11};
         end
     end
     

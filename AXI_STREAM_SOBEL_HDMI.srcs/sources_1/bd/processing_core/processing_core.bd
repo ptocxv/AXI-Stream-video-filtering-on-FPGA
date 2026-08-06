@@ -1,13 +1,13 @@
 {
   "design": {
     "design_info": {
-      "boundary_crc": "0xDAE444D7A46682D6",
+      "boundary_crc": "0xB71BBA7CEB04D5E1",
       "device": "xc7z020clg400-1",
       "gen_directory": "../../../../AXI_STREAM_SOBEL_HDMI.gen/sources_1/bd/processing_core",
       "name": "processing_core",
       "rev_ctrl_bd_flag": "RevCtrlBdOff",
       "synth_flow_mode": "Hierarchical",
-      "tool_version": "2025.1",
+      "tool_version": "2026.1",
       "validated": "true"
     },
     "design_tree": {
@@ -16,87 +16,13 @@
       "axis_sobel_0": ""
     },
     "interface_ports": {
-      "s_axis_0": {
-        "mode": "Slave",
-        "vlnv_bus_definition": "xilinx.com:interface:axis:1.0",
-        "vlnv": "xilinx.com:interface:axis_rtl:1.0",
-        "parameters": {
-          "CLK_DOMAIN": {
-            "value": "processing_core_clk",
-            "value_src": "default"
-          },
-          "FREQ_HZ": {
-            "value": "100000000",
-            "value_src": "default"
-          },
-          "HAS_TKEEP": {
-            "value": "0"
-          },
-          "HAS_TLAST": {
-            "value": "1"
-          },
-          "HAS_TREADY": {
-            "value": "1"
-          },
-          "HAS_TSTRB": {
-            "value": "0"
-          },
-          "INSERT_VIP": {
-            "value": "0",
-            "value_src": "default"
-          },
-          "LAYERED_METADATA": {
-            "value": "undef"
-          },
-          "PHASE": {
-            "value": "0.0",
-            "value_src": "default"
-          },
-          "TDATA_NUM_BYTES": {
-            "value": "3"
-          },
-          "TDEST_WIDTH": {
-            "value": "0"
-          },
-          "TID_WIDTH": {
-            "value": "0"
-          },
-          "TUSER_WIDTH": {
-            "value": "1"
-          }
-        },
-        "port_maps": {
-          "TDATA": {
-            "physical_name": "s_axis_0_tdata",
-            "direction": "I",
-            "left": "23",
-            "right": "0"
-          },
-          "TLAST": {
-            "physical_name": "s_axis_0_tlast",
-            "direction": "I"
-          },
-          "TUSER": {
-            "physical_name": "s_axis_0_tuser",
-            "direction": "I"
-          },
-          "TVALID": {
-            "physical_name": "s_axis_0_tvalid",
-            "direction": "I"
-          },
-          "TREADY": {
-            "physical_name": "s_axis_0_tready",
-            "direction": "O"
-          }
-        }
-      },
       "m_axis_0": {
         "mode": "Master",
         "vlnv_bus_definition": "xilinx.com:interface:axis:1.0",
         "vlnv": "xilinx.com:interface:axis_rtl:1.0",
         "parameters": {
           "CLK_DOMAIN": {
-            "value": "processing_core_clk",
+            "value": "processing_core_clk_0",
             "value_src": "default"
           },
           "FREQ_HZ": {
@@ -148,6 +74,12 @@
             "value_src": "const_prop"
           }
         },
+        "hdl_attributes": {
+          "LOCKED": {
+            "value": "FALSE",
+            "value_src": "default"
+          }
+        },
         "port_maps": {
           "TDATA": {
             "physical_name": "m_axis_0_tdata",
@@ -172,22 +104,103 @@
             "direction": "I"
           }
         }
+      },
+      "s_axis_0": {
+        "mode": "Slave",
+        "vlnv_bus_definition": "xilinx.com:interface:axis:1.0",
+        "vlnv": "xilinx.com:interface:axis_rtl:1.0",
+        "parameters": {
+          "CLK_DOMAIN": {
+            "value": "processing_core_clk_0",
+            "value_src": "default"
+          },
+          "FREQ_HZ": {
+            "value": "100000000",
+            "value_src": "default"
+          },
+          "HAS_TKEEP": {
+            "value": "0"
+          },
+          "HAS_TLAST": {
+            "value": "1"
+          },
+          "HAS_TREADY": {
+            "value": "1"
+          },
+          "HAS_TSTRB": {
+            "value": "0"
+          },
+          "INSERT_VIP": {
+            "value": "0",
+            "value_src": "default"
+          },
+          "LAYERED_METADATA": {
+            "value": "undef"
+          },
+          "PHASE": {
+            "value": "0.0",
+            "value_src": "default"
+          },
+          "TDATA_NUM_BYTES": {
+            "value": "3"
+          },
+          "TDEST_WIDTH": {
+            "value": "0"
+          },
+          "TID_WIDTH": {
+            "value": "0"
+          },
+          "TUSER_WIDTH": {
+            "value": "1"
+          }
+        },
+        "hdl_attributes": {
+          "LOCKED": {
+            "value": "FALSE",
+            "value_src": "default"
+          }
+        },
+        "port_maps": {
+          "TDATA": {
+            "physical_name": "s_axis_0_tdata",
+            "direction": "I",
+            "left": "23",
+            "right": "0"
+          },
+          "TLAST": {
+            "physical_name": "s_axis_0_tlast",
+            "direction": "I"
+          },
+          "TUSER": {
+            "physical_name": "s_axis_0_tuser",
+            "direction": "I"
+          },
+          "TVALID": {
+            "physical_name": "s_axis_0_tvalid",
+            "direction": "I"
+          },
+          "TREADY": {
+            "physical_name": "s_axis_0_tready",
+            "direction": "O"
+          }
+        }
       }
     },
     "ports": {
-      "clk": {
+      "clk_0": {
         "type": "clk",
         "direction": "I",
         "parameters": {
           "ASSOCIATED_BUSIF": {
-            "value": "s_axis_0:m_axis_0",
+            "value": "m_axis_0:s_axis_0",
             "value_src": "default"
           },
           "ASSOCIATED_RESET": {
-            "value": "rst_n"
+            "value": "rst_0",
+            "value_src": "default"
           },
           "CLK_DOMAIN": {
-            "value": "processing_core_clk",
+            "value": "processing_core_clk_0",
             "value_src": "default"
           },
           "FREQ_HZ": {
@@ -208,7 +221,7 @@
           }
         }
       },
-      "rst_n": {
+      "rst_0": {
         "type": "rst",
         "direction": "I",
         "parameters": {
@@ -217,9 +230,15 @@
             "value_src": "default"
           },
           "POLARITY": {
-            "value": "ACTIVE_HIGH"
+            "value": "ACTIVE_LOW",
+            "value_src": "default"
           }
         }
+      },
+      "grayscale_data_0": {
+        "direction": "O",
+        "left": "23",
+        "right": "0"
       }
     },
     "components": {
@@ -274,7 +293,7 @@
                 "value_src": "constant"
               },
               "CLK_DOMAIN": {
-                "value": "processing_core_clk",
+                "value": "processing_core_clk_0",
                 "value_src": "default_prop"
               }
             },
@@ -341,7 +360,7 @@
                 "value_src": "constant"
               },
               "CLK_DOMAIN": {
-                "value": "processing_core_clk",
+                "value": "processing_core_clk_0",
                 "value_src": "default_prop"
               },
               "LAYERED_METADATA": {
@@ -389,19 +408,14 @@
                 "value_src": "constant"
               },
               "CLK_DOMAIN": {
-                "value": "processing_core_clk",
+                "value": "processing_core_clk_0",
                 "value_src": "default_prop"
               }
             }
           },
           "rst": {
             "type": "rst",
-            "direction": "I",
-            "parameters": {
-              "POLARITY": {
-                "value": "ACTIVE_HIGH"
-              }
-            }
+            "direction": "I"
           }
         }
       },
@@ -456,7 +470,7 @@
                 "value_src": "constant"
               },
               "CLK_DOMAIN": {
-                "value": "processing_core_clk",
+                "value": "processing_core_clk_0",
                 "value_src": "default_prop"
               }
             },
@@ -523,7 +537,7 @@
                 "value_src": "constant"
               },
               "CLK_DOMAIN": {
-                "value": "processing_core_clk",
+                "value": "processing_core_clk_0",
                 "value_src": "default_prop"
               }
             },
@@ -567,19 +581,14 @@
                 "value_src": "constant"
               },
               "CLK_DOMAIN": {
-                "value": "processing_core_clk",
+                "value": "processing_core_clk_0",
                 "value_src": "default_prop"
               }
             }
           },
           "rst": {
             "type": "rst",
-            "direction": "I",
-            "parameters": {
-              "POLARITY": {
-                "value": "ACTIVE_HIGH"
-              }
-            }
+            "direction": "I"
           }
         }
       },
@@ -634,7 +643,7 @@
                 "value_src": "constant"
               },
               "CLK_DOMAIN": {
-                "value": "processing_core_clk",
+                "value": "processing_core_clk_0",
                 "value_src": "default_prop"
               }
             },
@@ -701,7 +710,7 @@
                 "value_src": "constant"
               },
               "CLK_DOMAIN": {
-                "value": "processing_core_clk",
+                "value": "processing_core_clk_0",
                 "value_src": "default_prop"
               }
             },
@@ -745,28 +754,40 @@
                 "value_src": "constant"
               },
               "CLK_DOMAIN": {
-                "value": "processing_core_clk",
+                "value": "processing_core_clk_0",
                 "value_src": "default_prop"
               }
             }
           },
           "rst": {
             "type": "rst",
-            "direction": "I",
-            "parameters": {
-              "POLARITY": {
-                "value": "ACTIVE_HIGH"
-              }
-            }
+            "direction": "I"
+          },
+          "grayscale_data": {
+            "direction": "O",
+            "left": "23",
+            "right": "0"
           }
         }
       }
     },
     "interface_nets": {
+      "axis_grayscale_0_m_axis": {
+        "interface_ports": [
+          "axis_grayscale_0/m_axis",
+          "axis_window_3x3_gene_0/s_axis"
+        ]
+      },
       "axis_sobel_0_m_axis": {
         "interface_ports": [
           "m_axis_0",
           "axis_sobel_0/m_axis"
+        ]
+      },
+      "axis_window_3x3_gene_0_m_axis": {
+        "interface_ports": [
+          "axis_window_3x3_gene_0/m_axis",
+          "axis_sobel_0/s_axis"
         ]
       },
       "s_axis_0_1": {
@@ -777,80 +798,26 @@
       }
     },
     "nets": {
-      "axis_grayscale_0_m_axis_tdata": {
+      "axis_sobel_0_grayscale_data": {
         "ports": [
-          "axis_grayscale_0/m_axis_tdata",
-          "axis_window_3x3_gene_0/s_axis_tdata"
-        ]
-      },
-      "axis_grayscale_0_m_axis_tlast": {
-        "ports": [
-          "axis_grayscale_0/m_axis_tlast",
-          "axis_window_3x3_gene_0/s_axis_tlast"
-        ]
-      },
-      "axis_grayscale_0_m_axis_tuser": {
-        "ports": [
-          "axis_grayscale_0/m_axis_tuser",
-          "axis_window_3x3_gene_0/s_axis_tuser"
-        ]
-      },
-      "axis_grayscale_0_m_axis_tvalid": {
-        "ports": [
-          "axis_grayscale_0/m_axis_tvalid",
-          "axis_window_3x3_gene_0/s_axis_tvalid"
-        ]
-      },
-      "axis_sobel_0_s_axis_tready": {
-        "ports": [
-          "axis_sobel_0/s_axis_tready",
-          "axis_window_3x3_gene_0/m_axis_tready"
-        ]
-      },
-      "axis_window_3x3_gene_0_m_axis_tdata": {
-        "ports": [
-          "axis_window_3x3_gene_0/m_axis_tdata",
-          "axis_sobel_0/s_axis_tdata"
-        ]
-      },
-      "axis_window_3x3_gene_0_m_axis_tlast": {
-        "ports": [
-          "axis_window_3x3_gene_0/m_axis_tlast",
-          "axis_sobel_0/s_axis_tlast"
-        ]
-      },
-      "axis_window_3x3_gene_0_m_axis_tuser": {
-        "ports": [
-          "axis_window_3x3_gene_0/m_axis_tuser",
-          "axis_sobel_0/s_axis_tuser"
-        ]
-      },
-      "axis_window_3x3_gene_0_m_axis_tvalid": {
-        "ports": [
-          "axis_window_3x3_gene_0/m_axis_tvalid",
-          "axis_sobel_0/s_axis_tvalid"
-        ]
-      },
-      "axis_window_3x3_gene_0_s_axis_tready": {
-        "ports": [
-          "axis_window_3x3_gene_0/s_axis_tready",
-          "axis_grayscale_0/m_axis_tready"
+          "axis_sobel_0/grayscale_data",
+          "grayscale_data_0"
         ]
       },
       "clk_0_1": {
         "ports": [
-          "clk",
+          "clk_0",
           "axis_grayscale_0/clk",
-          "axis_sobel_0/clk",
-          "axis_window_3x3_gene_0/clk"
+          "axis_window_3x3_gene_0/clk",
+          "axis_sobel_0/clk"
         ]
       },
       "rst_0_1": {
         "ports": [
-          "rst_n",
+          "rst_0",
           "axis_grayscale_0/rst",
-          "axis_sobel_0/rst",
-          "axis_window_3x3_gene_0/rst"
+          "axis_window_3x3_gene_0/rst",
+          "axis_sobel_0/rst"
         ]
       }
     }
