@@ -1,7 +1,7 @@
 {
    "ActiveEmotionalView":"Default View",
-   "Default View_ScaleFactor":"0.576451",
-   "Default View_TopLeft":"-226,-2",
+   "Default View_ScaleFactor":"5.0",
+   "Default View_TopLeft":"725,46",
    "ExpandedHierarchyInLayout":"",
    "guistr":"# # String gsaved with Nlview 7.8.0 2024-04-26 e1825d835c VDI=44 GEI=38 GUI=JA:24.0
 #  -string -flagsOSRD
@@ -54,6 +54,7 @@ preplace netloc processing_core_wrap_0_m_axis_0_tuser 1 4 1 1530 600n
 preplace netloc processing_core_wrap_0_m_axis_0_tvalid 1 4 1 1510 620n
 preplace netloc processing_core_wrap_0_s_axis_0_tready 1 3 1 990 520n
 preplace netloc processing_system7_0_FCLK_CLK0 1 3 3 1010 40 1470 150 1940J
+preplace netloc processing_system7_0_FCLK_RESET0_N 1 3 2 1020 50 1400
 preplace netloc rgb2dvi_0_TMDS_Clk_n 1 6 1 2270J 920n
 preplace netloc rgb2dvi_0_TMDS_Clk_p 1 6 1 2270J 890n
 preplace netloc rgb2dvi_0_TMDS_Data_n 1 6 1 2270J 970n
@@ -80,12 +81,11 @@ preplace netloc xlconstant_0_dout1 1 6 1 NJ 410
 preplace netloc xlconstant_1_dout 1 2 3 600 970 980 970 1480
 preplace netloc xlconstant_3_val0_dout 1 3 1 NJ 170
 preplace netloc xlconstant_3_val1_dout 1 3 1 990 60n
-preplace netloc processing_system7_0_FCLK_RESET0_N 1 3 2 1020 50 1400
 preplace netloc dvi2rgb_0_DDC 1 2 5 NJ 720 NJ 720 NJ 720 NJ 720 NJ
-preplace netloc smartconnect_0_M00_AXI 1 5 1 1920 220n
 preplace netloc processing_system7_0_DDR 1 4 3 NJ 320 NJ 320 NJ
 preplace netloc processing_system7_0_FIXED_IO 1 4 3 NJ 340 NJ 340 2270J
 preplace netloc processing_system7_0_M_AXI_GP0 1 4 1 1480 220n
+preplace netloc smartconnect_0_M00_AXI 1 5 1 1920 220n
 levelinfo -pg 1 0 120 390 800 1210 1730 2110 2290
 pagesize -pg 1 -db -bbox -sgen -180 0 2470 1220
 "
