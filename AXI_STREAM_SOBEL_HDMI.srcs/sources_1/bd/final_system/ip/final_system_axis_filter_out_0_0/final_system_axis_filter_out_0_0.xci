@@ -50,7 +50,8 @@
         "m_axis_tlast": [ { "direction": "out" } ],
         "grayscale_data": [ { "direction": "in", "size_left": "23", "size_right": "0" } ],
         "mode": [ { "direction": "in", "size_left": "1", "size_right": "0" } ],
-        "threshold": [ { "direction": "in", "size_left": "7", "size_right": "0" } ]
+        "threshold": [ { "direction": "in", "size_left": "7", "size_right": "0" } ],
+        "frame_start": [ { "direction": "out" } ]
       },
       "interfaces": {
         "m_axis": {
@@ -140,5 +141,5 @@
       }
     }
   },
-  "checksum": "18f2414b"
+  "checksum": "97aeae96"
 }

@@ -39,8 +39,12 @@ module axis_filter_out(
     input [23:0] grayscale_data,
     
     input [1:0] mode,
-    input [7:0] threshold
+    input [7:0] threshold,
+    
+    output frame_start
     );
+    
+    assign frame_start = s_axis_tvalid && s_axis_tready && s_axis_tuser;
     
     assign s_axis_tready = !m_axis_tvalid || m_axis_tready;
     

@@ -1,7 +1,7 @@
 {
   "design": {
     "design_info": {
-      "boundary_crc": "0xEF1956DC765B06CE",
+      "boundary_crc": "0x98CF40E677D0850D",
       "device": "xc7z020clg400-1",
       "gen_directory": "../../../../AXI_STREAM_SOBEL_HDMI.gen/sources_1/bd/final_system",
       "name": "final_system",
@@ -23,13 +23,12 @@
       "proc_sys_reset_0": "",
       "xlconstant_3_val0": "",
       "xlconstant_3_val1": "",
-      "video_control_axi_0": "",
       "xlconstant_0": "",
       "processing_system7_0": "",
       "axis_filter_out_0": "",
-      "sobel_threshold": "",
       "processing_core_0": "",
-      "xlconcat_0": ""
+      "video_config_cdc_0": "",
+      "video_control_axi_0": ""
     },
     "interface_ports": {
       "DDC_0": {
@@ -398,11 +397,6 @@
         "direction": "O",
         "left": "0",
         "right": "0"
-      },
-      "mode_sw": {
-        "direction": "I",
-        "left": "0",
-        "right": "0"
       }
     },
     "components": {
@@ -651,14 +645,6 @@
         "xci_name": "final_system_xlconstant_3_val0_0",
         "xci_path": "ip\\final_system_xlconstant_3_val0_0\\final_system_xlconstant_3_val0_0.xci",
         "inst_hier_path": "xlconstant_3_val1",
-        "has_run_ip_tcl": "true"
-      },
-      "video_control_axi_0": {
-        "vlnv": "xilinx.com:user:video_control_axi:1.0",
-        "ip_revision": "2",
-        "xci_name": "final_system_video_control_axi_0_0",
-        "xci_path": "ip\\final_system_video_control_axi_0_0\\final_system_video_control_axi_0_0.xci",
-        "inst_hier_path": "video_control_axi_0",
         "has_run_ip_tcl": "true"
       },
       "xlconstant_0": {
@@ -2579,34 +2565,15 @@
           "mode": {
             "direction": "I",
             "left": "1",
-            "right": "0",
-            "parameters": {
-              "PortWidth": {
-                "value": "2",
-                "value_src": "ip_prop"
-              }
-            }
+            "right": "0"
           },
           "threshold": {
             "direction": "I",
             "left": "7",
             "right": "0"
-          }
-        }
-      },
-      "sobel_threshold": {
-        "vlnv": "xilinx.com:ip:xlconstant:1.1",
-        "ip_revision": "11",
-        "xci_name": "final_system_xlconstant_1_0",
-        "xci_path": "ip\\final_system_xlconstant_1_0\\final_system_xlconstant_1_0.xci",
-        "inst_hier_path": "sobel_threshold",
-        "has_run_ip_tcl": "true",
-        "parameters": {
-          "CONST_VAL": {
-            "value": "120"
           },
-          "CONST_WIDTH": {
-            "value": "8"
+          "frame_start": {
+            "direction": "O"
           }
         }
       },
@@ -2906,12 +2873,80 @@
           }
         }
       },
-      "xlconcat_0": {
-        "vlnv": "xilinx.com:ip:xlconcat:2.1",
-        "ip_revision": "7",
-        "xci_name": "final_system_xlconcat_0_0",
-        "xci_path": "ip\\final_system_xlconcat_0_0\\final_system_xlconcat_0_0.xci",
-        "inst_hier_path": "xlconcat_0",
+      "video_config_cdc_0": {
+        "vlnv": "xilinx.com:module_ref:video_config_cdc:1.0",
+        "ip_revision": "1",
+        "xci_name": "final_system_video_config_cdc_0_0",
+        "xci_path": "ip\\final_system_video_config_cdc_0_0\\final_system_video_config_cdc_0_0.xci",
+        "inst_hier_path": "video_config_cdc_0",
+        "has_run_ip_tcl": "true",
+        "reference_info": {
+          "ref_type": "hdl",
+          "ref_name": "video_config_cdc",
+          "boundary_crc": "0x0"
+        },
+        "ports": {
+          "pixel_clk": {
+            "type": "clk",
+            "direction": "I",
+            "parameters": {
+              "ASSOCIATED_RESET": {
+                "value": "pixel_resetn",
+                "value_src": "constant"
+              },
+              "CLK_DOMAIN": {
+                "value": "final_system_dvi2rgb_0_0_PixelClk",
+                "value_src": "default_prop"
+              }
+            }
+          },
+          "pixel_resetn": {
+            "type": "rst",
+            "direction": "I",
+            "parameters": {
+              "POLARITY": {
+                "value": "ACTIVE_LOW",
+                "value_src": "constant"
+              }
+            }
+          },
+          "cfg_mode_axi": {
+            "direction": "I",
+            "left": "1",
+            "right": "0"
+          },
+          "cfg_threshold_axi": {
+            "direction": "I",
+            "left": "7",
+            "right": "0"
+          },
+          "cfg_req_toggle_axi": {
+            "direction": "I"
+          },
+          "cfg_ack_toggle_pixel": {
+            "direction": "O"
+          },
+          "frame_start_fire": {
+            "direction": "I"
+          },
+          "active_mode_pixel": {
+            "direction": "O",
+            "left": "1",
+            "right": "0"
+          },
+          "active_threshold_pixel": {
+            "direction": "O",
+            "left": "7",
+            "right": "0"
+          }
+        }
+      },
+      "video_control_axi_0": {
+        "vlnv": "xilinx.com:user:video_control_axi:1.0",
+        "ip_revision": "5",
+        "xci_name": "final_system_video_control_axi_0_0",
+        "xci_path": "ip\\final_system_video_control_axi_0_0\\final_system_video_control_axi_0_0.xci",
+        "inst_hier_path": "video_control_axi_0",
         "has_run_ip_tcl": "true"
       }
     },
@@ -2972,13 +3007,6 @@
       }
     },
     "nets": {
-      "In0_0_1": {
-        "ports": [
-          "mode_sw",
-          "xlconcat_0/In0",
-          "xlconcat_0/In1"
-        ]
-      },
       "TMDS_Clk_n_0_1": {
         "ports": [
           "TMDS_Clk_n_0",
@@ -3003,6 +3031,12 @@
           "dvi2rgb_0/TMDS_Data_p"
         ]
       },
+      "axis_filter_out_0_frame_start": {
+        "ports": [
+          "axis_filter_out_0/frame_start",
+          "video_config_cdc_0/frame_start_fire"
+        ]
+      },
       "clk_in1_0_1": {
         "ports": [
           "clk",
@@ -3023,6 +3057,7 @@
           "v_vid_in_axi4s_0/aclk",
           "rgb2dvi_0/PixelClk",
           "processing_core_0/clk_0",
+          "video_config_cdc_0/pixel_clk",
           "axis_filter_out_0/clk"
         ]
       },
@@ -3072,9 +3107,9 @@
         "ports": [
           "processing_system7_0/FCLK_CLK0",
           "smartconnect_0/aclk",
-          "video_control_axi_0/s00_axi_aclk",
           "processing_system7_0/M_AXI_GP0_ACLK",
-          "proc_sys_reset_0/slowest_sync_clk"
+          "proc_sys_reset_0/slowest_sync_clk",
+          "video_control_axi_0/s00_axi_aclk"
         ]
       },
       "processing_system7_0_FCLK_RESET0_N": {
@@ -3116,6 +3151,7 @@
           "dvi2rgb_0/aRst_n",
           "rgb2dvi_0/aRst_n",
           "processing_core_0/rst_0",
+          "video_config_cdc_0/pixel_resetn",
           "axis_filter_out_0/rst_n"
         ]
       },
@@ -3155,10 +3191,40 @@
           "v_tc_0/gen_clken"
         ]
       },
-      "xlconcat_0_dout": {
+      "video_config_cdc_0_active_mode_pixel": {
         "ports": [
-          "xlconcat_0/dout",
+          "video_config_cdc_0/active_mode_pixel",
           "axis_filter_out_0/mode"
+        ]
+      },
+      "video_config_cdc_0_active_threshold_pixel": {
+        "ports": [
+          "video_config_cdc_0/active_threshold_pixel",
+          "axis_filter_out_0/threshold"
+        ]
+      },
+      "video_config_cdc_0_cfg_ack_toggle_pixel": {
+        "ports": [
+          "video_config_cdc_0/cfg_ack_toggle_pixel",
+          "video_control_axi_0/cfg_ack_toggle_pixel"
+        ]
+      },
+      "video_control_axi_0_cfg_mode_axi": {
+        "ports": [
+          "video_control_axi_0/cfg_mode_axi",
+          "video_config_cdc_0/cfg_mode_axi"
+        ]
+      },
+      "video_control_axi_0_cfg_req_toggle_axi": {
+        "ports": [
+          "video_control_axi_0/cfg_req_toggle_axi",
+          "video_config_cdc_0/cfg_req_toggle_axi"
+        ]
+      },
+      "video_control_axi_0_cfg_threshold_axi": {
+        "ports": [
+          "video_control_axi_0/cfg_threshold_axi",
+          "video_config_cdc_0/cfg_threshold_axi"
         ]
       },
       "xlconstant_0_dout": {
@@ -3184,12 +3250,6 @@
           "v_vid_in_axi4s_0/vid_io_in_ce",
           "v_vid_in_axi4s_0/aclken",
           "v_vid_in_axi4s_0/axis_enable"
-        ]
-      },
-      "xlconstant_1_dout1": {
-        "ports": [
-          "sobel_threshold/dout",
-          "axis_filter_out_0/threshold"
         ]
       },
       "xlconstant_3_val0_dout": {

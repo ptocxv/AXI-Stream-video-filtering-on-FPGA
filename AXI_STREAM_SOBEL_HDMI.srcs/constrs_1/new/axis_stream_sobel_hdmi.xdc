@@ -25,13 +25,18 @@ create_clock -period 13.468 -name hdmi_rx_clk -waveform {0.000 6.734} [get_ports
 ## - uncomment the lines corresponding to used pins
 ## - rename the used ports (in each line, after get_ports) according to the top level signal names in the project
 
+# PS AXI control clock and recovered HDMI pixel clock are asynchronous.
+set_clock_groups -asynchronous \
+    -group [get_clocks clk_fpga_0] \
+    -group [get_clocks PixelClk_int]
+
 ## Clock signal 125 MHz
 
 #create_clock -period 8.000 -name sys_clk_pin -waveform {0.000 4.000} [get_ports clk]
 
 ##Switches
 
-set_property -dict { PACKAGE_PIN M19   IOSTANDARD LVCMOS33 } [get_ports { mode_sw[0] }]; #IO_L7P_T1_AD2P_35 Sch=sw[1]
+#set_property -dict { PACKAGE_PIN M19   IOSTANDARD LVCMOS33 } [get_ports { mode_sw[0] }]; #IO_L7P_T1_AD2P_35 Sch=sw[1]
 
 ##RGB LEDs
 

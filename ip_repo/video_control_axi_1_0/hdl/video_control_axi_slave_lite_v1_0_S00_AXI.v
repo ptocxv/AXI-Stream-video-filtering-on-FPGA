@@ -15,7 +15,10 @@
 	)
 	(
 		// Users to add ports here
-
+		output wire [1:0] cfg_mode_axi,
+		output wire [7:0] cfg_threshold_axi,
+		output wire cfg_req_toggle_axi,
+		input wire cfg_ack_toggle_pixel,
 		// User ports ends
 		// Do not modify the ports beyond this line
 
@@ -116,6 +119,22 @@
 	reg [C_S_AXI_DATA_WIDTH-1:0]	slv_reg6;
 	reg [C_S_AXI_DATA_WIDTH-1:0]	slv_reg7;
 	integer	 byte_index;
+	
+	// Frozen configuration payload
+	reg [1:0] payload_mode_axi;
+	reg [7:0] payload_threshold_axi;
+	// Source-side request state
+	reg req_toggle_axi;
+	reg update_busy_axi;
+	// Acknowledgement synchronizer
+	(* ASYNC_REG = "TRUE" *) reg ack_sync1_axi;
+	(* ASYNC_REG = "TRUE" *) reg ack_sync2_axi;
+	// Last configuration known to have become active
+	reg [1:0] active_mode_status_axi;
+	reg [7:0] active_threshold_status_axi;
+	assign cfg_mode_axi       = payload_mode_axi;
+	assign cfg_threshold_axi  = payload_threshold_axi;
+	assign cfg_req_toggle_axi = req_toggle_axi;
 
 	// I/O Connections assignments
 
@@ -326,8 +345,8 @@
                 3'h1: reg_data_out = slv_reg1;       // 0x04 THRESHOLD_SHADOW
                 3'h2: reg_data_out = slv_reg2;       // 0x08 COMMAND
                 3'h3: reg_data_out = slv_reg3;       // 0x0C SCRATCH
-                3'h4: reg_data_out = 32'h00000000;   // 0x10 STATUS
-                3'h5: reg_data_out = 32'h00000000;   // 0x14 ACTIVE_CONFIG
+                3'h4: reg_data_out = {31'd0,update_busy_axi};   // 0x10 STATUS
+                3'h5: reg_data_out = {16'd0,active_threshold_status_axi,5'd0,active_mode_status_axi,1'b0};   // 0x14 ACTIVE_CONFIG
                 3'h6: reg_data_out = 32'h00000000;   // 0x18 RESERVED
                 3'h7: reg_data_out = CORE_ID;        // 0x1C CORE_ID
         
@@ -340,6 +359,85 @@
         assign S_AXI_RDATA = reg_data_out;
 	// Add user logic here
 
+	// ----- Apply_Config Command 
+	wire [2:0] write_reg_index;
+	wire       write_data_fire;
+	wire       apply_config_event;
+	
+	assign write_reg_index =
+    (S_AXI_AWVALID && S_AXI_AWREADY)
+        ? S_AXI_AWADDR[
+            ADDR_LSB + OPT_MEM_ADDR_BITS : ADDR_LSB
+          ]
+        : axi_awaddr[
+            ADDR_LSB + OPT_MEM_ADDR_BITS : ADDR_LSB
+          ];
+
+	assign write_data_fire =
+		S_AXI_WVALID && S_AXI_WREADY;
+
+	assign apply_config_event =
+		write_data_fire           &&
+		(write_reg_index == 3'h2) &&
+		S_AXI_WSTRB[0]            &&
+		S_AXI_WDATA[0];
+		
+	// ----- Sync Acknowledgement
+	always @(posedge S_AXI_ACLK)
+		begin
+			if (!S_AXI_ARESETN)
+			begin
+				ack_sync1_axi <= 1'b0;
+				ack_sync2_axi <= 1'b0;
+			end
+			else
+			begin
+				ack_sync1_axi <= cfg_ack_toggle_pixel;
+				ack_sync2_axi <= ack_sync1_axi;
+			end
+		end
+	
+	// ----- Payload Freezing and Busy Control 
+	always @(posedge S_AXI_ACLK)
+		begin
+			if (!S_AXI_ARESETN)
+			begin
+				payload_mode_axi             <= 2'b00;
+				payload_threshold_axi        <= 8'd100;
+				req_toggle_axi               <= 1'b0;
+				update_busy_axi              <= 1'b0;
+				active_mode_status_axi       <= 2'b00;
+				active_threshold_status_axi  <= 8'd100;
+			end
+			else
+			begin
+				/*
+				 * Accept APPLY_CONFIG only when no previous update is active.
+				 */
+				if (apply_config_event && !update_busy_axi)
+				begin
+					payload_mode_axi      <= slv_reg0[2:1];
+					payload_threshold_axi <= slv_reg1[7:0];
+
+					req_toggle_axi  <= ~req_toggle_axi;
+					update_busy_axi <= 1'b1;
+				end
+				/*
+				 * Transfer completes when synchronized acknowledgement
+				 * matches the current request toggle.
+				 */
+				else if (update_busy_axi && (ack_sync2_axi == req_toggle_axi))
+				begin
+					update_busy_axi <= 1'b0;
+
+					active_mode_status_axi <= payload_mode_axi;
+
+					active_threshold_status_axi <= payload_threshold_axi;
+				end
+			end
+		end
+	
+	
 	// User logic ends
 
 	endmodule

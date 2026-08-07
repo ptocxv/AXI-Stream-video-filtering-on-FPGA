@@ -41,7 +41,12 @@
 		output wire [C_S00_AXI_DATA_WIDTH-1 : 0] s00_axi_rdata,
 		output wire [1 : 0] s00_axi_rresp,
 		output wire  s00_axi_rvalid,
-		input wire  s00_axi_rready
+		input wire  s00_axi_rready,
+		
+		output wire [1:0] cfg_mode_axi,
+		output wire [7:0] cfg_threshold_axi,
+		output wire       cfg_req_toggle_axi,
+		input  wire       cfg_ack_toggle_pixel
 	);
 // Instantiation of Axi Bus Interface S00_AXI
 	video_control_axi_slave_lite_v1_0_S00_AXI # ( 
@@ -68,7 +73,12 @@
 		.S_AXI_RDATA(s00_axi_rdata),
 		.S_AXI_RRESP(s00_axi_rresp),
 		.S_AXI_RVALID(s00_axi_rvalid),
-		.S_AXI_RREADY(s00_axi_rready)
+		.S_AXI_RREADY(s00_axi_rready),
+		
+		.cfg_mode_axi (cfg_mode_axi),
+		.cfg_threshold_axi (cfg_threshold_axi),
+		.cfg_req_toggle_axi (cfg_req_toggle_axi),
+		.cfg_ack_toggle_pixel (cfg_ack_toggle_pixel)
 	);
 
 	// Add user logic here
