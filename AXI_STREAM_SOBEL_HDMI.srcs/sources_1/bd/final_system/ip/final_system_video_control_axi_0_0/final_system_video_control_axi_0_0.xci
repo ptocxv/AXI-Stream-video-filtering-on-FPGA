@@ -4,7 +4,7 @@
     "xci_name": "final_system_video_control_axi_0_0",
     "cell_name": "video_control_axi_0",
     "component_reference": "xilinx.com:user:video_control_axi:1.0",
-    "ip_revision": "5",
+    "ip_revision": "6",
     "gen_directory": "../../../../../../AXI_STREAM_SOBEL_HDMI.gen/sources_1/bd/final_system/ip/final_system_video_control_axi_0_0",
     "parameters": {
       "component_parameters": {
@@ -33,7 +33,7 @@
       },
       "runtime_parameters": {
         "IPCONTEXT": [ { "value": "IP_Integrator" } ],
-        "IPREVISION": [ { "value": "5" } ],
+        "IPREVISION": [ { "value": "6" } ],
         "MANAGED": [ { "value": "TRUE" } ],
         "OUTPUTDIR": [ { "value": "../../../../../../AXI_STREAM_SOBEL_HDMI.gen/sources_1/bd/final_system/ip/final_system_video_control_axi_0_0" } ],
         "SELECTEDSIMMODEL": [ { "value": "" } ],
@@ -181,5 +181,5 @@
       }
     }
   },
-  "checksum": "709a1cf0"
+  "checksum": "28fa7be1"
 }

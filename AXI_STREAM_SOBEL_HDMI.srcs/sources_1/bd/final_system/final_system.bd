@@ -2943,7 +2943,7 @@
       },
       "video_control_axi_0": {
         "vlnv": "xilinx.com:user:video_control_axi:1.0",
-        "ip_revision": "5",
+        "ip_revision": "6",
         "xci_name": "final_system_video_control_axi_0_0",
         "xci_path": "ip\\final_system_video_control_axi_0_0\\final_system_video_control_axi_0_0.xci",
         "inst_hier_path": "video_control_axi_0",
@@ -3055,10 +3055,10 @@
           "v_axi4s_vid_out_0/aclk",
           "v_tc_0/clk",
           "v_vid_in_axi4s_0/aclk",
-          "rgb2dvi_0/PixelClk",
           "processing_core_0/clk_0",
           "video_config_cdc_0/pixel_clk",
-          "axis_filter_out_0/clk"
+          "axis_filter_out_0/clk",
+          "rgb2dvi_0/PixelClk"
         ]
       },
       "dvi2rgb_0_vid_pData": {
@@ -3148,11 +3148,11 @@
           "v_axi4s_vid_out_0/aresetn",
           "v_tc_0/resetn",
           "v_vid_in_axi4s_0/aresetn",
-          "dvi2rgb_0/aRst_n",
-          "rgb2dvi_0/aRst_n",
           "processing_core_0/rst_0",
           "video_config_cdc_0/pixel_resetn",
-          "axis_filter_out_0/rst_n"
+          "axis_filter_out_0/rst_n",
+          "dvi2rgb_0/aRst_n",
+          "rgb2dvi_0/aRst_n"
         ]
       },
       "v_axi4s_vid_out_0_sof_state_out": {
