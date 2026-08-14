@@ -1,26 +1,30 @@
 {
    "ActiveEmotionalView":"Default View",
-   "Default View_ScaleFactor":"5.0",
-   "Default View_TopLeft":"705,-2",
+   "Default View_ScaleFactor":"1.89465",
+   "Default View_TopLeft":"244,-141",
    "ExpandedHierarchyInLayout":"",
    "guistr":"# # String gsaved with Nlview 7.8.0 2024-04-26 e1825d835c VDI=44 GEI=38 GUI=JA:24.0
 #  -string -flagsOSRD
-preplace port m_axis_0 -pg 1 -lvl 4 -x 890 -y 0 -defaultsOSRD
+preplace port m_axis_0 -pg 1 -lvl 4 -x 890 -y -20 -defaultsOSRD
 preplace port s_axis_0 -pg 1 -lvl 0 -x -40 -y 0 -defaultsOSRD
 preplace port port-id_clk_0 -pg 1 -lvl 0 -x -40 -y -50 -defaultsOSRD
 preplace port port-id_rst_0 -pg 1 -lvl 0 -x -40 -y 40 -defaultsOSRD
-preplace portBus grayscale_data_0 -pg 1 -lvl 4 -x 890 -y 30 -defaultsOSRD
+preplace portBus grayscale_data_0 -pg 1 -lvl 4 -x 890 -y 10 -defaultsOSRD
+preplace portBus rbg_data_0 -pg 1 -lvl 4 -x 890 -y 40 -defaultsOSRD
 preplace inst axis_grayscale_0 -pg 1 -lvl 1 -x 110 -y 20 -defaultsOSRD
-preplace inst axis_window_3x3_gene_0 -pg 1 -lvl 2 -x 370 -y 80 -defaultsOSRD
-preplace inst axis_sobel_0 -pg 1 -lvl 3 -x 680 -y 20 -defaultsOSRD
-preplace netloc axis_sobel_0_grayscale_data 1 3 1 N 30
-preplace netloc clk_0_1 1 0 3 -10 -70 260 0 480
-preplace netloc rst_0_1 1 0 3 0 -60 240 -10 490
-preplace netloc axis_grayscale_0_m_axis 1 1 1 250 20n
-preplace netloc axis_sobel_0_m_axis 1 3 1 820 0n
-preplace netloc axis_window_3x3_gene_0_m_axis 1 2 1 500 0n
+preplace inst axis_window_3x3_gene_0 -pg 1 -lvl 2 -x 390 -y 80 -defaultsOSRD
+preplace inst axis_sobel_0 -pg 1 -lvl 3 -x 690 -y 20 -defaultsOSRD
+preplace netloc axis_sobel_0_grayscale_data 1 3 1 840 10n
+preplace netloc clk_0_1 1 0 3 -20 -70 260 -20 540
+preplace netloc rst_0_1 1 0 3 -10 -60 240 -10 520
+preplace netloc axis_sobel_0_rbg_data 1 3 1 N 40
+preplace netloc axis_window_3x3_gene_0_rbg_out 1 2 1 540 50n
+preplace netloc axis_grayscale_0_rbg_out 1 1 1 230 30n
+preplace netloc axis_grayscale_0_m_axis 1 1 1 250 10n
+preplace netloc axis_sobel_0_m_axis 1 3 1 840 -20n
+preplace netloc axis_window_3x3_gene_0_m_axis 1 2 1 530 -10n
 preplace netloc s_axis_0_1 1 0 1 N 0
-levelinfo -pg 1 -40 110 370 680 890
+levelinfo -pg 1 -40 110 390 690 890
 pagesize -pg 1 -db -bbox -sgen -150 -140 1100 240
 "
 }

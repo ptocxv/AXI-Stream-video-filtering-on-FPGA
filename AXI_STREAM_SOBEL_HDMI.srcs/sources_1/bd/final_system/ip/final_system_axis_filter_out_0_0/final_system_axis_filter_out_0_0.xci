@@ -49,6 +49,7 @@
         "m_axis_tuser": [ { "direction": "out" } ],
         "m_axis_tlast": [ { "direction": "out" } ],
         "grayscale_data": [ { "direction": "in", "size_left": "23", "size_right": "0" } ],
+        "rbg_data": [ { "direction": "in", "size_left": "23", "size_right": "0" } ],
         "mode": [ { "direction": "in", "size_left": "1", "size_right": "0" } ],
         "threshold": [ { "direction": "in", "size_left": "7", "size_right": "0" } ],
         "frame_start": [ { "direction": "out" } ]
@@ -141,5 +142,5 @@
       }
     }
   },
-  "checksum": "97aeae96"
+  "checksum": "167299a7"
 }

@@ -1,7 +1,7 @@
 {
   "design": {
     "design_info": {
-      "boundary_crc": "0xB71BBA7CEB04D5E1",
+      "boundary_crc": "0x7D7BFCDE18DEF905",
       "device": "xc7z020clg400-1",
       "gen_directory": "../../../../AXI_STREAM_SOBEL_HDMI.gen/sources_1/bd/processing_core",
       "name": "processing_core",
@@ -239,6 +239,11 @@
         "direction": "O",
         "left": "23",
         "right": "0"
+      },
+      "rbg_data_0": {
+        "direction": "O",
+        "left": "23",
+        "right": "0"
       }
     },
     "components": {
@@ -416,6 +421,11 @@
           "rst": {
             "type": "rst",
             "direction": "I"
+          },
+          "rbg_out": {
+            "direction": "O",
+            "left": "23",
+            "right": "0"
           }
         }
       },
@@ -589,6 +599,16 @@
           "rst": {
             "type": "rst",
             "direction": "I"
+          },
+          "rbg_in": {
+            "direction": "I",
+            "left": "23",
+            "right": "0"
+          },
+          "rbg_out": {
+            "direction": "O",
+            "left": "23",
+            "right": "0"
           }
         }
       },
@@ -767,6 +787,16 @@
             "direction": "O",
             "left": "23",
             "right": "0"
+          },
+          "rbg_in": {
+            "direction": "I",
+            "left": "23",
+            "right": "0"
+          },
+          "rbg_data": {
+            "direction": "O",
+            "left": "23",
+            "right": "0"
           }
         }
       }
@@ -798,10 +828,28 @@
       }
     },
     "nets": {
+      "axis_grayscale_0_rbg_out": {
+        "ports": [
+          "axis_grayscale_0/rbg_out",
+          "axis_window_3x3_gene_0/rbg_in"
+        ]
+      },
       "axis_sobel_0_grayscale_data": {
         "ports": [
           "axis_sobel_0/grayscale_data",
           "grayscale_data_0"
+        ]
+      },
+      "axis_sobel_0_rbg_data": {
+        "ports": [
+          "axis_sobel_0/rbg_data",
+          "rbg_data_0"
+        ]
+      },
+      "axis_window_3x3_gene_0_rbg_out": {
+        "ports": [
+          "axis_window_3x3_gene_0/rbg_out",
+          "axis_sobel_0/rbg_in"
         ]
       },
       "clk_0_1": {

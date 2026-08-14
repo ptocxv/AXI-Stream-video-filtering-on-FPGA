@@ -40,7 +40,11 @@ module axis_sobel(
     output reg m_axis_tlast,
     input m_axis_tready,
     
-    output reg [23:0] grayscale_data
+    // grayscale
+    output reg [23:0] grayscale_data,
+    // original
+    input [23:0] rbg_in,
+    output reg [23:0] rbg_data
     
     );
     
@@ -76,12 +80,17 @@ module axis_sobel(
     // pipeline stage 4 regs
     reg [12:0] mag;
     
-    // grayscale and metadata 4 stages regs
+    // metadata 4 stages regs
     reg rValid0, rUser0, rLast0;
     reg rValid1, rUser1, rLast1;
     reg rValid2, rUser2, rLast2;
     reg rValid3, rUser3, rLast3;
+    
+    // grayscale 4 stages regs
     reg [23:0] rGray0, rGray1, rGray2, rGray3;
+    // orginal frames 4 stages regs
+    reg [23:0] rbg0, rbg1, rbg2, rbg3;    
+    
     
     //saturation
     wire [7:0] edge_mag;
@@ -100,6 +109,7 @@ module axis_sobel(
             rValid0 <= 1'b0;
             rLast0 <= 1'b0;
             rGray0 <= 24'd0;
+            rbg0 <= 24'd0;
             
             //pipeline stage 2
             gx <= 12'd0;
@@ -108,6 +118,7 @@ module axis_sobel(
             rValid1 <= 1'b0;
             rLast1 <= 1'b0;
             rGray1 <= 24'd0;
+            rbg1 <= 24'd0;
             
             //pipeline stage 3
             abs_gx <= 12'd0;
@@ -116,6 +127,7 @@ module axis_sobel(
             rValid2 <= 1'b0;
             rLast2 <= 1'b0;
             rGray2 <= 24'd0;
+            rbg2 <= 24'd0;
             
             //pipeline stage 4
             mag <= 13'd0;
@@ -123,6 +135,7 @@ module axis_sobel(
             rValid3 <= 1'b0;
             rLast3 <= 1'b0;
             rGray3 <= 24'd0;
+            rbg3 <= 24'd0;
 
             //pipeline stage 5
             m_axis_tdata <= 24'd0;
@@ -130,6 +143,7 @@ module axis_sobel(
             m_axis_tuser <= 1'b0;
             m_axis_tlast <= 1'b0;
             grayscale_data <= 24'd0;
+            rbg_data <= 24'd0;
             
         end
         else if (s_axis_tready) begin
@@ -151,6 +165,7 @@ module axis_sobel(
             rUser0 <= s_axis_tuser;
             rLast0 <= s_axis_tlast;
             rGray0 <= {p11,p11,p11};
+            rbg0 <= rbg_in;
             
             //pipeline stage 2
             gx <= rgx0 + rgx2;
@@ -159,6 +174,7 @@ module axis_sobel(
             rUser1 <= rUser0;
             rLast1 <= rLast0;
             rGray1 <= rGray0;
+            rbg1 <= rbg0;
             
             //pipeline stage 3
             abs_gx <= (gx < 0) ? -gx : gx;
@@ -167,6 +183,7 @@ module axis_sobel(
             rUser2 <= rUser1;
             rLast2 <= rLast1;
             rGray2 <= rGray1;
+            rbg2 <= rbg1;
             
             //pipeline stage 4
             mag <= abs_gx + abs_gy;
@@ -174,6 +191,7 @@ module axis_sobel(
             rUser3 <= rUser2;
             rLast3 <= rLast2;
             rGray3 <= rGray2;
+            rbg3 <= rbg2;
             
             //pipeline stage 5
             m_axis_tdata <= {edge_mag, edge_mag, edge_mag};
@@ -181,6 +199,7 @@ module axis_sobel(
             m_axis_tuser <= rUser3;
             m_axis_tlast <= rLast3;
             grayscale_data <= rGray3;
+            rbg_data <= rbg3;
             
         end
     end

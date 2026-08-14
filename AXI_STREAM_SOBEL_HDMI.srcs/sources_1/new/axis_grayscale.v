@@ -37,8 +37,15 @@ module axis_grayscale(
     output reg m_axis_tvalid,
     input m_axis_tready,
     output reg m_axis_tuser,
-    output reg m_axis_tlast
+    output reg m_axis_tlast,
+    
+    // original frames
+    output reg [23:0] rbg_out
+    
     );
+    
+    //pipelined rbg_out reg
+    reg [23:0] r_rbg_out;
     
     //grayscale calculation
     wire [7:0] r_in;
@@ -69,12 +76,14 @@ module axis_grayscale(
             rValid <= 1'b0;
             rUser <= 1'b0;
             rLast <= 1'b0;
+            r_rbg_out <= 24'd0;
             
             //pipeline stage 2
             m_axis_tdata <= 8'h00;
             m_axis_tvalid <= 1'b0;
             m_axis_tuser <= 1'b0;
             m_axis_tlast <= 1'b0;
+            rbg_out <= 24'd0;
         end
         else if (s_axis_tready) begin
             //pipeline stage 1
@@ -84,12 +93,14 @@ module axis_grayscale(
             rValid <= s_axis_tvalid;
             rUser <= s_axis_tuser;
             rLast <= s_axis_tlast;
+            r_rbg_out <= s_axis_tdata;
             
             //pipeline stage 2
             m_axis_tdata <= gray_result[15:8];
             m_axis_tvalid <= rValid;
             m_axis_tuser <= rUser;
             m_axis_tlast <= rLast;
+            rbg_out <= r_rbg_out;
         end
     end
     

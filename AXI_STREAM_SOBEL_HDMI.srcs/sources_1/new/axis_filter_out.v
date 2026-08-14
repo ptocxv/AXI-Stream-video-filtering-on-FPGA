@@ -37,6 +37,7 @@ module axis_filter_out(
     output reg m_axis_tlast,
     
     input [23:0] grayscale_data,
+    input [23:0] rbg_data,
     
     input [1:0] mode,
     input [7:0] threshold,
@@ -77,13 +78,13 @@ module axis_filter_out(
                     m_axis_tlast <= s_axis_tlast;
                 end
                 2'b11: begin
-                    m_axis_tdata <= 24'hbc1501;
+                    m_axis_tdata <= rbg_data;
                     m_axis_tvalid <= s_axis_tvalid;
                     m_axis_tuser <= s_axis_tuser;
                     m_axis_tlast <= s_axis_tlast;
                 end
                 default: begin
-                    m_axis_tdata <= 24'hffffff;
+                    m_axis_tdata <= 24'hbc1501;
                     m_axis_tvalid <= s_axis_tvalid;
                     m_axis_tuser <= s_axis_tuser;
                     m_axis_tlast <= s_axis_tlast;

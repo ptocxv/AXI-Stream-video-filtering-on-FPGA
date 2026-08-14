@@ -1,7 +1,7 @@
 {
    "ActiveEmotionalView":"Default View",
-   "Default View_ScaleFactor":"1.16629",
-   "Default View_TopLeft":"2575,413",
+   "Default View_ScaleFactor":"1.89464",
+   "Default View_TopLeft":"2953,387",
    "ExpandedHierarchyInLayout":"",
    "guistr":"# # String gsaved with Nlview 7.8.0 2024-04-26 e1825d835c VDI=44 GEI=38 GUI=JA:24.0
 #  -string -flagsOSRD
@@ -38,40 +38,40 @@ preplace inst processing_core_0 -pg 1 -lvl 5 -x 1810 -y 454 -defaultsOSRD
 preplace inst video_config_cdc_0 -pg 1 -lvl 5 -x 1810 -y 820 -defaultsOSRD
 preplace inst video_control_axi_0 -pg 1 -lvl 4 -x 1250 -y 630 -defaultsOSRD
 preplace inst processing_core_0|axis_grayscale_0 -pg 1 -lvl 1 -x 1840 -y 484 -defaultsOSRD
-preplace inst processing_core_0|axis_window_3x3_gene_0 -pg 1 -lvl 2 -x 2070 -y 504 -defaultsOSRD
-preplace inst processing_core_0|axis_sobel_0 -pg 1 -lvl 3 -x 2330 -y 524 -defaultsOSRD
+preplace inst processing_core_0|axis_window_3x3_gene_0 -pg 1 -lvl 2 -x 2110 -y 504 -defaultsOSRD
+preplace inst processing_core_0|axis_sobel_0 -pg 1 -lvl 3 -x 2410 -y 524 -defaultsOSRD
 preplace netloc TMDS_Clk_n_0_1 1 0 3 NJ 270 NJ 270 NJ
 preplace netloc TMDS_Clk_p_0_1 1 0 3 NJ 240 NJ 240 620J
 preplace netloc TMDS_Data_n_0_1 1 0 3 20J 310 NJ 310 NJ
 preplace netloc TMDS_Data_p_0_1 1 0 3 NJ 300 NJ 300 620J
-preplace netloc axis_filter_out_0_frame_start 1 4 3 1610 354 NJ 354 3650
+preplace netloc axis_filter_out_0_frame_start 1 4 3 1600 354 NJ 354 3650
 preplace netloc clk_in1_0_1 1 0 2 NJ 370 NJ
 preplace netloc clk_wiz_0_clk_200MHz 1 2 1 620J 330n
-preplace netloc dvi2rgb_0_PixelClk 1 3 5 1090 340 1570 364 3345 660 3695 660 NJ
+preplace netloc dvi2rgb_0_PixelClk 1 3 5 1090 340 1560 364 3345 660 3695 660 NJ
 preplace netloc dvi2rgb_0_vid_pData 1 3 1 990 100n
 preplace netloc dvi2rgb_0_vid_pHSync 1 3 1 1010 140n
 preplace netloc dvi2rgb_0_vid_pVDE 1 3 1 1000 80n
 preplace netloc dvi2rgb_0_vid_pVSync 1 3 1 1020 160n
 preplace netloc proc_sys_reset_0_interconnect_aresetn 1 2 1 660 850n
 preplace netloc proc_sys_reset_0_peripheral_aresetn 1 2 2 650 640 NJ
-preplace netloc processing_core_0_grayscale_data_0 1 5 1 2630 534n
+preplace netloc processing_core_0_grayscale_data_0 1 5 1 2720 524n
 preplace netloc processing_system7_0_FCLK_CLK0 1 1 3 230 650 640 620 N
 preplace netloc processing_system7_0_FCLK_RESET0_N 1 1 2 240 660 620
 preplace netloc rgb2dvi_0_TMDS_Clk_n 1 8 1 NJ 600
 preplace netloc rgb2dvi_0_TMDS_Clk_p 1 8 1 4380J 570n
 preplace netloc rgb2dvi_0_TMDS_Data_n 1 8 1 4380J 640n
 preplace netloc rgb2dvi_0_TMDS_Data_p 1 8 1 4380J 620n
-preplace netloc rst_1 1 0 8 NJ 430 NJ 430 660 440 1080 374 1590 374 3315 730 3705 640 NJ
+preplace netloc rst_1 1 0 8 NJ 430 NJ 430 660 440 1080 374 1580 374 3315 670 3705 640 NJ
 preplace netloc v_axi4s_vid_out_0_sof_state_out 1 5 3 3345 1090 NJ 1090 4000
 preplace netloc v_axi4s_vid_out_0_vid_active_video 1 7 1 4020 620n
 preplace netloc v_axi4s_vid_out_0_vid_data 1 7 1 4000 560n
 preplace netloc v_axi4s_vid_out_0_vid_hsync 1 7 1 4010 580n
 preplace netloc v_axi4s_vid_out_0_vid_vsync 1 7 1 4030 600n
 preplace netloc v_axi4s_vid_out_0_vtg_ce 1 5 3 3335 1100 NJ 1100 4020
-preplace netloc video_config_cdc_0_active_mode_pixel 1 5 1 3325 570n
-preplace netloc video_config_cdc_0_active_threshold_pixel 1 5 1 2620 590n
-preplace netloc video_config_cdc_0_cfg_ack_toggle_pixel 1 3 3 1090 730 1450J 700 2630
-preplace netloc video_control_axi_0_cfg_mode_axi 1 4 1 1440 610n
+preplace netloc video_config_cdc_0_active_mode_pixel 1 5 1 3335 580n
+preplace netloc video_config_cdc_0_active_threshold_pixel 1 5 1 3325 600n
+preplace netloc video_config_cdc_0_cfg_ack_toggle_pixel 1 3 3 1090 730 1440J 690 2710
+preplace netloc video_control_axi_0_cfg_mode_axi 1 4 1 1430 610n
 preplace netloc video_control_axi_0_cfg_req_toggle_axi 1 4 1 1410 650n
 preplace netloc video_control_axi_0_cfg_threshold_axi 1 4 1 1420 630n
 preplace netloc xlconstant_0_dout 1 3 4 1060 980 NJ 980 NJ 980 3675
@@ -79,26 +79,30 @@ preplace netloc xlconstant_0_dout1 1 8 1 NJ 800
 preplace netloc xlconstant_1_dout 1 3 4 1070 930 NJ 930 3325 990 3715
 preplace netloc xlconstant_3_val0_dout 1 1 1 NJ 1010
 preplace netloc xlconstant_3_val1_dout 1 1 1 220 900n
+preplace netloc processing_core_0_rbg_data_0 1 5 1 2710 544n
 preplace netloc axis_filter_out_0_m_axis 1 6 1 3660 530n
 preplace netloc dvi2rgb_0_DDC 1 3 6 NJ 320 NJ 320 NJ 320 NJ 320 NJ 320 NJ
-preplace netloc processing_core_0_m_axis_0 1 5 1 2630 490n
-preplace netloc processing_system7_0_DDR 1 2 7 NJ 720 NJ 720 1430J 690 3335J 720 NJ 720 NJ 720 NJ
-preplace netloc processing_system7_0_FIXED_IO 1 2 7 NJ 740 NJ 740 1580J 710 2640J 740 NJ 740 NJ 740 4380J
+preplace netloc processing_core_0_m_axis_0 1 5 1 2710 480n
+preplace netloc processing_system7_0_DDR 1 2 7 NJ 720 NJ 720 1450J 700 2730J 720 NJ 720 NJ 720 NJ
+preplace netloc processing_system7_0_FIXED_IO 1 2 7 NJ 740 NJ 740 1570J 710 2720J 730 NJ 730 NJ 730 4380J
 preplace netloc processing_system7_0_M_AXI_GP0 1 2 1 630 780n
-preplace netloc s_axis_0_1 1 4 1 1600 120n
+preplace netloc s_axis_0_1 1 4 1 1590 120n
 preplace netloc smartconnect_0_M00_AXI 1 3 1 1080 600n
 preplace netloc v_tc_0_vtiming_out 1 6 1 N 870
-preplace netloc processing_core_0|axis_sobel_0_grayscale_data 1 3 1 N 534
-preplace netloc processing_core_0|clk_0_1 1 0 3 1730 564 1950 584 2180J
-preplace netloc processing_core_0|rst_0_1 1 0 3 1720 574 1960 594 2190J
-preplace netloc processing_core_0|axis_grayscale_0_m_axis 1 1 1 N 484
-preplace netloc processing_core_0|axis_sobel_0_m_axis 1 3 1 N 514
-preplace netloc processing_core_0|axis_window_3x3_gene_0_m_axis 1 2 1 N 504
+preplace netloc processing_core_0|axis_sobel_0_grayscale_data 1 3 1 N 524
+preplace netloc processing_core_0|clk_0_1 1 0 3 1720 564 1970 594 2250J
+preplace netloc processing_core_0|rst_0_1 1 0 3 1710 574 1980 604 2260J
+preplace netloc processing_core_0|axis_sobel_0_rbg_data 1 3 1 N 544
+preplace netloc processing_core_0|axis_window_3x3_gene_0_rbg_out 1 2 1 2240 514n
+preplace netloc processing_core_0|axis_grayscale_0_rbg_out 1 1 1 1960 494n
+preplace netloc processing_core_0|axis_grayscale_0_m_axis 1 1 1 N 474
+preplace netloc processing_core_0|axis_sobel_0_m_axis 1 3 1 N 504
+preplace netloc processing_core_0|axis_window_3x3_gene_0_m_axis 1 2 1 N 494
 preplace netloc processing_core_0|s_axis_0_1 1 0 1 N 464
 levelinfo -pg 1 0 120 430 830 1250 1810 3495 3855 4215 4400
-levelinfo -hier processing_core_0 * 1840 2070 2330 *
+levelinfo -hier processing_core_0 * 1840 2110 2410 *
 pagesize -pg 1 -db -bbox -sgen -190 0 4580 1150
-pagesize -hier processing_core_0 -db -bbox -sgen 1690 404 2500 604
+pagesize -hier processing_core_0 -db -bbox -sgen 1680 404 2590 614
 "
 }
 {

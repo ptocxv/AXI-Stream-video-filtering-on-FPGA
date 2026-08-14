@@ -39,13 +39,18 @@ module axis_window_3x3_generator#(
         output reg m_axis_tvalid,
         output reg m_axis_tuser,
         output reg m_axis_tlast,
-        input m_axis_tready
+        input m_axis_tready,
+        
+        // original frames
+        input [23:0] rbg_in,
+        output reg [23:0] rbg_out
+        
     );
     
     localparam COL_W = $clog2(FRAME_WIDTH);
     localparam ROW_W = $clog2(FRAME_HEIGHT);
     
-    // Line buffers
+    // Line buffers - for 3x3 windows
     // BRAM0 -> previous
     // BRAM1 -> two-lines-ago
     (* ram_style = "block" *) reg [7:0] BRAM0 [0:FRAME_WIDTH-1];
@@ -70,9 +75,19 @@ module axis_window_3x3_generator#(
     reg [7:0] r10, r11;
     reg [7:0] r20, r21;
     
-    // Define new valid, user, last
+    // Define window valid
     wire window_valid;
     assign window_valid = rValid && (rRow >= 2) && (rCol >= 2);
+    
+    // original frames BRAM
+    (* ram_style = "block" *) reg [23:0] RBG_BRAM [0:FRAME_WIDTH-1];
+    
+    // pipelined rbg_out regs
+    // current pixel is rbg_in
+    reg [23:0] rbg12; // shifted up by 1 row (corresponding p10)
+    
+    reg [23:0] rbg10;
+    reg [23:0] rbg11; // taken pixel (corresponding window-centered) -> rbg_out
     
     assign s_axis_tready = !m_axis_tvalid || m_axis_tready;
     
@@ -95,18 +110,26 @@ module axis_window_3x3_generator#(
                     r01, r11, r21,
                     rr0, rr1, rr2
                 };
+                rbg_out <= rbg11;
             end
             else begin
                 m_axis_tdata <= 72'd0;
+                rbg_out <= 24'd0;
             end   
             m_axis_tvalid <= rValid;
             m_axis_tuser <= rUser & rValid;
             m_axis_tlast <= rLast & rValid;
             
             if(rValid) begin // rValid = 1 only after input is accepted -> useful shifting happens
+                // all 2-stage pipelining
+                
                 r00 <= r01; r01 <= rr0;
                 r10 <= r11; r11 <= rr1;
                 r20 <= r21; r21 <= rr2;
+                
+                rbg10 <= rbg11;
+                rbg11 <= rbg12;
+                
             end
             
             // BRAM0 read is synchronous -> need to write BRAM1 1 cycle later
@@ -115,17 +138,23 @@ module axis_window_3x3_generator#(
             end
             
             if(s_axis_tready && s_axis_tvalid) begin // accepted input
+                
+                // read current data
                 rr0 <= BRAM1[cntH];
                 rr1 <= BRAM0[cntH];
                 rr2 <= s_axis_tdata;
+                rbg12 <= RBG_BRAM[cntH];
+                
+                // update BRAM
+                BRAM0[cntH] <= s_axis_tdata;
+                RBG_BRAM[cntH] <= rbg_in;
+                
+                // read metadata
                 rCol <= cntH;
                 rRow <= cntV;
                 rValid <= 1'b1;
                 rUser <= s_axis_tuser;
                 rLast <= s_axis_tlast;
-                
-                // update BRAM0
-                BRAM0[cntH] <= s_axis_tdata;
                 
                 // update counters
                 if(s_axis_tuser) begin
