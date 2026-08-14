@@ -1,24 +1,18 @@
 {
   "schema": "xilinx.com:schema:json_instance:1.0",
   "ip_inst": {
-    "xci_name": "final_system_xlconstant_0_2",
-    "cell_name": "xlconstant_3_val0",
-    "component_reference": "xilinx.com:ip:xlconstant:1.1",
-    "ip_revision": "11",
-    "gen_directory": "../../../../../../AXI_STREAM_SOBEL_HDMI.gen/sources_1/bd/final_system/ip/final_system_xlconstant_0_2",
+    "xci_name": "final_system_logic1_0_0",
+    "cell_name": "logic1_0",
+    "component_reference": "xilinx.com:module_ref:logic1:1.0",
+    "ip_revision": "1",
+    "gen_directory": "../../../../../../AXI_STREAM_SOBEL_HDMI.gen/sources_1/bd/final_system/ip/final_system_logic1_0_0",
     "parameters": {
       "component_parameters": {
-        "Component_Name": [ { "value": "final_system_xlconstant_0_2", "resolve_type": "user", "usage": "all" } ],
-        "CONST_WIDTH": [ { "value": "1", "resolve_type": "user", "format": "long", "usage": "all" } ],
-        "CONST_VAL": [ { "value": "0", "value_src": "user", "resolve_type": "user", "usage": "all" } ]
-      },
-      "model_parameters": {
-        "CONST_WIDTH": [ { "value": "1", "resolve_type": "generated", "format": "long", "usage": "all" } ],
-        "CONST_VAL": [ { "value": "0x0", "resolve_type": "generated", "format": "bitString", "usage": "all" } ]
+        "Component_Name": [ { "value": "final_system_logic1_0_0", "resolve_type": "user", "usage": "all" } ]
       },
       "project_parameters": {
         "ARCHITECTURE": [ { "value": "zynq", "resolve_type": "generated", "usage": "all" } ],
-        "BASE_BOARD_PART": [ { "value": "", "resolve_type": "generated", "usage": "all" } ],
+        "BASE_BOARD_PART": [ { "value": "tul.com.tw:pynq-z2:part0:1.0", "resolve_type": "generated", "usage": "all" } ],
         "BOARD_CONNECTIONS": [ { "value": "", "resolve_type": "generated", "usage": "all" } ],
         "DEVICE": [ { "value": "xc7z020", "resolve_type": "generated", "usage": "all" } ],
         "PACKAGE": [ { "value": "clg400", "resolve_type": "generated", "usage": "all" } ],
@@ -31,20 +25,20 @@
       },
       "runtime_parameters": {
         "IPCONTEXT": [ { "value": "IP_Integrator" } ],
-        "IPREVISION": [ { "value": "11" } ],
+        "IPREVISION": [ { "value": "1" } ],
         "MANAGED": [ { "value": "TRUE" } ],
-        "OUTPUTDIR": [ { "value": "../../../../../../AXI_STREAM_SOBEL_HDMI.gen/sources_1/bd/final_system/ip/final_system_xlconstant_0_2" } ],
+        "OUTPUTDIR": [ { "value": "../../../../../../AXI_STREAM_SOBEL_HDMI.gen/sources_1/bd/final_system/ip/final_system_logic1_0_0" } ],
         "SELECTEDSIMMODEL": [ { "value": "" } ],
         "SHAREDDIR": [ { "value": "../../ipshared" } ],
         "SWVERSION": [ { "value": "2026.1" } ],
-        "SYNTHESISFLOW": [ { "value": "GLOBAL" } ]
+        "SYNTHESISFLOW": [ { "value": "OOC_HIERARCHICAL" } ]
       }
     },
     "boundary": {
       "ports": {
-        "dout": [ { "direction": "out", "size_left": "0", "size_right": "0" } ]
+        "val1": [ { "direction": "out" } ]
       }
     }
   },
-  "checksum": "86defe84"
+  "checksum": "689515e2"
 }

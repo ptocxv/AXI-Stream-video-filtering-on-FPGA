@@ -16,19 +16,21 @@
       "clk_wiz_0": "",
       "v_axi4s_vid_out_0": "",
       "v_vid_in_axi4s_0": "",
-      "xlconstant_1_val1": "",
-      "xlconstant_0_val0": "",
       "v_tc_0": "",
       "smartconnect_0": "",
       "proc_sys_reset_0": "",
-      "xlconstant_3_val0": "",
-      "xlconstant_3_val1": "",
-      "xlconstant_0": "",
       "processing_system7_0": "",
       "axis_filter_out_0": "",
       "processing_core_0": "",
       "video_config_cdc_0": "",
-      "video_control_axi_0": ""
+      "video_control_axi_0": "",
+      "logic0_0": "",
+      "logic1_0": "",
+      "logic1_1": "",
+      "logic1_2": "",
+      "logic1_3": "",
+      "logic0_1": "",
+      "logic0_2": ""
     },
     "interface_ports": {
       "DDC_0": {
@@ -503,27 +505,6 @@
         "inst_hier_path": "v_vid_in_axi4s_0",
         "has_run_ip_tcl": "true"
       },
-      "xlconstant_1_val1": {
-        "vlnv": "xilinx.com:ip:xlconstant:1.1",
-        "ip_revision": "10",
-        "xci_name": "final_system_xlconstant_0_0",
-        "xci_path": "ip\\final_system_xlconstant_0_0\\final_system_xlconstant_0_0.xci",
-        "inst_hier_path": "xlconstant_1_val1",
-        "has_run_ip_tcl": "true"
-      },
-      "xlconstant_0_val0": {
-        "vlnv": "xilinx.com:ip:xlconstant:1.1",
-        "ip_revision": "10",
-        "xci_name": "final_system_xlconstant_0_1",
-        "xci_path": "ip\\final_system_xlconstant_0_1\\final_system_xlconstant_0_1.xci",
-        "inst_hier_path": "xlconstant_0_val0",
-        "has_run_ip_tcl": "true",
-        "parameters": {
-          "CONST_VAL": {
-            "value": "0"
-          }
-        }
-      },
       "v_tc_0": {
         "vlnv": "xilinx.com:ip:v_tc:6.2",
         "ip_revision": "12",
@@ -625,40 +606,6 @@
         "xci_path": "ip\\final_system_proc_sys_reset_0_0\\final_system_proc_sys_reset_0_0.xci",
         "inst_hier_path": "proc_sys_reset_0",
         "has_run_ip_tcl": "true"
-      },
-      "xlconstant_3_val0": {
-        "vlnv": "xilinx.com:ip:xlconstant:1.1",
-        "ip_revision": "11",
-        "xci_name": "final_system_xlconstant_0_2",
-        "xci_path": "ip\\final_system_xlconstant_0_2\\final_system_xlconstant_0_2.xci",
-        "inst_hier_path": "xlconstant_3_val0",
-        "has_run_ip_tcl": "true",
-        "parameters": {
-          "CONST_VAL": {
-            "value": "0"
-          }
-        }
-      },
-      "xlconstant_3_val1": {
-        "vlnv": "xilinx.com:ip:xlconstant:1.1",
-        "ip_revision": "11",
-        "xci_name": "final_system_xlconstant_3_val0_0",
-        "xci_path": "ip\\final_system_xlconstant_3_val0_0\\final_system_xlconstant_3_val0_0.xci",
-        "inst_hier_path": "xlconstant_3_val1",
-        "has_run_ip_tcl": "true"
-      },
-      "xlconstant_0": {
-        "vlnv": "xilinx.com:ip:xlconstant:1.1",
-        "ip_revision": "11",
-        "xci_name": "final_system_xlconstant_0_3",
-        "xci_path": "ip\\final_system_xlconstant_0_3\\final_system_xlconstant_0_3.xci",
-        "inst_hier_path": "xlconstant_0",
-        "has_run_ip_tcl": "true",
-        "parameters": {
-          "CONST_VAL": {
-            "value": "1"
-          }
-        }
       },
       "processing_system7_0": {
         "vlnv": "xilinx.com:ip:processing_system7:5.5",
@@ -2958,6 +2905,132 @@
         "xci_path": "ip\\final_system_video_control_axi_0_0\\final_system_video_control_axi_0_0.xci",
         "inst_hier_path": "video_control_axi_0",
         "has_run_ip_tcl": "true"
+      },
+      "logic0_0": {
+        "vlnv": "xilinx.com:module_ref:logic0:1.0",
+        "ip_revision": "1",
+        "xci_name": "final_system_logic0_0_0",
+        "xci_path": "ip\\final_system_logic0_0_0\\final_system_logic0_0_0.xci",
+        "inst_hier_path": "logic0_0",
+        "has_run_ip_tcl": "true",
+        "reference_info": {
+          "ref_type": "hdl",
+          "ref_name": "logic0",
+          "boundary_crc": "0x0"
+        },
+        "ports": {
+          "val0": {
+            "direction": "O"
+          }
+        }
+      },
+      "logic1_0": {
+        "vlnv": "xilinx.com:module_ref:logic1:1.0",
+        "ip_revision": "1",
+        "xci_name": "final_system_logic1_0_0",
+        "xci_path": "ip\\final_system_logic1_0_0\\final_system_logic1_0_0.xci",
+        "inst_hier_path": "logic1_0",
+        "has_run_ip_tcl": "true",
+        "reference_info": {
+          "ref_type": "hdl",
+          "ref_name": "logic1",
+          "boundary_crc": "0x0"
+        },
+        "ports": {
+          "val1": {
+            "direction": "O"
+          }
+        }
+      },
+      "logic1_1": {
+        "vlnv": "xilinx.com:module_ref:logic1:1.0",
+        "ip_revision": "1",
+        "xci_name": "final_system_logic1_1_0",
+        "xci_path": "ip\\final_system_logic1_1_0\\final_system_logic1_1_0.xci",
+        "inst_hier_path": "logic1_1",
+        "has_run_ip_tcl": "true",
+        "reference_info": {
+          "ref_type": "hdl",
+          "ref_name": "logic1",
+          "boundary_crc": "0x0"
+        },
+        "ports": {
+          "val1": {
+            "direction": "O"
+          }
+        }
+      },
+      "logic1_2": {
+        "vlnv": "xilinx.com:module_ref:logic1:1.0",
+        "ip_revision": "1",
+        "xci_name": "final_system_logic1_2_1",
+        "xci_path": "ip\\final_system_logic1_2_1\\final_system_logic1_2_1.xci",
+        "inst_hier_path": "logic1_2",
+        "has_run_ip_tcl": "true",
+        "reference_info": {
+          "ref_type": "hdl",
+          "ref_name": "logic1",
+          "boundary_crc": "0x0"
+        },
+        "ports": {
+          "val1": {
+            "direction": "O"
+          }
+        }
+      },
+      "logic1_3": {
+        "vlnv": "xilinx.com:module_ref:logic1:1.0",
+        "ip_revision": "1",
+        "xci_name": "final_system_logic1_3_0",
+        "xci_path": "ip\\final_system_logic1_3_0\\final_system_logic1_3_0.xci",
+        "inst_hier_path": "logic1_3",
+        "has_run_ip_tcl": "true",
+        "reference_info": {
+          "ref_type": "hdl",
+          "ref_name": "logic1",
+          "boundary_crc": "0x0"
+        },
+        "ports": {
+          "val1": {
+            "direction": "O"
+          }
+        }
+      },
+      "logic0_1": {
+        "vlnv": "xilinx.com:module_ref:logic0:1.0",
+        "ip_revision": "1",
+        "xci_name": "final_system_logic0_1_0",
+        "xci_path": "ip\\final_system_logic0_1_0\\final_system_logic0_1_0.xci",
+        "inst_hier_path": "logic0_1",
+        "has_run_ip_tcl": "true",
+        "reference_info": {
+          "ref_type": "hdl",
+          "ref_name": "logic0",
+          "boundary_crc": "0x0"
+        },
+        "ports": {
+          "val0": {
+            "direction": "O"
+          }
+        }
+      },
+      "logic0_2": {
+        "vlnv": "xilinx.com:module_ref:logic0:1.0",
+        "ip_revision": "1",
+        "xci_name": "final_system_logic0_2_1",
+        "xci_path": "ip\\final_system_logic0_2_1\\final_system_logic0_2_1.xci",
+        "inst_hier_path": "logic0_2",
+        "has_run_ip_tcl": "true",
+        "reference_info": {
+          "ref_type": "hdl",
+          "ref_name": "logic0",
+          "boundary_crc": "0x0"
+        },
+        "ports": {
+          "val0": {
+            "direction": "O"
+          }
+        }
       }
     },
     "interface_nets": {
@@ -3093,6 +3166,47 @@
         "ports": [
           "dvi2rgb_0/vid_pVSync",
           "v_vid_in_axi4s_0/vid_vsync"
+        ]
+      },
+      "logic0_0_val0": {
+        "ports": [
+          "logic0_0/val0",
+          "proc_sys_reset_0/mb_debug_sys_rst"
+        ]
+      },
+      "logic0_1_val0": {
+        "ports": [
+          "logic0_1/val0",
+          "v_vid_in_axi4s_0/vid_field_id"
+        ]
+      },
+      "logic0_2_val0": {
+        "ports": [
+          "logic0_2/val0",
+          "v_axi4s_vid_out_0/fid",
+          "v_axi4s_vid_out_0/vtg_field_id"
+        ]
+      },
+      "logic1_1_val1": {
+        "ports": [
+          "logic1_1/val1",
+          "hdmi_rx_hpd"
+        ]
+      },
+      "logic1_2_val1": {
+        "ports": [
+          "logic1_2/val1",
+          "v_vid_in_axi4s_0/vid_io_in_ce",
+          "v_vid_in_axi4s_0/aclken",
+          "v_vid_in_axi4s_0/axis_enable"
+        ]
+      },
+      "logic1_3_val1": {
+        "ports": [
+          "logic1_3/val1",
+          "v_tc_0/clken",
+          "v_axi4s_vid_out_0/aclken",
+          "v_axi4s_vid_out_0/vid_io_out_ce"
         ]
       },
       "proc_sys_reset_0_interconnect_aresetn": {
@@ -3243,40 +3357,9 @@
           "video_config_cdc_0/cfg_threshold_axi"
         ]
       },
-      "xlconstant_0_dout": {
-        "ports": [
-          "xlconstant_0_val0/dout",
-          "v_axi4s_vid_out_0/fid",
-          "v_axi4s_vid_out_0/vtg_field_id",
-          "v_vid_in_axi4s_0/vid_field_id"
-        ]
-      },
-      "xlconstant_0_dout1": {
-        "ports": [
-          "xlconstant_0/dout",
-          "hdmi_rx_hpd"
-        ]
-      },
-      "xlconstant_1_dout": {
-        "ports": [
-          "xlconstant_1_val1/dout",
-          "v_axi4s_vid_out_0/aclken",
-          "v_axi4s_vid_out_0/vid_io_out_ce",
-          "v_tc_0/clken",
-          "v_vid_in_axi4s_0/vid_io_in_ce",
-          "v_vid_in_axi4s_0/aclken",
-          "v_vid_in_axi4s_0/axis_enable"
-        ]
-      },
-      "xlconstant_3_val0_dout": {
-        "ports": [
-          "xlconstant_3_val0/dout",
-          "proc_sys_reset_0/mb_debug_sys_rst"
-        ]
-      },
       "xlconstant_3_val1_dout": {
         "ports": [
-          "xlconstant_3_val1/dout",
+          "logic1_0/val1",
           "proc_sys_reset_0/aux_reset_in",
           "proc_sys_reset_0/dcm_locked"
         ]
