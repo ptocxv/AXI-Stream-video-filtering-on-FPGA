@@ -19,7 +19,7 @@ set_property -dict {PACKAGE_PIN J19 IOSTANDARD TMDS_33} [get_ports {TMDS_Data_n_
 set_property -dict {PACKAGE_PIN K19 IOSTANDARD TMDS_33} [get_ports {TMDS_Data_p_1[1]}]
 set_property -dict {PACKAGE_PIN H18 IOSTANDARD TMDS_33} [get_ports {TMDS_Data_n_1[2]}]
 set_property -dict {PACKAGE_PIN J18 IOSTANDARD TMDS_33} [get_ports {TMDS_Data_p_1[2]}]
-create_clock -period 13.468 -name hdmi_rx_clk -waveform {0.000 6.734} [get_ports TMDS_Clk_p_0]
+create_clock -period 6.734 -name hdmi_rx_clk -waveform {0.000 3.367} [get_ports TMDS_Clk_p_0]
 ## This file is a general .xdc for the PYNQ-Z2 board
 ## To use it in a project:
 ## - uncomment the lines corresponding to used pins

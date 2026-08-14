@@ -59,55 +59,129 @@ module axis_sobel(
     assign p12 = s_axis_tdata [15:8];
     assign p22 = s_axis_tdata [7:0];
     
-    // sobel calculation
-    wire signed [11:0] gx;
-    wire signed [11:0] gy;
-
-    wire [11:0] abs_gx;
-    wire [11:0] abs_gy;
-    wire [12:0] mag;
-
-    wire [7:0] edge_mag;
+    // pipeline stage 1 regs
+    reg signed [11:0] rgx0;
+    reg signed [11:0] rgx2;
+    reg signed [11:0] rgy0;
+    reg signed [11:0] rgy2;
     
-    // Gx = - p00 + p02 - 2p10 + 2p12 - p20 + p22
-    assign gx = -$signed({4'h0, p00})
-         + $signed({4'h0, p02})
-         - ($signed({4'h0, p10}) <<< 1)
-         + ($signed({4'h0, p12}) <<< 1)
-         - $signed({4'h0, p20})
-         + $signed({4'h0, p22});
-
-    // Gy = - p00 - 2p01 - p02 + p20 + 2p21 + p22
-    assign gy = -$signed({4'h0, p00})
-         - ($signed({4'h0, p01}) <<< 1)
-         - $signed({4'h0, p02})
-         + $signed({4'h0, p20})
-         + ($signed({4'h0, p21}) <<< 1)
-         + $signed({4'h0, p22});
-
-    assign abs_gx = (gx < 0) ? -gx : gx;
-    assign abs_gy = (gy < 0) ? -gy : gy;
-    assign mag = abs_gx + abs_gy;
+    // pipeline stage 2 regs
+    reg signed [11:0] gx;
+    reg signed [11:0] gy;
+    
+    // pipeline stage 3 regs
+    reg [11:0] abs_gx;
+    reg [11:0] abs_gy;
+    
+    // pipeline stage 4 regs
+    reg [12:0] mag;
+    
+    // grayscale and metadata 4 stages regs
+    reg rValid0, rUser0, rLast0;
+    reg rValid1, rUser1, rLast1;
+    reg rValid2, rUser2, rLast2;
+    reg rValid3, rUser3, rLast3;
+    reg [23:0] rGray0, rGray1, rGray2, rGray3;
     
     //saturation
+    wire [7:0] edge_mag;
     assign edge_mag = (mag > 13'd255) ? 8'd255 : mag[7:0];
     
     assign s_axis_tready = !m_axis_tvalid || m_axis_tready;
     //output register
     always @(posedge clk) begin
         if(!rst) begin
+            //pipeline stage 1
+            rgx0 <= 12'd0;
+            rgx2 <= 12'd0;
+            rgy0 <= 12'd0;
+            rgy2 <= 12'd0;
+            rUser0 <= 1'b0;
+            rValid0 <= 1'b0;
+            rLast0 <= 1'b0;
+            rGray0 <= 24'd0;
+            
+            //pipeline stage 2
+            gx <= 12'd0;
+            gy <= 12'd0;
+            rUser1 <= 1'b0;
+            rValid1 <= 1'b0;
+            rLast1 <= 1'b0;
+            rGray1 <= 24'd0;
+            
+            //pipeline stage 3
+            abs_gx <= 12'd0;
+            abs_gy <= 12'd0;
+            rUser2 <= 1'b0;
+            rValid2 <= 1'b0;
+            rLast2 <= 1'b0;
+            rGray2 <= 24'd0;
+            
+            //pipeline stage 4
+            mag <= 13'd0;
+            rUser3 <= 1'b0;
+            rValid3 <= 1'b0;
+            rLast3 <= 1'b0;
+            rGray3 <= 24'd0;
+
+            //pipeline stage 5
             m_axis_tdata <= 24'd0;
             m_axis_tvalid <= 1'b0;
             m_axis_tuser <= 1'b0;
             m_axis_tlast <= 1'b0;
             grayscale_data <= 24'd0;
+            
         end
         else if (s_axis_tready) begin
+            
+            //pipeline stage 1
+            rgx0 <= -$signed({4'h0, p00})
+                 - ($signed({4'h0, p10}) <<< 1)
+                 - $signed({4'h0, p20});
+            rgx2 <= + $signed({4'h0, p02})
+                 + ($signed({4'h0, p12}) <<< 1)
+                 + $signed({4'h0, p22});
+            rgy0 <= -$signed({4'h0, p00})
+                 - ($signed({4'h0, p01}) <<< 1)
+                 - $signed({4'h0, p02});
+            rgy2 <= + $signed({4'h0, p20})
+                 + ($signed({4'h0, p21}) <<< 1)
+                 + $signed({4'h0, p22});
+            rValid0 <= s_axis_tvalid;
+            rUser0 <= s_axis_tuser;
+            rLast0 <= s_axis_tlast;
+            rGray0 <= {p11,p11,p11};
+            
+            //pipeline stage 2
+            gx <= rgx0 + rgx2;
+            gy <= rgy0 + rgy2;
+            rValid1 <= rValid0;
+            rUser1 <= rUser0;
+            rLast1 <= rLast0;
+            rGray1 <= rGray0;
+            
+            //pipeline stage 3
+            abs_gx <= (gx < 0) ? -gx : gx;
+            abs_gy <= (gy < 0) ? -gy : gy;
+            rValid2 <= rValid1;
+            rUser2 <= rUser1;
+            rLast2 <= rLast1;
+            rGray2 <= rGray1;
+            
+            //pipeline stage 4
+            mag <= abs_gx + abs_gy;
+            rValid3 <= rValid2;
+            rUser3 <= rUser2;
+            rLast3 <= rLast2;
+            rGray3 <= rGray2;
+            
+            //pipeline stage 5
             m_axis_tdata <= {edge_mag, edge_mag, edge_mag};
-            m_axis_tvalid <= s_axis_tvalid;
-            m_axis_tuser <= s_axis_tuser;
-            m_axis_tlast <= s_axis_tlast;
-            grayscale_data <= {p11,p11,p11};
+            m_axis_tvalid <= rValid3;
+            m_axis_tuser <= rUser3;
+            m_axis_tlast <= rLast3;
+            grayscale_data <= rGray3;
+            
         end
     end
     

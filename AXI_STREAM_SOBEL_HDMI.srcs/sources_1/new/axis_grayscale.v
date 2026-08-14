@@ -48,31 +48,48 @@ module axis_grayscale(
     assign b_in = s_axis_tdata[15:8];
     assign g_in = s_axis_tdata[7:0];
     
-    wire [15:0] r_mult;
-    wire [15:0] b_mult;
-    wire [15:0] g_mult;
-    assign r_mult = r_in * 8'd77;
-    assign b_mult = b_in * 8'd29;
-    assign g_mult = g_in * 8'd150;
+    reg [15:0] r_mult;
+    reg [15:0] b_mult;
+    reg [15:0] g_mult;
 
     wire [16:0] gray_result;
     assign gray_result = r_mult + g_mult + b_mult;
     
     assign s_axis_tready = (m_axis_tvalid != 1'b1) || (m_axis_tready == 1'b1);
     
+    reg rValid, rUser, rLast;
+    
     //output register
     always @(posedge clk) begin
         if(!rst) begin
+            //pipeline stage 1
+            r_mult <= r_in * 8'd0;
+            b_mult <= b_in * 8'd0;
+            g_mult <= g_in * 8'd0;
+            rValid <= 1'b0;
+            rUser <= 1'b0;
+            rLast <= 1'b0;
+            
+            //pipeline stage 2
             m_axis_tdata <= 8'h00;
             m_axis_tvalid <= 1'b0;
             m_axis_tuser <= 1'b0;
             m_axis_tlast <= 1'b0;
         end
         else if (s_axis_tready) begin
+            //pipeline stage 1
+            r_mult <= r_in * 8'd77;
+            b_mult <= b_in * 8'd29;
+            g_mult <= g_in * 8'd150;
+            rValid <= s_axis_tvalid;
+            rUser <= s_axis_tuser;
+            rLast <= s_axis_tlast;
+            
+            //pipeline stage 2
             m_axis_tdata <= gray_result[15:8];
-            m_axis_tvalid <= s_axis_tvalid;
-            m_axis_tuser <= s_axis_tuser;
-            m_axis_tlast <= s_axis_tlast;
+            m_axis_tvalid <= rValid;
+            m_axis_tuser <= rUser;
+            m_axis_tlast <= rLast;
         end
     end
     

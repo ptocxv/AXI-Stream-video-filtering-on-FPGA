@@ -412,10 +412,10 @@
             "value": "true"
           },
           "kClkRange": {
-            "value": "3"
+            "value": "1"
           },
           "kEdidFileName": {
-            "value": "dgl_720p_cea.data"
+            "value": "dgl_1080p_cea.data"
           },
           "kEmulateDDC": {
             "value": "true"
@@ -434,7 +434,7 @@
         "has_run_ip_tcl": "true",
         "parameters": {
           "kClkRange": {
-            "value": "3"
+            "value": "1"
           },
           "kGenerateSerialClk": {
             "value": "true"
@@ -539,7 +539,7 @@
             "value": "false"
           },
           "VIDEO_MODE": {
-            "value": "720p"
+            "value": "1080p"
           },
           "enable_detection": {
             "value": "false"
@@ -3057,8 +3057,8 @@
           "v_vid_in_axi4s_0/aclk",
           "processing_core_0/clk_0",
           "video_config_cdc_0/pixel_clk",
-          "axis_filter_out_0/clk",
-          "rgb2dvi_0/PixelClk"
+          "rgb2dvi_0/PixelClk",
+          "axis_filter_out_0/clk"
         ]
       },
       "dvi2rgb_0_vid_pData": {
@@ -3150,9 +3150,9 @@
           "v_vid_in_axi4s_0/aresetn",
           "processing_core_0/rst_0",
           "video_config_cdc_0/pixel_resetn",
-          "axis_filter_out_0/rst_n",
           "dvi2rgb_0/aRst_n",
-          "rgb2dvi_0/aRst_n"
+          "rgb2dvi_0/aRst_n",
+          "axis_filter_out_0/rst_n"
         ]
       },
       "v_axi4s_vid_out_0_sof_state_out": {
