@@ -1,5 +1,4 @@
-# AXI-Stream Sobel HDMI
-
+# PS-controlled 1080p60 FPGA Video Processor
 A real-time FPGA video pipeline that captures live HDMI input, converts it into a custom AXI-Stream pixel bus, and runs grayscale conversion + Sobel edge detection on every frame — with the output mode and edge threshold controllable at runtime from the Zynq PS over UART.
 
 Built on a **PYNQ-Z2** board (Xilinx Zynq-7020, `xc7z020clg400-1`) in Vivado, mixing hand-written Verilog datapath IP with Xilinx/Digilent video IP (`dvi2rgb`, `rgb2dvi`, `v_tc`, `v_axi4s_vid_out`) and the Zynq Processing System.
