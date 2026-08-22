@@ -94,14 +94,19 @@ module axis_window_3x3_generator#(
     always @(posedge clk) begin
         if(!rst) begin
             cntH <= 0; cntV <= 0;
-            rr0 <= 8'd0; rr1 <= 8'd0; rr2 <= 8'd0;
             rCol <= 0; rRow <= 0;
-            rValid <= 1'b0; rUser <= 1'b0; rLast <= 1'b0; 
-            r00 <= 8'd0; r01 <= 8'd0; r10 <= 8'd0; r11 <= 8'd0; r20 <= 8'd0; r21 <= 8'd0; 
+            rValid <= 1'b0; rUser <= 1'b0; rLast <= 1'b0;
             m_axis_tdata  <= 72'd0;
             m_axis_tvalid <= 1'b0;
             m_axis_tuser  <= 1'b0;
             m_axis_tlast  <= 1'b0;
+            
+            rr0 <= 8'd0; rr1 <= 8'd0; rr2 <= 8'd0;
+            r00 <= 8'd0; r01 <= 8'd0; r10 <= 8'd0; r11 <= 8'd0; r20 <= 8'd0; r21 <= 8'd0;            
+            rbg12  <= 24'd0;
+            rbg10  <= 24'd0;
+            rbg11  <= 24'd0;
+            rbg_out <= 24'd0;
         end
         else if (s_axis_tready) begin
             if(window_valid) begin
