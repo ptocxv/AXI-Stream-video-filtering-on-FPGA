@@ -20,6 +20,7 @@
 		output wire cfg_req_toggle_axi,
 		input wire cfg_ack_toggle_pixel,
 		// User ports ends
+		
 		// Do not modify the ports beyond this line
 
 		// Global Clock Signal
@@ -366,15 +367,10 @@
 	
 	assign write_reg_index =
     (S_AXI_AWVALID && S_AXI_AWREADY)
-        ? S_AXI_AWADDR[
-            ADDR_LSB + OPT_MEM_ADDR_BITS : ADDR_LSB
-          ]
-        : axi_awaddr[
-            ADDR_LSB + OPT_MEM_ADDR_BITS : ADDR_LSB
-          ];
+        ? S_AXI_AWADDR[ ADDR_LSB + OPT_MEM_ADDR_BITS : ADDR_LSB ]
+        : axi_awaddr[ ADDR_LSB + OPT_MEM_ADDR_BITS : ADDR_LSB ];
 
-	assign write_data_fire =
-		S_AXI_WVALID && S_AXI_WREADY;
+	assign write_data_fire = S_AXI_WVALID && S_AXI_WREADY;
 
 	assign apply_config_event =
 		write_data_fire           &&
