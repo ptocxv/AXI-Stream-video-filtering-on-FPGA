@@ -47,7 +47,9 @@ module axis_filter_out(
     
     assign frame_start = s_axis_tvalid && s_axis_tready && s_axis_tuser;
     
-    assign s_axis_tready = !m_axis_tvalid || m_axis_tready;
+    wire pipeline_ena;
+    assign pipeline_ena = !m_axis_tvalid || m_axis_tready;
+    assign s_axis_tready = pipeline_ena;
     
     always @(posedge clk) begin
         if(!rst_n) begin
@@ -56,36 +58,36 @@ module axis_filter_out(
             m_axis_tuser <= 1'b0;
             m_axis_tlast <= 1'b0;
         end
-        else if (s_axis_tready) begin
+        else if (pipeline_ena) begin
             case(mode)
                 2'b00: begin
                     // m_axis_tdata <= s_axis_tdata;
                     m_axis_tdata <= s_axis_tdata;
-                    m_axis_tvalid <= s_axis_tvalid;
+                    m_axis_tvalid <= s_axis_tvalid && s_axis_tready;
                     m_axis_tuser <= s_axis_tuser;
                     m_axis_tlast <= s_axis_tlast;
                 end
                 2'b01: begin
                     m_axis_tdata <= (s_axis_tdata[7:0] > threshold) ? 24'hffffff : 24'h000000;
-                    m_axis_tvalid <= s_axis_tvalid;
+                    m_axis_tvalid <= s_axis_tvalid && s_axis_tready;
                     m_axis_tuser <= s_axis_tuser;
                     m_axis_tlast <= s_axis_tlast;
                 end
                 2'b10: begin
                     m_axis_tdata <= grayscale_data;
-                    m_axis_tvalid <= s_axis_tvalid;
+                    m_axis_tvalid <= s_axis_tvalid && s_axis_tready;
                     m_axis_tuser <= s_axis_tuser;
                     m_axis_tlast <= s_axis_tlast;
                 end
                 2'b11: begin
                     m_axis_tdata <= rbg_data;
-                    m_axis_tvalid <= s_axis_tvalid;
+                    m_axis_tvalid <= s_axis_tvalid && s_axis_tready;
                     m_axis_tuser <= s_axis_tuser;
                     m_axis_tlast <= s_axis_tlast;
                 end
                 default: begin
                     m_axis_tdata <= 24'hbc1501;
-                    m_axis_tvalid <= s_axis_tvalid;
+                    m_axis_tvalid <= s_axis_tvalid && s_axis_tready;
                     m_axis_tuser <= s_axis_tuser;
                     m_axis_tlast <= s_axis_tlast;
                 end

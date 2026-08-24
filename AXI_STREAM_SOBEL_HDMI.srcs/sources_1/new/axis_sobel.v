@@ -96,7 +96,11 @@ module axis_sobel(
     wire [7:0] edge_mag;
     assign edge_mag = (mag > 13'd255) ? 8'd255 : mag[7:0];
     
-    assign s_axis_tready = !m_axis_tvalid || m_axis_tready;
+    
+    wire pipeline_ena;
+    assign pipeline_ena = !m_axis_tvalid || m_axis_tready;
+    assign s_axis_tready = pipeline_ena;
+    
     //output register
     always @(posedge clk) begin
         if(!rst) begin
@@ -146,7 +150,7 @@ module axis_sobel(
             rbg_data <= 24'd0;
             
         end
-        else if (s_axis_tready) begin
+        else if (pipeline_ena) begin
             
             //pipeline stage 1
             rgx0 <= -$signed({4'h0, p00})
@@ -161,7 +165,7 @@ module axis_sobel(
             rgy2 <= + $signed({4'h0, p20})
                  + ($signed({4'h0, p21}) <<< 1)
                  + $signed({4'h0, p22});
-            rValid0 <= s_axis_tvalid;
+            rValid0 <= s_axis_tvalid && s_axis_tready;
             rUser0 <= s_axis_tuser;
             rLast0 <= s_axis_tlast;
             rGray0 <= {p11,p11,p11};

@@ -89,7 +89,9 @@ module axis_window_3x3_generator#(
     reg [23:0] rbg10;
     reg [23:0] rbg11; // taken pixel (corresponding window-centered) -> rbg_out
     
-    assign s_axis_tready = !m_axis_tvalid || m_axis_tready;
+    wire pipeline_ena;
+    assign pipeline_ena = !m_axis_tvalid || m_axis_tready;
+    assign s_axis_tready = pipeline_ena;
     
     always @(posedge clk) begin
         if(!rst) begin
@@ -108,7 +110,7 @@ module axis_window_3x3_generator#(
             rbg11  <= 24'd0;
             rbg_out <= 24'd0;
         end
-        else if (s_axis_tready) begin
+        else if (pipeline_ena) begin
             if(window_valid) begin
                 m_axis_tdata <= {
                     r00, r10, r20,
@@ -157,7 +159,7 @@ module axis_window_3x3_generator#(
                 // read metadata
                 rCol <= cntH;
                 rRow <= cntV;
-                rValid <= 1'b1;
+                rValid <= 1'b1; //s_axis_tready && s_axis_tvalid
                 rUser <= s_axis_tuser;
                 rLast <= s_axis_tlast;
                 

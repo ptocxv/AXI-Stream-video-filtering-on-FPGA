@@ -62,7 +62,9 @@ module axis_grayscale(
     wire [16:0] gray_result;
     assign gray_result = r_mult + g_mult + b_mult;
     
-    assign s_axis_tready = (m_axis_tvalid != 1'b1) || (m_axis_tready == 1'b1);
+    wire pipeline_ena;
+    assign pipeline_ena = !m_axis_tvalid || m_axis_tready;
+    assign s_axis_tready = pipeline_ena;
     
     reg rValid, rUser, rLast;
     
@@ -85,12 +87,12 @@ module axis_grayscale(
             m_axis_tlast <= 1'b0;
             rbg_out <= 24'd0;
         end
-        else if (s_axis_tready) begin
+        else if (pipeline_ena) begin
             //pipeline stage 1
             r_mult <= r_in * 8'd77;
             b_mult <= b_in * 8'd29;
             g_mult <= g_in * 8'd150;
-            rValid <= s_axis_tvalid;
+            rValid <= s_axis_tvalid && s_axis_tready;
             rUser <= s_axis_tuser;
             rLast <= s_axis_tlast;
             r_rbg_out <= s_axis_tdata;
