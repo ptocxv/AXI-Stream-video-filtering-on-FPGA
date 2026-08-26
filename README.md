@@ -155,7 +155,7 @@ A bare-metal Vitis/standalone application that:
 
 ## Verification
 
-- **Unit-level SystemVerilog testbenches** (`sim_1/new/`) exercise `axis_grayscale`, `axis_window_3x3_generator`, and `axis_sobel` in isolation.
+- **Unit-level Verilog testbenches** (`sim_1/new/`) exercise `axis_grayscale`, `axis_window_3x3_generator`, and `axis_sobel` in isolation.
 - **`ref/gen_processing_core_ref.py`** generates a reproducible (seeded) synthetic RGB frame plus the expected grayscale/Sobel output, writing both to `ref/tb_data/` as vectors the testbenches can check against — a lightweight golden-model approach to catch pipeline/timing bugs before hardware bring-up.
 
 ## Getting started
