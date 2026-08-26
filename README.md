@@ -24,12 +24,10 @@ Built on a **PYNQ-Z2** board (Xilinx Zynq-7020, `xc7z020clg400-1`) in Vivado, mi
 ## Architecture
 
 ### System overview
-
-The full system: HDMI in → AXI-Stream conversion → processing core → AXI-Stream conversion → HDMI out, with the Zynq PS supervising configuration over AXI-Lite.
-
-### Processing core
-
-The core pixel pipeline instantiated inside the system above:
+The design is divided into two main paths:
+1. A real-time AXI4-Stream video-processing path in the Programmable Logic.
+2. A low-rate software-control path from the Cortex-A9 to the PL.
+The live video path remains entirely in the PL. The PS is used only for UART interaction and runtime configuration.
 
 ```
                          ┌────────────┐
