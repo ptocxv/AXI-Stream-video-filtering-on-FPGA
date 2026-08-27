@@ -1,0 +1,87 @@
+Copyright 1986-2022 Xilinx, Inc. All Rights Reserved. Copyright 2022-2026 Advanced Micro Devices, Inc. All Rights Reserved.
+---------------------------------------------------------------------------------------------------------------------------------------------
+| Tool Version : Vivado v.2026.1 (win64) Build 6511674 Tue Jun 16 11:02:23 MDT 2026
+| Date         : Thu Aug 27 11:04:19 2026
+| Host         : DESKTOP-T3NL2RB running 64-bit major release  (build 9200)
+| Command      : report_cdc -details -file D:/_me/project/sobel_hdmi/AXI_STREAM_SOBEL_HDMI/reports/cdc_detailed.rpt
+| Design       : final_system_wrapper
+| Device       : 7z020-clg400
+| Speed File   : -1  PRODUCTION 1.12 2019-11-22
+| Design State : Routed
+---------------------------------------------------------------------------------------------------------------------------------------------
+
+CDC Report
+
+ID      Severity  Count  Description
+------  --------  -----  -------------------------------------------------------
+CDC-3   Info          8  1-bit synchronized with ASYNC_REG property
+CDC-7   Critical      3  Asynchronous reset unknown CDC circuitry
+CDC-9   Info          3  Asynchronous reset synchronized with ASYNC_REG property
+CDC-15  Warning      10  Clock enable controlled CDC structure detected
+
+Source Clock: clk_200MHz_final_system_clk_wiz_0_0
+Destination Clock: PixelClk_int
+CDC Type: No Common Primary Clock
+
+Row  ID     Severity  Description                                              Depth  Exception   Source (From)                                                                 Destination (To)
+---  -----  --------  -------------------------------------------------------  -----  ----------  ----------------------------------------------------------------------------  ------------------------------------------------------------------------------------------------
+  1  CDC-3  Info      1-bit synchronized with ASYNC_REG property                   2  False Path  final_system_i/dvi2rgb_0/U0/DataDecoders[0].DecoderX/SyncBaseOvf/iIn_q_reg/C  final_system_i/dvi2rgb_0/U0/DataDecoders[0].DecoderX/SyncBaseOvf/SyncAsyncx/oSyncStages_reg[0]/D
+  2  CDC-3  Info      1-bit synchronized with ASYNC_REG property                   2  False Path  final_system_i/dvi2rgb_0/U0/DataDecoders[1].DecoderX/SyncBaseOvf/iIn_q_reg/C  final_system_i/dvi2rgb_0/U0/DataDecoders[1].DecoderX/SyncBaseOvf/SyncAsyncx/oSyncStages_reg[0]/D
+  3  CDC-3  Info      1-bit synchronized with ASYNC_REG property                   2  False Path  final_system_i/dvi2rgb_0/U0/DataDecoders[2].DecoderX/SyncBaseOvf/iIn_q_reg/C  final_system_i/dvi2rgb_0/U0/DataDecoders[2].DecoderX/SyncBaseOvf/SyncAsyncx/oSyncStages_reg[0]/D
+  4  CDC-9  Info      Asynchronous reset synchronized with ASYNC_REG property      2  False Path  final_system_i/dvi2rgb_0/U0/TMDS_ClockingX/aLocked_reg/C                      final_system_i/dvi2rgb_0/U0/LockLostReset/SyncAsyncx/oSyncStages_reg[0]/PRE
+
+Source Clock: clk_fpga_0
+Destination Clock: PixelClk_int
+CDC Type: No Common Primary Clock
+
+Row  ID      Severity  Description                                     Depth  Exception            Source (From)                                                                                                          Destination (To)
+---  ------  --------  ----------------------------------------------  -----  -------------------  ---------------------------------------------------------------------------------------------------------------------  -----------------------------------------------------------------------
+  1  CDC-15  Warning   Clock enable controlled CDC structure detected      0  Asynch Clock Groups  final_system_i/video_control_axi_0/inst/video_control_axi_slave_lite_v1_0_S00_AXI_inst/payload_mode_axi_reg[0]/C       final_system_i/video_config_cdc_0/inst/pending_mode_pixel_reg[0]/D
+  2  CDC-15  Warning   Clock enable controlled CDC structure detected      0  Asynch Clock Groups  final_system_i/video_control_axi_0/inst/video_control_axi_slave_lite_v1_0_S00_AXI_inst/payload_mode_axi_reg[1]/C       final_system_i/video_config_cdc_0/inst/pending_mode_pixel_reg[1]/D
+  3  CDC-15  Warning   Clock enable controlled CDC structure detected      0  Asynch Clock Groups  final_system_i/video_control_axi_0/inst/video_control_axi_slave_lite_v1_0_S00_AXI_inst/payload_threshold_axi_reg[0]/C  final_system_i/video_config_cdc_0/inst/pending_threshold_pixel_reg[0]/D
+  4  CDC-15  Warning   Clock enable controlled CDC structure detected      0  Asynch Clock Groups  final_system_i/video_control_axi_0/inst/video_control_axi_slave_lite_v1_0_S00_AXI_inst/payload_threshold_axi_reg[1]/C  final_system_i/video_config_cdc_0/inst/pending_threshold_pixel_reg[1]/D
+  5  CDC-15  Warning   Clock enable controlled CDC structure detected      0  Asynch Clock Groups  final_system_i/video_control_axi_0/inst/video_control_axi_slave_lite_v1_0_S00_AXI_inst/payload_threshold_axi_reg[2]/C  final_system_i/video_config_cdc_0/inst/pending_threshold_pixel_reg[2]/D
+  6  CDC-15  Warning   Clock enable controlled CDC structure detected      0  Asynch Clock Groups  final_system_i/video_control_axi_0/inst/video_control_axi_slave_lite_v1_0_S00_AXI_inst/payload_threshold_axi_reg[3]/C  final_system_i/video_config_cdc_0/inst/pending_threshold_pixel_reg[3]/D
+  7  CDC-15  Warning   Clock enable controlled CDC structure detected      0  Asynch Clock Groups  final_system_i/video_control_axi_0/inst/video_control_axi_slave_lite_v1_0_S00_AXI_inst/payload_threshold_axi_reg[4]/C  final_system_i/video_config_cdc_0/inst/pending_threshold_pixel_reg[4]/D
+  8  CDC-15  Warning   Clock enable controlled CDC structure detected      0  Asynch Clock Groups  final_system_i/video_control_axi_0/inst/video_control_axi_slave_lite_v1_0_S00_AXI_inst/payload_threshold_axi_reg[5]/C  final_system_i/video_config_cdc_0/inst/pending_threshold_pixel_reg[5]/D
+  9  CDC-15  Warning   Clock enable controlled CDC structure detected      0  Asynch Clock Groups  final_system_i/video_control_axi_0/inst/video_control_axi_slave_lite_v1_0_S00_AXI_inst/payload_threshold_axi_reg[6]/C  final_system_i/video_config_cdc_0/inst/pending_threshold_pixel_reg[6]/D
+ 10  CDC-15  Warning   Clock enable controlled CDC structure detected      0  Asynch Clock Groups  final_system_i/video_control_axi_0/inst/video_control_axi_slave_lite_v1_0_S00_AXI_inst/payload_threshold_axi_reg[7]/C  final_system_i/video_config_cdc_0/inst/pending_threshold_pixel_reg[7]/D
+ 11  CDC-3   Info      1-bit synchronized with ASYNC_REG property          2  Asynch Clock Groups  final_system_i/video_control_axi_0/inst/video_control_axi_slave_lite_v1_0_S00_AXI_inst/req_toggle_axi_reg/C            final_system_i/video_config_cdc_0/inst/req_sync1_pixel_reg/D
+
+Source Clock: input port clock
+Destination Clock: PixelClk_int
+CDC Type: No Common Primary Clock
+
+Row  ID     Severity  Description                                              Depth  Exception   Source (From)  Destination (To)
+---  -----  --------  -------------------------------------------------------  -----  ----------  -------------  ------------------------------------------------------------------------------------------------------
+  1  CDC-9  Info      Asynchronous reset synchronized with ASYNC_REG property      2  False Path  rst            final_system_i/rgb2dvi_0/U0/ClockGenInternal.ClockGenX/LockLostReset/SyncAsyncx/oSyncStages_reg[0]/PRE
+
+Source Clock: PixelClk_int
+Destination Clock: clk_200MHz_final_system_clk_wiz_0_0
+CDC Type: No Common Primary Clock
+
+Row  ID     Severity  Description                                 Depth  Exception   Source (From)                                                                 Destination (To)
+---  -----  --------  ------------------------------------------  -----  ----------  ----------------------------------------------------------------------------  ------------------------------------------------------------------------------------------------
+  1  CDC-7  Critical  Asynchronous reset unknown CDC circuitry        0  False Path  final_system_i/dvi2rgb_0/U0/LockLostReset/SyncAsyncx/oSyncStages_reg[1]/C     final_system_i/dvi2rgb_0/U0/DataDecoders[0].DecoderX/SyncBaseOvf/iIn_q_reg/CLR
+  2  CDC-7  Critical  Asynchronous reset unknown CDC circuitry        0  False Path  final_system_i/dvi2rgb_0/U0/LockLostReset/SyncAsyncx/oSyncStages_reg[1]/C     final_system_i/dvi2rgb_0/U0/DataDecoders[1].DecoderX/SyncBaseOvf/iIn_q_reg/CLR
+  3  CDC-7  Critical  Asynchronous reset unknown CDC circuitry        0  False Path  final_system_i/dvi2rgb_0/U0/LockLostReset/SyncAsyncx/oSyncStages_reg[1]/C     final_system_i/dvi2rgb_0/U0/DataDecoders[2].DecoderX/SyncBaseOvf/iIn_q_reg/CLR
+  4  CDC-3  Info      1-bit synchronized with ASYNC_REG property      2  False Path  final_system_i/dvi2rgb_0/U0/DataDecoders[0].DecoderX/SyncBaseRst/iIn_q_reg/C  final_system_i/dvi2rgb_0/U0/DataDecoders[0].DecoderX/SyncBaseRst/SyncAsyncx/oSyncStages_reg[0]/D
+  5  CDC-3  Info      1-bit synchronized with ASYNC_REG property      2  False Path  final_system_i/dvi2rgb_0/U0/DataDecoders[1].DecoderX/SyncBaseRst/iIn_q_reg/C  final_system_i/dvi2rgb_0/U0/DataDecoders[1].DecoderX/SyncBaseRst/SyncAsyncx/oSyncStages_reg[0]/D
+  6  CDC-3  Info      1-bit synchronized with ASYNC_REG property      2  False Path  final_system_i/dvi2rgb_0/U0/DataDecoders[2].DecoderX/SyncBaseRst/iIn_q_reg/C  final_system_i/dvi2rgb_0/U0/DataDecoders[2].DecoderX/SyncBaseRst/SyncAsyncx/oSyncStages_reg[0]/D
+
+Source Clock: input port clock
+Destination Clock: clk_200MHz_final_system_clk_wiz_0_0
+CDC Type: No Common Primary Clock
+
+Row  ID     Severity  Description                                              Depth  Exception   Source (From)  Destination (To)
+---  -----  --------  -------------------------------------------------------  -----  ----------  -------------  ------------------------------------------------------------------------------------------
+  1  CDC-9  Info      Asynchronous reset synchronized with ASYNC_REG property      2  False Path  rst            final_system_i/dvi2rgb_0/U0/TMDS_ClockingX/LockLostReset/SyncAsyncx/oSyncStages_reg[0]/PRE
+
+Source Clock: PixelClk_int
+Destination Clock: clk_fpga_0
+CDC Type: No Common Primary Clock
+
+Row  ID     Severity  Description                                 Depth  Exception            Source (From)                                                      Destination (To)
+---  -----  --------  ------------------------------------------  -----  -------------------  -----------------------------------------------------------------  ----------------------------------------------------------------------------------------------------------
+  1  CDC-3  Info      1-bit synchronized with ASYNC_REG property      2  Asynch Clock Groups  final_system_i/video_config_cdc_0/inst/cfg_ack_toggle_pixel_reg/C  final_system_i/video_control_axi_0/inst/video_control_axi_slave_lite_v1_0_S00_AXI_inst/ack_sync1_axi_reg/D
+

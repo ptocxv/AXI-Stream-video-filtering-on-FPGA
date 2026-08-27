@@ -1,0 +1,30 @@
+Copyright 1986-2022 Xilinx, Inc. All Rights Reserved. Copyright 2022-2026 Advanced Micro Devices, Inc. All Rights Reserved.
+---------------------------------------------------------------------------------------------------------------------------------------------
+| Tool Version : Vivado v.2026.1 (win64) Build 6511674 Tue Jun 16 11:02:23 MDT 2026
+| Date         : Thu Aug 27 11:04:19 2026
+| Host         : DESKTOP-T3NL2RB running 64-bit major release  (build 9200)
+| Command      : report_clock_interaction -file D:/_me/project/sobel_hdmi/AXI_STREAM_SOBEL_HDMI/reports/clock_interaction.rpt
+| Design       : final_system_wrapper
+| Device       : 7z020-clg400
+| Speed File   : -1  PRODUCTION 1.12 2019-11-22
+| Design State : Routed
+---------------------------------------------------------------------------------------------------------------------------------------------
+
+Clock Interaction Report
+
+Clock Interaction Table
+-----------------------
+
+                                                                          WNS                            TNS Failing  TNS Total    WNS Path         Clock-Pair           Inter-Clock          
+From Clock                           To Clock                             Clock Edges  WNS(ns)  TNS(ns)    Endpoints    Endpoints  Requirement(ns)  Classification       Constraints          
+-----------------------------------  -----------------------------------  -----------  -------  -------  -----------  -----------  ---------------  -------------------  -------------------  
+PixelClk_int                         PixelClkIO                           rise - rise     0.90     0.00            0           38             6.73  Clean                Timed                
+PixelClk_int                         PixelClk_int                         rise - rise     0.15     0.00            0         3558             6.73  Clean                Partial False Path   
+PixelClk_int                         clk_200MHz_final_system_clk_wiz_0_0                                           0           12                   Ignored              False Path           
+PixelClk_int                         clk_fpga_0                                                                    0            1                   Ignored              Asynchronous Groups  
+clk_200MHz_final_system_clk_wiz_0_0  PixelClk_int                                                                  0            5                   Ignored              False Path           
+clk_200MHz_final_system_clk_wiz_0_0  clk_200MHz_final_system_clk_wiz_0_0  rise - rise     1.09     0.00            0          342             5.00  Clean                Timed                
+clk_fpga_0                           PixelClk_int                                                                  0           11                   Ignored              Asynchronous Groups  
+clk_fpga_0                           clk_fpga_0                           rise - rise     3.54     0.00            0         1576            10.00  Clean                Partial False Path   
+
+
