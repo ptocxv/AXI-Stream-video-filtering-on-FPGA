@@ -130,18 +130,17 @@ module axis_window_3x3_generator#(
             if(rValid) begin // rValid = 1 only after input is accepted -> useful shifting happens
                 // all 2-stage pipelining
                 
+                //window columns shifted
                 r00 <= r01; r01 <= rr0;
                 r10 <= r11; r11 <= rr1;
                 r20 <= r21; r21 <= rr2;
                 
-                rbg10 <= rbg11;
-                rbg11 <= rbg12;
-                
-            end
-            
-            // BRAM0 read is synchronous -> need to write BRAM1 1 cycle later
-            if(rValid) begin
+                // update BRAM1
                 BRAM1[rCol] <= rr1;
+                
+                //orginal pixels BRAM alignment
+                rbg10 <= rbg11;
+                rbg11 <= rbg12;                
             end
             
             if(s_axis_tready && s_axis_tvalid) begin // accepted input
@@ -152,8 +151,10 @@ module axis_window_3x3_generator#(
                 rr2 <= s_axis_tdata;
                 rbg12 <= RBG_BRAM[cntH];
                 
-                // update BRAM
+                // update BRAM0
                 BRAM0[cntH] <= s_axis_tdata;
+                
+                // update orginal pixels BRAM
                 RBG_BRAM[cntH] <= rbg_in;
                 
                 // read metadata
