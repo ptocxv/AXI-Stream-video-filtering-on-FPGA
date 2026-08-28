@@ -2488,13 +2488,17 @@
                 "value": "m_axis:s_axis",
                 "value_src": "constant"
               },
+              "ASSOCIATED_RESET": {
+                "value": "rstn",
+                "value_src": "constant"
+              },
               "CLK_DOMAIN": {
                 "value": "final_system_dvi2rgb_0_0_PixelClk",
                 "value_src": "default_prop"
               }
             }
           },
-          "rst_n": {
+          "rstn": {
             "type": "rst",
             "direction": "I",
             "parameters": {
@@ -2524,7 +2528,7 @@
             "left": "7",
             "right": "0"
           },
-          "frame_start": {
+          "sof_out": {
             "direction": "O"
           }
         }
@@ -2821,7 +2825,7 @@
         "variant_info": {
           "processing_core.bd": {
             "scoped_diagram": "processing_core_inst_0.bd",
-            "design_checksum": "0xF17D4C2D7D7BFCDE",
+            "design_checksum": "0x745E7ACD7D7BFCDE",
             "ref_name": "processing_core",
             "ref_subinst_path": "final_system_processing_core_0",
             "ref_type": "Block Design",
@@ -2883,7 +2887,7 @@
           "cfg_ack_toggle_pixel": {
             "direction": "O"
           },
-          "frame_start_fire": {
+          "sof_fire": {
             "direction": "I"
           },
           "active_mode_pixel": {
@@ -3116,8 +3120,8 @@
       },
       "axis_filter_out_0_frame_start": {
         "ports": [
-          "axis_filter_out_0/frame_start",
-          "video_config_cdc_0/frame_start_fire"
+          "axis_filter_out_0/sof_out",
+          "video_config_cdc_0/sof_fire"
         ]
       },
       "clk_in1_0_1": {
@@ -3139,9 +3143,9 @@
           "v_tc_0/clk",
           "v_vid_in_axi4s_0/aclk",
           "processing_core_0/clk_0",
-          "video_config_cdc_0/pixel_clk",
           "rgb2dvi_0/PixelClk",
-          "axis_filter_out_0/clk"
+          "axis_filter_out_0/clk",
+          "video_config_cdc_0/pixel_clk"
         ]
       },
       "dvi2rgb_0_vid_pData": {
@@ -3279,10 +3283,10 @@
           "v_tc_0/resetn",
           "v_vid_in_axi4s_0/aresetn",
           "processing_core_0/rst_0",
-          "video_config_cdc_0/pixel_resetn",
           "dvi2rgb_0/aRst_n",
           "rgb2dvi_0/aRst_n",
-          "axis_filter_out_0/rst_n"
+          "video_config_cdc_0/pixel_resetn",
+          "axis_filter_out_0/rstn"
         ]
       },
       "v_axi4s_vid_out_0_sof_state_out": {

@@ -23,36 +23,36 @@
 `timescale 1ns / 1ps
 
 module video_config_cdc (
-    input  wire       pixel_clk,
-    input  wire       pixel_resetn,
+    input pixel_clk,
+    input pixel_resetn,
 
-    // Frozen payload from AXI domain
-    input  wire [1:0] cfg_mode_axi,
-    input  wire [7:0] cfg_threshold_axi,
-    input  wire       cfg_req_toggle_axi,
+    // frozen payload from PS domain
+    input [1:0] cfg_mode_axi,
+    input [7:0] cfg_threshold_axi,
+    input cfg_req_toggle_axi,
 
-    // Transaction acknowledgement back to AXI domain
-    output reg        cfg_ack_toggle_pixel,
+    // acknowledgement back to PS domain
+    output reg cfg_ack_toggle_pixel,
 
-    // Accepted first pixel of output frame
-    input  wire       frame_start_fire,
+    // sof mark
+    input sof_fire,
 
-    // Active video-domain controls
+    // active video-domain controls
     output reg  [1:0] active_mode_pixel,
     output reg  [7:0] active_threshold_pixel
 );
 
-    // Request synchronizer
+    // request synchronizer
     (* ASYNC_REG = "TRUE" *) reg req_sync1_pixel;
     (* ASYNC_REG = "TRUE" *) reg req_sync2_pixel;
 
-    // Last request already captured
+    // last request captured
     reg req_seen_pixel;
 
-    // Pending configuration
+    // pending data
     reg [1:0] pending_mode_pixel;
     reg [7:0] pending_threshold_pixel;
-    reg       config_pending_pixel;
+    reg config_pending_pixel;
 
     always @(posedge pixel_clk)
     begin
@@ -61,8 +61,7 @@ module video_config_cdc (
             req_sync1_pixel <= 1'b0;
             req_sync2_pixel <= 1'b0;
         end
-        else
-        begin
+        else begin
             req_sync1_pixel <= cfg_req_toggle_axi;
             req_sync2_pixel <= req_sync1_pixel;
         end
@@ -73,57 +72,38 @@ module video_config_cdc (
         if (!pixel_resetn)
         begin
             req_seen_pixel          <= 1'b0;
-
             pending_mode_pixel      <= 2'b00;
             pending_threshold_pixel <= 8'd100;
             config_pending_pixel    <= 1'b0;
-
             active_mode_pixel       <= 2'b00;
             active_threshold_pixel  <= 8'd100;
-
             cfg_ack_toggle_pixel    <= 1'b0;
         end
-        else
-        begin
-            /*
-             * Detect a new synchronized request and capture
-             * the stable bundled payload.
-             */
-            if (req_sync2_pixel != req_seen_pixel)
-            begin
-                pending_mode_pixel <=
-                    cfg_mode_axi;
-
-                pending_threshold_pixel <=
-                    cfg_threshold_axi;
-
+        else begin
+            // detect a new synchronized request and capture the stable bundled payload.
+            if (req_sync2_pixel != req_seen_pixel) begin
+                // update pending data
+                pending_mode_pixel <= cfg_mode_axi;
+                pending_threshold_pixel <= cfg_threshold_axi;
+                
+                // set pending config mark
                 config_pending_pixel <= 1'b1;
-                req_seen_pixel       <= req_sync2_pixel;
+                
+                // update last captured req
+                req_seen_pixel <= req_sync2_pixel;
             end
 
-            /*
-             * Apply the complete pending configuration at
-             * an accepted frame-start transaction.
-             */
-            if (
-                config_pending_pixel &&
-                frame_start_fire
-            )
-            begin
-                active_mode_pixel <=
-                    pending_mode_pixel;
-
-                active_threshold_pixel <=
-                    pending_threshold_pixel;
-
+            // update active data on sof after pending data is configured.
+            if (config_pending_pixel && sof_fire) begin
+                // update active data
+                active_mode_pixel <= pending_mode_pixel;
+                active_threshold_pixel <= pending_threshold_pixel;
+                
+                // reset pending config mark
                 config_pending_pixel <= 1'b0;
 
-                /*
-                 * Acknowledge the request that has now
-                 * become active.
-                 */
-                cfg_ack_toggle_pixel <=
-                    req_seen_pixel;
+                // acknowledge the request that has now become active.
+                cfg_ack_toggle_pixel <= req_seen_pixel;
             end
         end
     end

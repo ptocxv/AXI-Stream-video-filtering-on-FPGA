@@ -108,6 +108,7 @@
 	//------------------------------------------------
 	//-- Number of Slave Registers 8
 	
+	////////////////////////////////////////////////////////////////////////////////////////////////////////////		
 	localparam [31:0] CORE_ID = 32'h534F424C;
 	reg [C_S_AXI_DATA_WIDTH-1:0] reg_data_out;
 	
@@ -136,6 +137,7 @@
 	assign cfg_mode_axi       = payload_mode_axi;
 	assign cfg_threshold_axi  = payload_threshold_axi;
 	assign cfg_req_toggle_axi = req_toggle_axi;
+	////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 	// I/O Connections assignments
 
@@ -359,14 +361,14 @@
         
         assign S_AXI_RDATA = reg_data_out;
 	// Add user logic here
-
-	// ----- Apply_Config Command 
+	
+	////////////////////////////////////////////////////////////////////////////////////////////////////////////
+	// Apply_Config Command 
 	wire [2:0] write_reg_index;
 	wire       write_data_fire;
 	wire       apply_config_event;
 	
-	assign write_reg_index =
-    (S_AXI_AWVALID && S_AXI_AWREADY)
+	assign write_reg_index = (S_AXI_AWVALID && S_AXI_AWREADY)
         ? S_AXI_AWADDR[ ADDR_LSB + OPT_MEM_ADDR_BITS : ADDR_LSB ]
         : axi_awaddr[ ADDR_LSB + OPT_MEM_ADDR_BITS : ADDR_LSB ];
 
@@ -378,7 +380,7 @@
 		S_AXI_WSTRB[0]            &&
 		S_AXI_WDATA[0];
 		
-	// ----- Sync Acknowledgement
+	// Sync Acknowledgement - 2FF
 	always @(posedge S_AXI_ACLK)
 		begin
 			if (!S_AXI_ARESETN)
@@ -393,7 +395,7 @@
 			end
 		end
 	
-	// ----- Payload Freezing and Busy Control 
+	// Payload Freezing and Busy Control 
 	always @(posedge S_AXI_ACLK)
 		begin
 			if (!S_AXI_ARESETN)
@@ -407,9 +409,7 @@
 			end
 			else
 			begin
-				/*
-				 * Accept APPLY_CONFIG only when no previous update is active.
-				 */
+				// Accept APPLY_CONFIG only when no previous update is active.
 				if (apply_config_event && !update_busy_axi)
 				begin
 					payload_mode_axi      <= slv_reg0[2:1];
@@ -418,10 +418,7 @@
 					req_toggle_axi  <= ~req_toggle_axi;
 					update_busy_axi <= 1'b1;
 				end
-				/*
-				 * Transfer completes when synchronized acknowledgement
-				 * matches the current request toggle.
-				 */
+				// Transfer completes when synchronized acknowledgement matches the current request toggle.
 				else if (update_busy_axi && (ack_sync2_axi == req_toggle_axi))
 				begin
 					update_busy_axi <= 1'b0;
@@ -432,8 +429,7 @@
 				end
 			end
 		end
-	
-	
+	////////////////////////////////////////////////////////////////////////////////////////////////////////////
 	// User logic ends
 
 	endmodule

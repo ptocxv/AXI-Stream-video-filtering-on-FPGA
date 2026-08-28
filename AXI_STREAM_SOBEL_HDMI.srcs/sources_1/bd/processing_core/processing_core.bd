@@ -409,7 +409,7 @@
                 "value_src": "constant"
               },
               "ASSOCIATED_RESET": {
-                "value": "rst",
+                "value": "rstn",
                 "value_src": "constant"
               },
               "CLK_DOMAIN": {
@@ -418,9 +418,15 @@
               }
             }
           },
-          "rst": {
+          "rstn": {
             "type": "rst",
-            "direction": "I"
+            "direction": "I",
+            "parameters": {
+              "POLARITY": {
+                "value": "ACTIVE_LOW",
+                "value_src": "constant"
+              }
+            }
           },
           "rbg_out": {
             "direction": "O",
@@ -587,7 +593,7 @@
                 "value_src": "constant"
               },
               "ASSOCIATED_RESET": {
-                "value": "rst",
+                "value": "rstn",
                 "value_src": "constant"
               },
               "CLK_DOMAIN": {
@@ -596,9 +602,15 @@
               }
             }
           },
-          "rst": {
+          "rstn": {
             "type": "rst",
-            "direction": "I"
+            "direction": "I",
+            "parameters": {
+              "POLARITY": {
+                "value": "ACTIVE_LOW",
+                "value_src": "constant"
+              }
+            }
           },
           "rbg_in": {
             "direction": "I",
@@ -770,7 +782,7 @@
                 "value_src": "constant"
               },
               "ASSOCIATED_RESET": {
-                "value": "rst",
+                "value": "rstn",
                 "value_src": "constant"
               },
               "CLK_DOMAIN": {
@@ -779,9 +791,15 @@
               }
             }
           },
-          "rst": {
+          "rstn": {
             "type": "rst",
-            "direction": "I"
+            "direction": "I",
+            "parameters": {
+              "POLARITY": {
+                "value": "ACTIVE_LOW",
+                "value_src": "constant"
+              }
+            }
           },
           "grayscale_data": {
             "direction": "O",
@@ -863,9 +881,9 @@
       "rst_0_1": {
         "ports": [
           "rst_0",
-          "axis_grayscale_0/rst",
-          "axis_sobel_0/rst",
-          "axis_window_3x3_gene_0/rst"
+          "axis_grayscale_0/rstn",
+          "axis_window_3x3_gene_0/rstn",
+          "axis_sobel_0/rstn"
         ]
       }
     }

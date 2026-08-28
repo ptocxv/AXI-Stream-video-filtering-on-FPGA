@@ -25,7 +25,7 @@ module axis_window_3x3_generator#(
         parameter FRAME_HEIGHT = 1080
     )(
         input clk,
-        input rst,
+        input rstn,
             
         // up stream / as-slave side
         input [7:0] s_axis_tdata,
@@ -90,7 +90,7 @@ module axis_window_3x3_generator#(
     assign s_axis_tready = pipeline_ena;
     
     always @(posedge clk) begin
-        if(!rst) begin
+        if(!rstn) begin
             cntH <= 0; cntV <= 0;
             rCol <= 0; rRow <= 0;
             rValid <= 1'b0; rUser <= 1'b0; rLast <= 1'b0;

@@ -21,9 +21,9 @@
 
 
 module axis_grayscale(
-    // clk & rst
+    
     input clk,
-    input rst,
+    input rstn,
     
     // up stream / as-slave side
     input [23:0] s_axis_tdata,
@@ -70,7 +70,7 @@ module axis_grayscale(
     
     //output register
     always @(posedge clk) begin
-        if(!rst) begin
+        if(!rstn) begin
             //pipeline stage 1
             r_mult <= r_in * 8'd0;
             b_mult <= b_in * 8'd0;

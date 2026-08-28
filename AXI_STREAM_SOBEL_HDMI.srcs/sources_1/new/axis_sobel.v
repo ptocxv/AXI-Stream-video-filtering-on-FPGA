@@ -22,9 +22,8 @@
 
 module axis_sobel(
 
-    //clk & rst
     input clk,
-    input rst,
+    input rstn,
     
     // up stream / as-slave side
     input [71:0] s_axis_tdata,
@@ -101,7 +100,7 @@ module axis_sobel(
     
     //output register
     always @(posedge clk) begin
-        if(!rst) begin
+        if(!rstn) begin
             //pipeline stage 1
             rgx0 <= 12'd0;
             rgx2 <= 12'd0;
