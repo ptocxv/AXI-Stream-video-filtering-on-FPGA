@@ -54,13 +54,13 @@ module axis_sobel(
     // p20 p21 p22
     wire [7:0] p00, p01, p02, p10, p11, p12, p20, p21, p22;
     assign p00 = s_axis_tdata [71:64];
-    assign p10 = s_axis_tdata [63:56];
-    assign p20 = s_axis_tdata [55:48];
-    assign p01 = s_axis_tdata [47:40];
+    assign p01 = s_axis_tdata [63:56];
+    assign p02 = s_axis_tdata [55:48];
+    assign p10 = s_axis_tdata [47:40];
     assign p11 = s_axis_tdata [39:32];
-    assign p21 = s_axis_tdata [31:24];
-    assign p02 = s_axis_tdata [23:16];
-    assign p12 = s_axis_tdata [15:8];
+    assign p12 = s_axis_tdata [31:24];
+    assign p20 = s_axis_tdata [23:16];
+    assign p21 = s_axis_tdata [15:8];
     assign p22 = s_axis_tdata [7:0];
     
     // pipeline stage 1 regs
@@ -88,14 +88,12 @@ module axis_sobel(
     
     // grayscale 4 stages regs
     reg [23:0] rGray0, rGray1, rGray2, rGray3;
-    // orginal frames 4 stages regs
+    // orginal pixels 4 stages regs
     reg [23:0] rbg0, rbg1, rbg2, rbg3;    
     
-    
-    //saturation
+    // clipping magnitude
     wire [7:0] edge_mag;
     assign edge_mag = (mag > 13'd255) ? 8'd255 : mag[7:0];
-    
     
     wire pipeline_ena;
     assign pipeline_ena = !m_axis_tvalid || m_axis_tready;
@@ -153,18 +151,18 @@ module axis_sobel(
         else if (pipeline_ena) begin
             
             //pipeline stage 1
-            rgx0 <= -$signed({4'h0, p00})
-                 - ($signed({4'h0, p10}) <<< 1)
-                 - $signed({4'h0, p20});
+            rgx0 <= - $signed({4'h0, p00})
+                    - ($signed({4'h0, p10}) <<< 1)
+                    - $signed({4'h0, p20});
             rgx2 <= + $signed({4'h0, p02})
-                 + ($signed({4'h0, p12}) <<< 1)
-                 + $signed({4'h0, p22});
+                    + ($signed({4'h0, p12}) <<< 1)
+                    + $signed({4'h0, p22});
             rgy0 <= -$signed({4'h0, p00})
-                 - ($signed({4'h0, p01}) <<< 1)
-                 - $signed({4'h0, p02});
+                    - ($signed({4'h0, p01}) <<< 1)
+                    - $signed({4'h0, p02});
             rgy2 <= + $signed({4'h0, p20})
-                 + ($signed({4'h0, p21}) <<< 1)
-                 + $signed({4'h0, p22});
+                    + ($signed({4'h0, p21}) <<< 1)
+                    + $signed({4'h0, p22});
             rValid0 <= s_axis_tvalid && s_axis_tready;
             rUser0 <= s_axis_tuser;
             rLast0 <= s_axis_tlast;

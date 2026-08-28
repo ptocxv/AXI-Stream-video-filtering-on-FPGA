@@ -41,7 +41,7 @@ module axis_window_3x3_generator#(
         output reg m_axis_tlast,
         input m_axis_tready,
         
-        // original frames
+        // original pixels
         input [23:0] rbg_in,
         output reg [23:0] rbg_out
         
@@ -50,17 +50,16 @@ module axis_window_3x3_generator#(
     localparam COL_W = $clog2(FRAME_WIDTH);
     localparam ROW_W = $clog2(FRAME_HEIGHT);
     
-    // Line buffers - for 3x3 windows
+    // line buffers for 3x3 windows
     // BRAM0 -> previous
     // BRAM1 -> two-lines-ago
     (* ram_style = "block" *) reg [7:0] BRAM0 [0:FRAME_WIDTH-1];
     (* ram_style = "block" *) reg [7:0] BRAM1 [0:FRAME_WIDTH-1];
     
-    // Horizontal + Vertical counters
+    // horizontal + vertical counters
     reg [COL_W-1:0] cntH;
     reg [ROW_W-1:0] cntV;
     
-    // BRAM read stage - synchronous -> need to be registered
     // rr0 -> pixel from two lines ago
     // rr1 -> pixel from previous line
     // rr2 -> current pixel
@@ -75,7 +74,7 @@ module axis_window_3x3_generator#(
     reg [7:0] r10, r11;
     reg [7:0] r20, r21;
     
-    // Define window valid
+    // define window valid
     wire window_valid;
     assign window_valid = rValid && (rRow >= 2) && (rCol >= 2);
     
@@ -83,10 +82,7 @@ module axis_window_3x3_generator#(
     (* ram_style = "block" *) reg [23:0] RBG_BRAM [0:FRAME_WIDTH-1];
     
     // pipelined rbg_out regs
-    // current pixel is rbg_in
-    reg [23:0] rbg12; // shifted up by 1 row (corresponding p10)
-    
-    reg [23:0] rbg10;
+    reg [23:0] rbg12; // corresponding p12
     reg [23:0] rbg11; // taken pixel (corresponding window-centered) -> rbg_out
     
     wire pipeline_ena;
@@ -104,46 +100,16 @@ module axis_window_3x3_generator#(
             m_axis_tlast  <= 1'b0;
             
             rr0 <= 8'd0; rr1 <= 8'd0; rr2 <= 8'd0;
-            r00 <= 8'd0; r01 <= 8'd0; r10 <= 8'd0; r11 <= 8'd0; r20 <= 8'd0; r21 <= 8'd0;            
+            r00 <= 8'd0; r01 <= 8'd0; r10 <= 8'd0;
+            r11 <= 8'd0; r20 <= 8'd0; r21 <= 8'd0;            
             rbg12  <= 24'd0;
-            rbg10  <= 24'd0;
             rbg11  <= 24'd0;
             rbg_out <= 24'd0;
         end
         else if (pipeline_ena) begin
-            if(window_valid) begin
-                m_axis_tdata <= {
-                    r00, r10, r20,
-                    r01, r11, r21,
-                    rr0, rr1, rr2
-                };
-                rbg_out <= rbg11;
-            end
-            else begin
-                m_axis_tdata <= 72'd0;
-                rbg_out <= 24'd0;
-            end   
-            m_axis_tvalid <= rValid;
-            m_axis_tuser <= rUser & rValid;
-            m_axis_tlast <= rLast & rValid;
-            
-            if(rValid) begin // rValid = 1 only after input is accepted -> useful shifting happens
-                // all 2-stage pipelining
-                
-                //window columns shifted
-                r00 <= r01; r01 <= rr0;
-                r10 <= r11; r11 <= rr1;
-                r20 <= r21; r21 <= rr2;
-                
-                // update BRAM1
-                BRAM1[rCol] <= rr1;
-                
-                //orginal pixels BRAM alignment
-                rbg10 <= rbg11;
-                rbg11 <= rbg12;                
-            end
-            
-            if(s_axis_tready && s_axis_tvalid) begin // accepted input
+                    
+            // stage 1 - inputs accepted
+            if(s_axis_tready && s_axis_tvalid) begin
                 
                 // read current data
                 rr0 <= BRAM1[cntH];
@@ -168,7 +134,7 @@ module axis_window_3x3_generator#(
                 if(s_axis_tuser) begin
                     cntV <= 0; // new frame, start again from row 0
                     if(s_axis_tlast) cntH <= 0; // if the frame has width 1 -> after tuser, the column keeps being 0
-                    else cntH <= 1; // after tuser, moves to the next column
+                    else cntH <= cntH + 1; // after tuser, moves to the next column
                 end
                 else if(s_axis_tlast || cntH == FRAME_WIDTH - 1) begin
                     cntH <= 0; // after reaching last, moves to next line at first column
@@ -183,6 +149,37 @@ module axis_window_3x3_generator#(
                 rUser <= 1'b0;
                 rLast <= 1'b0;
             end
+            
+            // stage 2 - shifting after accepting inputs
+            if(rValid) begin               
+                //window columns shifted
+                r00 <= r01; r01 <= rr0;
+                r10 <= r11; r11 <= rr1;
+                r20 <= r21; r21 <= rr2;
+                
+                // update BRAM1
+                BRAM1[rCol] <= rr1;
+                
+                //orginal pixels BRAM alignment - 
+                rbg11 <= rbg12;                
+            end
+            
+            // stage 2 - update output regs
+            if(window_valid) begin
+                m_axis_tdata <= {
+                    r00, r01, rr1,
+                    r10, r11, rr2,
+                    r20, r21, rr2
+                };
+                rbg_out <= rbg11;
+            end
+            else begin
+                m_axis_tdata <= 72'd0;
+                rbg_out <= 24'd0;
+            end   
+            m_axis_tvalid <= rValid;
+            m_axis_tuser <= rUser & rValid;
+            m_axis_tlast <= rLast & rValid;
         end
     end
     
