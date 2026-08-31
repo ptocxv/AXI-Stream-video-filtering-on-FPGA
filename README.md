@@ -839,11 +839,7 @@ Latest routed build captured on **[INSERT DATE]**:
 </tr>
 <tr>
 <td>Vivado version</td>
-<td>[INSERT VIVADO VERSION]</td>
-</tr>
-<tr>
-<td>Project</td>
-<td>[INSERT PROJECT NAME]</td>
+<td>[2026.1]</td>
 </tr>
 <tr>
 <td>Target board</td>
@@ -871,19 +867,19 @@ Latest routed build captured on **[INSERT DATE]**:
 </tr>
 <tr>
 <td>WNS</td>
-<td><strong>[INSERT WNS] ns</strong></td>
+<td><strong>[0.152] ns</strong></td>
 </tr>
 <tr>
 <td>TNS</td>
-<td><strong>[INSERT TNS] ns</strong></td>
+<td><strong>[0.000] ns</strong></td>
 </tr>
 <tr>
 <td>WHS</td>
-<td><strong>[INSERT WHS] ns</strong></td>
+<td><strong>[0.059] ns</strong></td>
 </tr>
 <tr>
 <td>THS</td>
-<td><strong>[INSERT THS] ns</strong></td>
+<td><strong>[0.000] ns</strong></td>
 </tr>
 </table>
 
@@ -900,44 +896,35 @@ The values must come from the fully routed post-route timing report rather than 
 </tr>
 <tr>
 <td>Slice LUTs</td>
-<td>[INSERT]</td>
+<td>[1520]</td>
 <td>53,200</td>
-<td>[INSERT]%</td>
+<td>[2.86]%</td>
 </tr>
 <tr>
 <td>LUTRAM</td>
-<td>[INSERT]</td>
+<td>[24]</td>
 <td>17,400</td>
-<td>[INSERT]%</td>
+<td>[0.14]%</td>
 </tr>
 <tr>
 <td>Slice registers</td>
-<td>[INSERT]</td>
+<td>[2,211]</td>
 <td>106,400</td>
-<td>[INSERT]%</td>
+<td>[2.08]%</td>
 </tr>
 <tr>
 <td>Block RAM tiles</td>
-<td>[INSERT]</td>
+<td>[4.5]</td>
 <td>140</td>
-<td>[INSERT]%</td>
+<td>[3.21]%</td>
 </tr>
 <tr>
 <td>DSPs</td>
-<td>[INSERT]</td>
+<td>[0]</td>
 <td>220</td>
-<td>[INSERT]%</td>
+<td>[0.00]%</td>
 </tr>
 </table>
-
-The expected custom-memory contribution includes:
-
-```text
-Two 1920 × 8 grayscale line buffers
-One 1920 × 24 original-pixel line buffer
-```
-
-The final hierarchical utilisation report should confirm whether these arrays infer block RAM and how many physical RAM tiles are used.
 
 ## Latency and throughput design decisions
 
