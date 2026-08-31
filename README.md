@@ -829,9 +829,7 @@ Open Vivado project
 
 ## Measured implementation results
 
-Reports should be stored under implementation_reports.
-
-Latest routed build captured on **[INSERT DATE]**:
+### Timing
 
 <table>
 <tr>
@@ -883,8 +881,6 @@ Latest routed build captured on **[INSERT DATE]**:
 <td><strong>[0.000] ns</strong></td>
 </tr>
 </table>
-
-The values must come from the fully routed post-route timing report rather than synthesis estimates.
 
 ### Utilisation
 
