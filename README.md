@@ -18,6 +18,7 @@ Runtime mode and threshold configuration is performed by a bare-metal applicatio
   - [Supported Output Modes](#supported-output-modes)
   - [Data Representation](#data-representation)
   - [RTL Datapath](#rtl-datapath)
+    - [Grayscale conversion](#grayscale-conversion)
     - [3x3 Window Generation](#3x3-window-generation)
     - [Sobel Processing](#sobel-processing)
   - [Runtime Configuration](#runtime-configuration)
