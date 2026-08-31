@@ -33,6 +33,7 @@ Runtime mode and threshold configuration is performed by a bare-metal applicatio
     - [Current Block Design](#current-block-design)
     - [Build Flow](#build-flow)
   - [Measured Implementation Results](#measured-implementation-results)
+    - [Timing](#timing)
     - [Utilisation](#utilisation)
   - [Latency and Throughput Design Decisions](#latency-and-throughput-design-decisions)
     - [Datapath Behavior](#datapath-behavior)
