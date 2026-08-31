@@ -8,40 +8,39 @@ Runtime mode and threshold configuration is performed by a bare-metal applicatio
 
 ## Contents
 
-- #fpga-1080p60-axi4-stream-video-processor
-  - #contents
-  - #project-status
-  - #system-architecture
-    - #processing-system-and-programmable-logic
-    - #pl-video-processing-path
-  - #pynq-z2-hardware-model
-  - #video-and-stream-model
-  - #supported-output-modes
-  - #data-representation
-  - [RTL datapath](#rtl-datapscale-conversion
-    - #3x3-window-generation
-    - #sobel-processing
-  - #runtime-configuration
-    - #uart-commands
-  - #axi4-lite-register-map
-  - [Clock-domain crossing](#clock-domaindel-and-verification
-    - #expected-transaction
-    - #scoreboard-behavior
-    - #assertions
-    - #verification-modes
-  - #vivado-and-pynq-z2-build
-    - #current-block-design
-    - #build-flow
-  - #measured-implementation-results
-    - #utilisation
-  - [Latency and-throughput-design-decisions
-    - #datapath-behavior
-    - #spatial-latency
-    - #throughput
-    - #backpressure-decision
-  - #known-limitations
-  - #further-documentation
-  - #project-structure
+- [FPGA 1080p60 AXI4-Stream Video Processor](#fpga-1080p60-axi4-stream-video-processor)
+  - [Contents](#contents)
+  - [System Architecture](#system-architecture)
+    - [Processing System and Programmable Logic](#processing-system-and-programmable-logic)
+    - [PL Video Processing Path](#pl-video-processing-path)
+  - [Pynq-Z2 Hardware Model](#pynq-z2-hardware-model)
+  - [Video and Stream Model](#video-and-stream-model)
+  - [Supported Output Modes](#supported-output-modes)
+  - [Data Representation](#data-representation)
+  - [RTL Datapath](#rtl-datapath)
+    - [3x3 Window Generation](#3x3-window-generation)
+    - [Sobel Processing](#sobel-processing)
+  - [Runtime Configuration](#runtime-configuration)
+    - [UART Commands](#uart-commands)
+  - [AXI4-Lite Register Map](#axi4-lite-register-map)
+  - [Clock-Domain Crossing and Verification](#clock-domain-crossing)
+    - [Expected Transaction](#expected-transaction)
+    - [Scoreboard Behavior](#scoreboard-behavior)
+    - [Assertions](#assertions)
+    - [Verification Modes](#verification-modes)
+  - [Vivado and Pynq-Z2 Build](#vivado-and-pynq-z2-build)
+    - [Current Block Design](#current-block-design)
+    - [Build Flow](#build-flow)
+  - [Measured Implementation Results](#measured-implementation-results)
+    - [Utilisation](#utilisation)
+  - [Latency and Throughput Design Decisions](#latency-and-throughput-design-decisions)
+    - [Datapath Behavior](#datapath-behavior)
+    - [Spatial Latency](#spatial-latency)
+    - [Throughput](#throughput)
+    - [Backpressure Decision](#backpressure-decision)
+  - [Known Limitations](#known-limitations)
+  - [Further Documentation](#further-documentation)
+  - [Project Structure](#project-structure)
 
 ## System architecture
 
