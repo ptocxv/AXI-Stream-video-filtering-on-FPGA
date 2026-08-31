@@ -2,113 +2,68 @@
 
 module processing_core_TB;
 
-    // ============================================================
-    // Simulation configuration
-    // ============================================================
-
-    /*
-     * 1080p60 pixel clock:
-     *
-     * 148.5 MHz -> approximately 6.734 ns.
-     *
-     * The testbench remains functionally valid at another frequency,
-     * but using the real period better represents the implemented
-     * video clock.
-     */
+    // 1080p60 pixel clock -> 148.5 MHz -> approximately 6.734 ns.
     parameter real CLK_PERIOD_NS = 6.734;
 
-    /*
-     * Set to 1 after the always-ready test passes.
-     *
-     * This randomly deasserts m_axis_0_tready and verifies that the
-     * complete output transaction remains stable during backpressure.
-     */
+    // set to 1 after the always-ready test passes.
+    // this randomly deasserts m_axis_0_tready and verifies that the complete output transaction remains stable during backpressure.
     parameter bit ENABLE_RANDOM_BACKPRESSURE = 1'b0;
-
-
-    // ============================================================
-    // Clock and reset
-    // ============================================================
 
     logic clk;
     logic rst_n;
 
-
-    // ============================================================
-    // Input AXI4-Stream interface
-    // ============================================================
-
+    // input AXI4-Stream interface
     logic [23:0] s_axis_0_tdata;
-    logic        s_axis_0_tvalid;
-    logic        s_axis_0_tuser;
-    logic        s_axis_0_tlast;
+    logic s_axis_0_tvalid;
+    logic s_axis_0_tuser;
+    logic s_axis_0_tlast;
 
-    wire         s_axis_0_tready;
+    wire s_axis_0_tready;
 
 
-    // ============================================================
-    // Output AXI4-Stream interface
-    // ============================================================
-
+    // output AXI4-Stream interface
     wire [23:0]  m_axis_0_tdata;
-    wire         m_axis_0_tvalid;
-    wire         m_axis_0_tuser;
-    wire         m_axis_0_tlast;
+    wire m_axis_0_tvalid;
+    wire m_axis_0_tuser;
+    wire m_axis_0_tlast;
 
-    logic        m_axis_0_tready;
+    logic m_axis_0_tready;
 
-
-    // ============================================================
-    // Aligned auxiliary outputs
-    // ============================================================
-
+    // aligned auxiliary outputs
     wire [23:0] grayscale_data_0;
     wire [23:0] rbg_data_0;
 
-
-    // ============================================================
     // DUT
-    // ============================================================
-
     processing_core_wrapper dut (
-        .clk_0              (clk),
-        .rst_0              (rst_n),
+        .clk_0(clk),
+        .rst_0(rst_n),
 
-        .s_axis_0_tdata     (s_axis_0_tdata),
-        .s_axis_0_tvalid    (s_axis_0_tvalid),
-        .s_axis_0_tready    (s_axis_0_tready),
-        .s_axis_0_tuser     (s_axis_0_tuser),
-        .s_axis_0_tlast     (s_axis_0_tlast),
+        .s_axis_0_tdata(s_axis_0_tdata),
+        .s_axis_0_tvalid(s_axis_0_tvalid),
+        .s_axis_0_tready(s_axis_0_tready),
+        .s_axis_0_tuser(s_axis_0_tuser),
+        .s_axis_0_tlast(s_axis_0_tlast),
 
-        .m_axis_0_tdata     (m_axis_0_tdata),
-        .m_axis_0_tvalid    (m_axis_0_tvalid),
-        .m_axis_0_tready    (m_axis_0_tready),
-        .m_axis_0_tuser     (m_axis_0_tuser),
-        .m_axis_0_tlast     (m_axis_0_tlast),
+        .m_axis_0_tdata(m_axis_0_tdata),
+        .m_axis_0_tvalid(m_axis_0_tvalid),
+        .m_axis_0_tready(m_axis_0_tready),
+        .m_axis_0_tuser(m_axis_0_tuser),
+        .m_axis_0_tlast(m_axis_0_tlast),
 
-        .grayscale_data_0   (grayscale_data_0),
-        .rbg_data_0         (rbg_data_0)
+        .grayscale_data_0(grayscale_data_0),
+        .rbg_data_0(rbg_data_0)
     );
 
-
-    // ============================================================
-    // Clock generation
-    // ============================================================
-
+    // clock generation    
     initial begin
         clk = 1'b0;
-
         forever begin
             #(CLK_PERIOD_NS / 2.0);
             clk = ~clk;
         end
     end
 
-
-    // ============================================================
-    // Expected output transaction
-    // ============================================================
-
+    // expected output transaction
     typedef struct packed {
         logic [23:0] sobel_rgb;
         logic [23:0] grayscale_rgb;
@@ -119,11 +74,7 @@ module processing_core_TB;
 
     exp_t exp_q[$];
 
-
-    // ============================================================
-    // Verification counters
-    // ============================================================
-
+    // verification counters
     int pass_count;
     int fail_count;
     int assertion_fail_count;
@@ -131,17 +82,13 @@ module processing_core_TB;
 
     bit input_complete;
 
-
-    // ============================================================
-    // Reset task
-    // ============================================================
-
+    // reset task
     task automatic reset_dut();
         begin
-            s_axis_0_tdata  <= 24'd0;
+            s_axis_0_tdata <= 24'd0;
             s_axis_0_tvalid <= 1'b0;
-            s_axis_0_tuser  <= 1'b0;
-            s_axis_0_tlast  <= 1'b0;
+            s_axis_0_tuser <= 1'b0;
+            s_axis_0_tlast <= 1'b0;
 
             m_axis_0_tready <= 1'b0;
 
@@ -157,32 +104,22 @@ module processing_core_TB;
         end
     endtask
 
-
-    // ============================================================
-    // Send one AXI4-Stream RGB transaction
-    // ============================================================
-
+    // send one AXI4-Stream RGB transaction
     task automatic send_pixel(
         input logic [23:0] rgb,
-        input logic        user,
-        input logic        last
+        input logic user,
+        input logic last
     );
         begin
-            /*
-             * Present data on the falling edge so the transaction is
-             * stable before the next positive sampling edge.
-             */
+            // present data on the falling edge so the transaction is stable before the next positive sampling edge.
             @(negedge clk);
 
-            s_axis_0_tdata  <= rgb;
+            s_axis_0_tdata <= rgb;
             s_axis_0_tvalid <= 1'b1;
-            s_axis_0_tuser  <= user;
-            s_axis_0_tlast  <= last;
+            s_axis_0_tuser <= user;
+            s_axis_0_tlast <= last;
 
-            /*
-             * Hold all signals stable until the DUT accepts the
-             * transaction.
-             */
+            // hold all signals stable until the DUT accepts the transaction
             do begin
                 @(posedge clk);
             end
@@ -190,11 +127,7 @@ module processing_core_TB;
         end
     endtask
 
-
-    // ============================================================
     // Stop the input stream
-    // ============================================================
-
     task automatic stop_input();
         begin
             @(negedge clk);
@@ -206,18 +139,11 @@ module processing_core_TB;
         end
     endtask
 
-
-    // ============================================================
     // Output scoreboard
-    // ============================================================
-
     always @(posedge clk) begin : output_monitor
         exp_t expected;
 
-        /*
-         * Wait one simulation time unit so the monitor observes
-         * values updated by nonblocking assignments at this edge.
-         */
+        // Wait one simulation time unit so the monitor observes values updated by nonblocking assignments at this edge.
         #1;
 
         if (rst_n && m_axis_0_tvalid && m_axis_0_tready) begin
@@ -229,22 +155,22 @@ module processing_core_TB;
                 );
 
                 $display(
-                    "             Sobel    = %06h",
+                    "Sobel = %06h",
                     m_axis_0_tdata
                 );
 
                 $display(
-                    "             Grayscale = %06h",
+                    "Grayscale = %06h",
                     grayscale_data_0
                 );
 
                 $display(
-                    "             Original  = %06h",
+                    "Original = %06h",
                     rbg_data_0
                 );
 
                 $display(
-                    "             TUSER=%0b TLAST=%0b",
+                    "TUSER=%0b TLAST=%0b",
                     m_axis_0_tuser,
                     m_axis_0_tlast
                 );
@@ -262,12 +188,12 @@ module processing_core_TB;
                     );
 
                     $display(
-                        "        Expected = %06h",
+                        "Expected = %06h",
                         expected.sobel_rgb
                     );
 
                     $display(
-                        "        Actual   = %06h",
+                        "Actual = %06h",
                         m_axis_0_tdata
                     );
 
@@ -282,12 +208,12 @@ module processing_core_TB;
                     );
 
                     $display(
-                        "            Expected = %06h",
+                        "Expected = %06h",
                         expected.grayscale_rgb
                     );
 
                     $display(
-                        "            Actual   = %06h",
+                        "Actual = %06h",
                         grayscale_data_0
                     );
 
@@ -302,12 +228,12 @@ module processing_core_TB;
                     );
 
                     $display(
-                        "           Expected = %06h",
+                        "Expected = %06h",
                         expected.original_rgb
                     );
 
                     $display(
-                        "           Actual   = %06h",
+                        "Actual = %06h",
                         rbg_data_0
                     );
 
@@ -345,13 +271,8 @@ module processing_core_TB;
                 ) begin
                     pass_count++;
 
-                    /*
-                     * Do not print every pixel for a large frame.
-                     */
-                    if (
-                        (output_count < 10) ||
-                        ((output_count % 50000) == 0)
-                    ) begin
+                    // do not print every pixel for a large frame.
+                    if((output_count < 10) || ((output_count % 50000) == 0))begin
                         $display(
                             "[PASS] output=%0d sobel=%06h gray=%06h original=%06h user=%0b last=%0b",
                             output_count,
@@ -369,12 +290,9 @@ module processing_core_TB;
         end
     end
 
-
-    // ============================================================
     // SystemVerilog Assertions
-    // ============================================================
-
-    /*
+    
+    /* #1
      * AXI4-Stream rule:
      *
      * If the output is valid but the receiver is not ready, the
@@ -409,7 +327,7 @@ module processing_core_TB;
     end
 
 
-    /*
+    /* #2
      * The upstream source must also retain the complete transaction
      * while the DUT is not ready.
      *
@@ -439,7 +357,7 @@ module processing_core_TB;
     end
 
 
-    /*
+    /* #3
      * TUSER identifies the first pixel of a frame and must not be
      * asserted without a valid output transaction.
      */
@@ -460,7 +378,7 @@ module processing_core_TB;
     end
 
 
-    /*
+    /* #4
      * TLAST identifies the final pixel of a line and must not be
      * asserted without a valid output transaction.
      */
@@ -481,7 +399,7 @@ module processing_core_TB;
     end
 
 
-    /*
+    /* #5
      * Check that output control signals never become X or Z after
      * reset has been released.
      */
@@ -507,7 +425,7 @@ module processing_core_TB;
     end
 
 
-    /*
+    /* #6
      * Check that input control signals never become X or Z after
      * reset has been released.
      */
@@ -532,38 +450,20 @@ module processing_core_TB;
         assertion_fail_count++;
     end
 
-
-    // ============================================================
-    // Optional randomized backpressure
-    // ============================================================
-
-    /*
-     * Only this block controls m_axis_0_tready after reset.
-     *
-     * With random backpressure disabled, the downstream interface
-     * remains continuously ready.
-     */
+    // randomized backpressure\
     always @(negedge clk) begin
         if (!rst_n) begin
             m_axis_0_tready <= 1'b0;
         end
         else if (ENABLE_RANDOM_BACKPRESSURE) begin
-            /*
-             * Approximately 80 percent ready.
-             */
-            m_axis_0_tready <=
-                ($urandom_range(0, 9) < 8);
+            m_axis_0_tready <= ($urandom_range(0, 9) < 8);
         end
         else begin
             m_axis_0_tready <= 1'b1;
         end
     end
 
-
-    // ============================================================
-    // Wait until expected outputs drain
-    // ============================================================
-
+    // wait until expected outputs drain
     task automatic wait_for_outputs_to_drain(
         input int timeout_cycles
     );
@@ -580,9 +480,7 @@ module processing_core_TB;
                 timeout++;
             end
 
-            /*
-             * Allow time for accidental extra output transactions.
-             */
+            // allow time for accidental extra output transactions.
             repeat (20) @(posedge clk);
 
             if (exp_q.size() != 0) begin
@@ -596,26 +494,7 @@ module processing_core_TB;
         end
     endtask
 
-
-    // ============================================================
-    // Load Python-generated expected output
-    // ============================================================
-
-    /*
-     * Expected file format:
-     *
-     * WIDTH HEIGHT NUM_OUTPUTS
-     * SOBEL_RGB_HEX GRAYSCALE_RGB_HEX ORIGINAL_RGB_HEX USER LAST
-     * SOBEL_RGB_HEX GRAYSCALE_RGB_HEX ORIGINAL_RGB_HEX USER LAST
-     * ...
-     *
-     * Example:
-     *
-     * 1920 1080 2073600
-     * 000000 000000 000000 1 0
-     * 000000 000000 000000 0 0
-     * 121212 808080 A1B2C3 0 0
-     */
+    // load Python-generated expected output
     task automatic load_expected_file(
         output int width,
         output int height,
@@ -690,11 +569,11 @@ module processing_core_TB;
                     );
                 end
 
-                item.sobel_rgb     = sobel_rgb;
+                item.sobel_rgb = sobel_rgb;
                 item.grayscale_rgb = grayscale_rgb;
-                item.original_rgb  = original_rgb;
-                item.user          = user_int[0];
-                item.last          = last_int[0];
+                item.original_rgb = original_rgb;
+                item.user = user_int[0];
+                item.last = last_int[0];
 
                 exp_q.push_back(item);
             end
@@ -708,26 +587,7 @@ module processing_core_TB;
         end
     endtask
 
-
-    // ============================================================
-    // Drive Python-generated RGB frame
-    // ============================================================
-
-    /*
-     * Input file format:
-     *
-     * WIDTH HEIGHT
-     * RGB_HEX
-     * RGB_HEX
-     * ...
-     *
-     * Example:
-     *
-     * 1920 1080
-     * FF0000
-     * 00FF00
-     * 0000FF
-     */
+    // drive Python-generated RGB frame
     task automatic drive_input_file(
         input int expected_width,
         input int expected_height
@@ -742,8 +602,8 @@ module processing_core_TB;
         int col;
 
         logic [23:0] rgb;
-        logic        user_value;
-        logic        last_value;
+        logic user_value;
+        logic last_value;
 
         begin
             in_fd = $fopen(
@@ -810,18 +670,11 @@ module processing_core_TB;
                         );
                     end
 
-                    user_value =
-                        (row == 0) &&
-                        (col == 0);
+                    user_value = (row == 0) && (col == 0);
 
-                    last_value =
-                        (col == width - 1);
+                    last_value = (col == width - 1);
 
-                    send_pixel(
-                        rgb,
-                        user_value,
-                        last_value
-                    );
+                    send_pixel(rgb, user_value, last_value);
                 end
             end
 
@@ -836,12 +689,8 @@ module processing_core_TB;
             );
         end
     endtask
-
-
-    // ============================================================
-    // Main Python-reference test
-    // ============================================================
-
+    
+    // main Python-reference test
     task automatic test_python_reference();
         int width;
         int height;
@@ -867,10 +716,7 @@ module processing_core_TB;
                 height
             );
 
-            /*
-             * Provide several cycles per expected output plus a
-             * generous pipeline margin.
-             */
+            // Provide several cycles per expected output plus a generous pipeline margin.
             timeout_cycles =
                 (num_outputs * 5) + 10000;
 
@@ -885,25 +731,22 @@ module processing_core_TB;
     endtask
 
 
-    // ============================================================
-    // Main simulation sequence
-    // ============================================================
-
+    // main simulation sequence
     initial begin
-        pass_count            = 0;
-        fail_count            = 0;
-        assertion_fail_count  = 0;
-        output_count          = 0;
-        input_complete        = 1'b0;
+        pass_count = 0;
+        fail_count = 0;
+        assertion_fail_count = 0;
+        output_count = 0;
+        input_complete = 1'b0;
 
-        s_axis_0_tdata        = 24'd0;
-        s_axis_0_tvalid       = 1'b0;
-        s_axis_0_tuser        = 1'b0;
-        s_axis_0_tlast        = 1'b0;
+        s_axis_0_tdata = 24'd0;
+        s_axis_0_tvalid = 1'b0;
+        s_axis_0_tuser = 1'b0;
+        s_axis_0_tlast = 1'b0;
 
-        m_axis_0_tready       = 1'b0;
+        m_axis_0_tready = 1'b0;
 
-        rst_n                 = 1'b0;
+        rst_n = 1'b0;
 
         repeat (3) @(posedge clk);
 
