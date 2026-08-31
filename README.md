@@ -11,7 +11,7 @@ Runtime mode and threshold configuration is performed by a bare-metal applicatio
 - [FPGA 1080p60 AXI4-Stream Video Processor](#fpga-1080p60-axi4-stream-video-processor)
   - [Contents](#contents)
   - [System Architecture](#system-architecture)
-    - [Processing System and Programmable Logic](#processing-system-and-programmable-logic)
+    - [Host, Processing System, Programmable Logic, and Output Monitor](#host-processing-system-programmable-logic-and-output-monitor)
     - [PL Video Processing Path](#pl-video-processing-path)
   - [Pynq-Z2 Hardware Model](#pynq-z2-hardware-model)
   - [Video and Stream Model](#video-and-stream-model)
@@ -39,28 +39,28 @@ Runtime mode and threshold configuration is performed by a bare-metal applicatio
     - [Throughput](#throughput)
     - [Backpressure Decision](#backpressure-decision)
   - [Known Limitations](#known-limitations)
-  - [Further Documentation](#further-documentation)
-  - [Project Structure](#project-structure)
 
 ## System architecture
 
-### Processing System and Programmable Logic
+### Host, Processing System, Programmable Logic, and Output Monitor
 
 ```mermaid
-flowchart LR
-    subgraph HOST["Host computer"]
+flowchart TB
+    subgraph HOST["Host computer / Output monitor"]
         TERM["PuTTY serial terminal"]
+        HDMIRX["HDMI Rx"]
+        HDMITX["HDMI Tx"]
     end
 
     subgraph PS["Zynq-7000 Processing System"]
         UART["PS UART through MIO"]
-        APP["Bare-metal C application"]
         DDR["PS DDR"]
+        APP["Bare-metal C application"]
         GP0["M_AXI_GP0"]
         
         UART <--> APP
-        DDR <--> APP
         APP --> GP0
+        DDR <--> APP
     end
 
     subgraph PL_CTRL["Programmable Logic: 50 MHz AXI control domain"]
@@ -75,6 +75,7 @@ flowchart LR
     subgraph PL_VIDEO["Programmable Logic: approximately 148.5 MHz video domain"]
         CDC_PIXEL["PixelClk side of video_config_cdc"]
         FILTER["axis_filter_out"]
+        PROCESSING["processing_core"]
         
         CDC_PIXEL -->|"Active mode and threshold"| FILTER
     end
@@ -82,6 +83,10 @@ flowchart LR
     TERM <--> UART
     GP0 --> SC
     CDC_AXI --> CDC_PIXEL
+    FILTER -->|"Start of Frame State"| CDC_PIXEL
+    HDMIRX --> PROCESSING
+    PROCESSING --> FILTER
+    FILTER --> HDMITX
 ```
 
 The Processing System is responsible for:
@@ -104,15 +109,15 @@ The Programmable Logic is responsible for:
 ### PL video-processing path
 
 ```mermaid
-flowchart LR
-    RX["dvi2rgb<br/>HDMI receiver"]
+flowchart TB
+    RX["dvi2rgb<br/>HDMI Rx"]
     VIN["Video In to<br/>AXI4-Stream"]
     GRAY["axis_grayscale"]
     WIN["axis_window_3x3_generator"]
     SOBEL["axis_sobel"]
     SEL["axis_filter_out"]
     VOUT["AXI4-Stream to<br/>Video Out"]
-    TX["rgb2dvi<br/>HDMI transmitter"]
+    TX["rgb2dvi<br/>HDMI Tx"]
 
     RX -->|"Native RGB video"| VIN
     VIN -->|"24-bit AXI4-Stream pixels"| GRAY
@@ -1061,77 +1066,3 @@ The trade-off is a potentially long combinational `TREADY` path and limited tole
 - The bundled-data CDC relies on a registered payload that remains frozen until acknowledgement.
 - The current testbench verifies a project-specific processing wrapper rather than a complete reusable verification IP environment.
 - Full 1080p simulation requires significantly more time and simulator memory than small regression frames.
-
-## Further documentation
-
-- docs/environment.md - Vivado, Vitis, Python, and simulator setup
-- docs/running_the_project.md - hardware build, software build, simulation, and cleanup commands
-- docs/rtl_datapath.md - RTL stage contracts, pipeline latency, and backpressure behavior
-- docs/window_generator.md - line-buffer behavior and 3x3 spatial alignment
-- docs/sobel_pipeline.md - Sobel arithmetic, bit widths, and pipeline stages
-- docs/processing_system.md - Cortex-A9 software, UART control, and `M_AXI_GP0`
-- docs/axi_control.md - AXI4-Lite register interface and software-visible behavior
-- docs/configuration_cdc.md - bundled-data request/acknowledgement crossing
-- docs/verification.md - Python reference model, SystemVerilog scoreboard, assertions, and coverage roadmap
-- implementation_reports - final post-route timing, utilisation, CDC, DRC, methodology, and power reports
-
-## Project structure
-
-The final repository is intended to follow this organization:
-
-```text
-.
-├── README.md
-├── LICENSE
-│
-├── hardware/
-│   ├── rtl/
-│   │   ├── axis_grayscale.v
-│   │   ├── axis_window_3x3_generator.v
-│   │   ├── axis_sobel.v
-│   │   ├── axis_filter_out.v
-│   │   ├── video_config_cdc.v
-│   │   └── video_control_axi/
-│   │
-│   ├── vivado/
-│   │   ├── constraints/
-│   │   ├── scripts/
-│   │   └── block_design/
-│   │
-│   └── implementation_reports/
-│
-├── software/
-│   └── baremetal_video_control/
-│       └── src/
-│           └── main.c
-│
-├── verification/
-│   ├── python/
-│   │   └── generate_processing_vectors.py
-│   │
-│   ├── systemverilog/
-│   │   └── processing_core_TB.sv
-│   │
-│   ├── vectors/
-│   │   ├── processing_core_input.txt
-│   │   └── processing_core_expected.txt
-│   │
-│   └── results/
-│
-├── docs/
-│   ├── environment.md
-│   ├── running_the_project.md
-│   ├── rtl_datapath.md
-│   ├── window_generator.md
-│   ├── sobel_pipeline.md
-│   ├── processing_system.md
-│   ├── axi_control.md
-│   ├── configuration_cdc.md
-│   └── verification.md
-│
-└── media/
-    ├── architecture/
-    ├── waveforms/
-    ├── screenshots/
-    └── demo/
-```
