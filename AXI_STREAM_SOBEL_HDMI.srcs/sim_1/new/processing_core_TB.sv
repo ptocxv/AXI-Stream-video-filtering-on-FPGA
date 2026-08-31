@@ -22,7 +22,7 @@ module processing_core_TB;
 
 
     // output AXI4-Stream interface
-    wire [23:0]  m_axis_0_tdata;
+    wire [23:0] m_axis_0_tdata;
     wire m_axis_0_tvalid;
     wire m_axis_0_tuser;
     wire m_axis_0_tlast;
@@ -68,8 +68,8 @@ module processing_core_TB;
         logic [23:0] sobel_rgb;
         logic [23:0] grayscale_rgb;
         logic [23:0] original_rgb;
-        logic        user;
-        logic        last;
+        logic user;
+        logic last;
     } exp_t;
 
     exp_t exp_q[$];
