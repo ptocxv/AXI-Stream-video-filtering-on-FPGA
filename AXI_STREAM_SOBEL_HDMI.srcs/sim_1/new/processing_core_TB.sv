@@ -71,7 +71,8 @@ module processing_core_TB;
         logic user;
         logic last;
     } exp_t;
-
+    
+    // queue - expected outputs
     exp_t exp_q[$];
 
     // verification counters
@@ -109,7 +110,7 @@ module processing_core_TB;
         input logic [23:0] rgb,
         input logic user,
         input logic last
-    );
+        );
         begin
             // present data on the falling edge so the transaction is stable before the next positive sampling edge.
             @(negedge clk);
@@ -127,7 +128,7 @@ module processing_core_TB;
         end
     endtask
 
-    // Stop the input stream
+    // stop the input stream
     task automatic stop_input();
         begin
             @(negedge clk);
@@ -139,173 +140,18 @@ module processing_core_TB;
         end
     endtask
 
-    // Output scoreboard
-    always @(posedge clk) begin : output_monitor
-        exp_t expected;
-
-        // Wait one simulation time unit so the monitor observes values updated by nonblocking assignments at this edge.
-        #1;
-
-        if (rst_n && m_axis_0_tvalid && m_axis_0_tready) begin
-
-            if (exp_q.size() == 0) begin
-                $error(
-                    "[SCOREBOARD] Unexpected output at time %0t",
-                    $time
-                );
-
-                $display(
-                    "Sobel = %06h",
-                    m_axis_0_tdata
-                );
-
-                $display(
-                    "Grayscale = %06h",
-                    grayscale_data_0
-                );
-
-                $display(
-                    "Original = %06h",
-                    rbg_data_0
-                );
-
-                $display(
-                    "TUSER=%0b TLAST=%0b",
-                    m_axis_0_tuser,
-                    m_axis_0_tlast
-                );
-
-                fail_count++;
-            end
-            else begin
-                expected = exp_q.pop_front();
-
-                if (m_axis_0_tdata !== expected.sobel_rgb) begin
-                    $error(
-                        "[SOBEL] Mismatch at output %0d, time %0t",
-                        output_count,
-                        $time
-                    );
-
-                    $display(
-                        "Expected = %06h",
-                        expected.sobel_rgb
-                    );
-
-                    $display(
-                        "Actual = %06h",
-                        m_axis_0_tdata
-                    );
-
-                    fail_count++;
-                end
-
-                if (grayscale_data_0 !== expected.grayscale_rgb) begin
-                    $error(
-                        "[GRAYSCALE] Mismatch at output %0d, time %0t",
-                        output_count,
-                        $time
-                    );
-
-                    $display(
-                        "Expected = %06h",
-                        expected.grayscale_rgb
-                    );
-
-                    $display(
-                        "Actual = %06h",
-                        grayscale_data_0
-                    );
-
-                    fail_count++;
-                end
-
-                if (rbg_data_0 !== expected.original_rgb) begin
-                    $error(
-                        "[ORIGINAL] Mismatch at output %0d, time %0t",
-                        output_count,
-                        $time
-                    );
-
-                    $display(
-                        "Expected = %06h",
-                        expected.original_rgb
-                    );
-
-                    $display(
-                        "Actual = %06h",
-                        rbg_data_0
-                    );
-
-                    fail_count++;
-                end
-
-                if (m_axis_0_tuser !== expected.user) begin
-                    $error(
-                        "[TUSER] Mismatch at output %0d: expected=%0b actual=%0b",
-                        output_count,
-                        expected.user,
-                        m_axis_0_tuser
-                    );
-
-                    fail_count++;
-                end
-
-                if (m_axis_0_tlast !== expected.last) begin
-                    $error(
-                        "[TLAST] Mismatch at output %0d: expected=%0b actual=%0b",
-                        output_count,
-                        expected.last,
-                        m_axis_0_tlast
-                    );
-
-                    fail_count++;
-                end
-
-                if (
-                    (m_axis_0_tdata === expected.sobel_rgb) &&
-                    (grayscale_data_0 === expected.grayscale_rgb) &&
-                    (rbg_data_0 === expected.original_rgb) &&
-                    (m_axis_0_tuser === expected.user) &&
-                    (m_axis_0_tlast === expected.last)
-                ) begin
-                    pass_count++;
-
-                    // do not print every pixel for a large frame.
-                    if((output_count < 10) || ((output_count % 50000) == 0))begin
-                        $display(
-                            "[PASS] output=%0d sobel=%06h gray=%06h original=%06h user=%0b last=%0b",
-                            output_count,
-                            m_axis_0_tdata,
-                            grayscale_data_0,
-                            rbg_data_0,
-                            m_axis_0_tuser,
-                            m_axis_0_tlast
-                        );
-                    end
-                end
-
-                output_count++;
-            end
-        end
-    end
 
     // SystemVerilog Assertions
     
-    /* #1
-     * AXI4-Stream rule:
-     *
-     * If the output is valid but the receiver is not ready, the
-     * complete transaction must remain valid and unchanged on the
-     * following cycle.
-     *
-     * The aligned grayscale and original RGB outputs are included
-     * because they belong to the same logical output transaction.
-     */
+    // ==================================================================================
+    // Rule #1: 
+    // If the output is valid but the receiver is not ready,
+    // the complete transaction must remain valid and unchanged on the following cycle.
+    
     property p_output_stable_during_stall;
         @(posedge clk)
         disable iff (!rst_n)
-
+        
         m_axis_0_tvalid && !m_axis_0_tready
         |=> m_axis_0_tvalid &&
             $stable({
@@ -320,20 +166,17 @@ module processing_core_TB;
     assert property (p_output_stable_during_stall)
     else begin
         $error(
-            "[ASSERTION] Output transaction changed during backpressure"
+            "[ASSERTION - RULE #1] Output transaction changed during backpressure"
         );
 
         assertion_fail_count++;
     end
 
-
-    /* #2
-     * The upstream source must also retain the complete transaction
-     * while the DUT is not ready.
-     *
-     * This primarily verifies the testbench driver, but the same
-     * requirement applies to any real AXI4-Stream source.
-     */
+    // ==================================================================================
+    // Rule #2
+    // The upstream source must retain the complete transaction while the DUT is not ready.     
+    // This primarily verifies the testbench driver
+    
     property p_input_stable_during_stall;
         @(posedge clk)
         disable iff (!rst_n)
@@ -350,17 +193,16 @@ module processing_core_TB;
     assert property (p_input_stable_during_stall)
     else begin
         $error(
-            "[ASSERTION] Input transaction changed during backpressure"
+            "[ASSERTION - RULE #2] Input transaction changed during backpressure"
         );
 
         assertion_fail_count++;
     end
 
-
-    /* #3
-     * TUSER identifies the first pixel of a frame and must not be
-     * asserted without a valid output transaction.
-     */
+    // ==================================================================================
+    // Rule #3
+    // TUSER identifies the first pixel of a frame and must not be asserted without a valid output.
+    
     property p_output_tuser_requires_tvalid;
         @(posedge clk)
         disable iff (!rst_n)
@@ -371,17 +213,15 @@ module processing_core_TB;
     assert property (p_output_tuser_requires_tvalid)
     else begin
         $error(
-            "[ASSERTION] Output TUSER asserted without TVALID"
+            "[ASSERTION - RULE #3] Output TUSER asserted without TVALID"
         );
 
         assertion_fail_count++;
     end
 
-
-    /* #4
-     * TLAST identifies the final pixel of a line and must not be
-     * asserted without a valid output transaction.
-     */
+    // ==================================================================================
+    // Rule #4
+    // TLAST identifies the final pixel of a line and must not be asserted without a valid output.
     property p_output_tlast_requires_tvalid;
         @(posedge clk)
         disable iff (!rst_n)
@@ -392,17 +232,15 @@ module processing_core_TB;
     assert property (p_output_tlast_requires_tvalid)
     else begin
         $error(
-            "[ASSERTION] Output TLAST asserted without TVALID"
+            "[ASSERTION - RULE #4] Output TLAST asserted without TVALID"
         );
 
         assertion_fail_count++;
     end
 
-
-    /* #5
-     * Check that output control signals never become X or Z after
-     * reset has been released.
-     */
+    // ==================================================================================
+    // Rule #5
+    // Check that output control signals never become X or Z after reset has been released.
     property p_output_control_known;
         @(posedge clk)
         disable iff (!rst_n)
@@ -425,10 +263,9 @@ module processing_core_TB;
     end
 
 
-    /* #6
-     * Check that input control signals never become X or Z after
-     * reset has been released.
-     */
+    // Rule #6
+    // Check that input control signals never become X or Z after reset has been released.
+    
     property p_input_control_known;
         @(posedge clk)
         disable iff (!rst_n)
@@ -440,7 +277,7 @@ module processing_core_TB;
             s_axis_0_tlast
         });
     endproperty
-
+    
     assert property (p_input_control_known)
     else begin
         $error(
@@ -450,7 +287,7 @@ module processing_core_TB;
         assertion_fail_count++;
     end
 
-    // randomized backpressure\
+    // randomized backpressure
     always @(negedge clk) begin
         if (!rst_n) begin
             m_axis_0_tready <= 1'b0;
@@ -690,7 +527,7 @@ module processing_core_TB;
         end
     endtask
     
-    // main Python-reference test
+    // Python-reference test
     task automatic test_python_reference();
         int width;
         int height;
@@ -729,8 +566,173 @@ module processing_core_TB;
             );
         end
     endtask
+    
+    // output scoreboard
+    always @(posedge clk) begin : output_monitor
+        exp_t expected;
 
+        // wait one simulation time unit so the monitor observes values updated by nonblocking assignments at this edge.
+        #1;
 
+        if (rst_n && m_axis_0_tvalid && m_axis_0_tready) begin
+
+            if (exp_q.size() == 0) begin
+                $error(
+                    "[SCOREBOARD] No expected output at time %0t",
+                    $time
+                );
+
+                $display(
+                    "Sobel = %06h",
+                    m_axis_0_tdata
+                );
+
+                $display(
+                    "Grayscale = %06h",
+                    grayscale_data_0
+                );
+
+                $display(
+                    "Original = %06h",
+                    rbg_data_0
+                );
+
+                $display(
+                    "TUSER=%0b TLAST=%0b",
+                    m_axis_0_tuser,
+                    m_axis_0_tlast
+                );
+
+                fail_count++;
+            end
+            else begin
+                expected = exp_q.pop_front();
+                
+                // compare sobel
+                if (m_axis_0_tdata !== expected.sobel_rgb) begin
+                    $error(
+                        "[SOBEL] Mismatch at output %0d, time %0t",
+                        output_count,
+                        $time
+                    );
+
+                    $display(
+                        "Expected = %06h",
+                        expected.sobel_rgb
+                    );
+
+                    $display(
+                        "Actual = %06h",
+                        m_axis_0_tdata
+                    );
+
+                    fail_count++;
+                end
+                   
+                // compare grayscale
+                if (grayscale_data_0 !== expected.grayscale_rgb) begin
+                    $error(
+                        "[GRAYSCALE] Mismatch at output %0d, time %0t",
+                        output_count,
+                        $time
+                    );
+
+                    $display(
+                        "Expected = %06h",
+                        expected.grayscale_rgb
+                    );
+
+                    $display(
+                        "Actual = %06h",
+                        grayscale_data_0
+                    );
+
+                    fail_count++;
+                end
+                
+                //compare original
+                if (rbg_data_0 !== expected.original_rgb) begin
+                    $error(
+                        "[ORIGINAL] Mismatch at output %0d, time %0t",
+                        output_count,
+                        $time
+                    );
+
+                    $display(
+                        "Expected = %06h",
+                        expected.original_rgb
+                    );
+
+                    $display(
+                        "Actual = %06h",
+                        rbg_data_0
+                    );
+
+                    fail_count++;
+                end
+                
+                // compare user
+                if (m_axis_0_tuser !== expected.user) begin
+                    $error(
+                        "[TUSER] Mismatch at output %0d: expected=%0b actual=%0b",
+                        output_count,
+                        expected.user,
+                        m_axis_0_tuser
+                    );
+
+                    fail_count++;
+                end
+                
+                // compare last
+                if (m_axis_0_tlast !== expected.last) begin
+                    $error(
+                        "[TLAST] Mismatch at output %0d: expected=%0b actual=%0b",
+                        output_count,
+                        expected.last,
+                        m_axis_0_tlast
+                    );
+
+                    fail_count++;
+                end
+                
+                // update pass counter
+                if (
+                    (m_axis_0_tdata === expected.sobel_rgb) &&
+                    (grayscale_data_0 === expected.grayscale_rgb) &&
+                    (rbg_data_0 === expected.original_rgb) &&
+                    (m_axis_0_tuser === expected.user) &&
+                    (m_axis_0_tlast === expected.last)
+                ) begin
+                    pass_count++;
+
+                    // do not print every pixel for a large frame.
+                    if((output_count < 10) || ((output_count % 50000) == 0))begin
+                        $display(
+                            "[PASS] output=%0d sobel=%06h gray=%06h original=%06h user=%0b last=%0b",
+                            output_count,
+                            m_axis_0_tdata,
+                            grayscale_data_0,
+                            rbg_data_0,
+                            m_axis_0_tuser,
+                            m_axis_0_tlast
+                        );
+                    end
+                end
+
+                output_count++;
+            end
+        end
+    end
+    
+
+    /*
+     *  __  __    _    ___ _   _ 
+     * |  \/  |  / \  |_ _| \ | |
+     * | |\/| | / _ \  | ||  \| |
+     * | |  | |/ ___ \ | || |\  |
+     * |_|  |_/_/   \_\___|_| \_|
+     *                          
+     */
     // main simulation sequence
     initial begin
         pass_count = 0;
@@ -759,7 +761,7 @@ module processing_core_TB;
         $display(" Processing-Core Verification Summary");
         $display("================================================");
         $display(
-            "Accepted outputs     : %0d",
+            "Accepted outputs : %0d",
             output_count
         );
         $display(
@@ -767,15 +769,15 @@ module processing_core_TB;
             pass_count
         );
         $display(
-            "Scoreboard failures  : %0d",
+            "Scoreboard failures : %0d",
             fail_count
         );
         $display(
-            "Assertion failures   : %0d",
+            "Assertion failures : %0d",
             assertion_fail_count
         );
         $display(
-            "Remaining expected   : %0d",
+            "Remaining expected : %0d",
             exp_q.size()
         );
         $display("================================================");
