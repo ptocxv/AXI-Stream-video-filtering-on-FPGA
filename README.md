@@ -194,8 +194,7 @@ If `TVALID` is high while `TREADY` is low, the complete transaction must remain 
 The custom modules use a globally stalled pipeline:
 
 ```verilog
-pipeline_enable =
-    !m_axis_tvalid || m_axis_tready;
+pipeline_enable = !m_axis_tvalid || m_axis_tready;
 ```
 
 When a valid output is blocked, the module freezes:
@@ -306,11 +305,7 @@ Gray = (77 × Red + 150 × Green + 29 × Blue) >> 8
 The coefficients approximate:
 
 ```text
-0.299 × Red
-+
-0.587 × Green
-+
-0.114 × Blue
+0.299 × Red + 0.587 × Green + 0.114 × Blue
 ```
 
 The implementation avoids floating-point arithmetic and is pipelined for streaming operation.
@@ -330,7 +325,7 @@ The newest accepted input pixel is `p22`, while the Sobel result represents the 
 For an input completing a window at coordinate `(row, column)`:
 
 ```text
-p22 = (row,     column)
+p22 = (row, column)
 p11 = (row - 1, column - 1)
 p00 = (row - 2, column - 2)
 ```
@@ -430,9 +425,7 @@ the aligned original output is `p5`.
 A complete 3x3 window exists only when:
 
 ```text
-row >= 2
-and
-column >= 2
+row >= 2 && column >= 2
 ```
 
 The first two rows and first two columns are therefore output as black.
@@ -451,7 +444,7 @@ Preserving the full transaction count keeps the active frame dimensions compatib
 The Sobel kernels are:
 
 ```text
-Gx                   Gy
+    (Gx)                (Gy)
 
 -1   0   1           -1  -2  -1
 -2   0   2            0   0   0
@@ -461,15 +454,13 @@ Gx                   Gy
 The RTL calculates:
 
 ```text
-Gx =
-    -p00 + p02
+Gx = -p00 + p02
     -2p10 + 2p12
     -p20 + p22
 ```
 
 ```text
-Gy =
-    -p00 - 2p01 - p02
+Gy = -p00 - 2p01 - p02
     +p20 + 2p21 + p22
 ```
 
@@ -628,7 +619,7 @@ The control path crosses between:
 
 ```text
 AXI control domain: 50 MHz
-Video domain:       approximately 148.5 MHz
+Video domain: approximately 148.5 MHz
 ```
 
 The configuration uses a bundled-data request/acknowledgement protocol.
