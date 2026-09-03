@@ -1,5 +1,5 @@
 # RTL Datapath
-This document focuses on the video processing core calculations and per-stage responsibilities. Detailed information about clock-domain-crossing configuration with video_control_axi peripheral is in [CDC Configuration Document](#docs/cdc_configuration.md).
+This document focuses on the video processing core calculations and per-stage responsibilities. Detailed information about clock-domain-crossing configuration with video_control_axi peripheral is in ["cdc_configuration.md"](cdc_configuration.md).
 
 ## Grayscale conversion
 
