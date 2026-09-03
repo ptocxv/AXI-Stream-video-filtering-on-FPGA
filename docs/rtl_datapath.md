@@ -197,7 +197,7 @@ The `axis_filter_out` module receives the aligned outputs from the processing ch
 
 Based on the active configuration, the module selects the final AXI4-Stream pixel sent toward the HDMI output:
 
-```text
+```verilog
 case(mode)
         2'b00: begin
             m_axis_tdata <= s_axis_tdata;
@@ -232,7 +232,7 @@ assign sof_out = s_axis_tvalid && s_axis_tready && s_axis_tuser;
 
 This event is fed back to `video_config_cdc` as `sof_fire`:
 
-```text
+```verilog
 if (config_pending_pixel && sof_fire) begin
         // update active data
         active_mode_pixel <= pending_mode_pixel;
