@@ -211,7 +211,7 @@ This preserves transaction and spatial alignment under backpressure.
 
 ## RTL datapath
 
-Detailed calculation, AXI-Stream valid-ready handshake, and per-stage responsibilities are documented in #docs/rtl_datapath.md.
+Detailed calculation, AXI-Stream valid-ready handshake, and per-stage responsibilities are documented in [`rtl_datapath.md`](rtl_datapath.md).
 
 <table>
 <tr>
@@ -471,11 +471,11 @@ Random-backpressure test
 → stall stability, upstream backpressure, and ordered recovery
 ```
 
-Detailed verification architecture and future improvements should be documented in docs/verification.md.
+Detailed verification architecture and future improvements should be documented in [`verification.md`](verification.md).
 
 ## Clock-domain crossing
 
-This documents shows the overall methods used to solve clock-domain-crossing. More detailed configurations can be found in ["cdc_configuration.md"](cdc_configuration.md).
+This documents shows the overall methods used to solve clock-domain-crossing. More detailed configurations can be found in [`cdc_configuration.md`](cdc_configuration.md).
 
 The control path crosses between:
 
