@@ -488,19 +488,30 @@ The configuration uses a bundled-data request/acknowledgement protocol.
 
 ```mermaid
 flowchart LR
-    SHADOW["Shadow mode and threshold"]
-    PAYLOAD["Frozen AXI payload"]
-    REQ["Request toggle"]
-    PENDING["Pending PixelClk configuration"]
-    ACTIVE["Active mode and threshold"]
-    ACK["Acknowledgement toggle"]
+    subgraph AXI["50 MHz AXI control domain"]
+        SHADOW["Shadow mode<br/>and threshold"]
+        PAYLOAD["Frozen payload"]
+        REQ["Request toggle"]
+        BUSY["BUSY state"]
+        ACKSYNC["Acknowledgement<br/>synchronizer"]
+    end
+
+    subgraph PIXEL["148.5 MHz PixelClk domain"]
+        REQSYNC["Request<br/>synchronizer"]
+        PENDING["Pending mode<br/>and threshold"]
+        ACTIVE["Active mode<br/>and threshold"]
+        ACK["Acknowledgement<br/>toggle"]
+    end
 
     SHADOW -->|"APPLY_CONFIG"| PAYLOAD
+    SHADOW -->|"APPLY_CONFIG"| REQ
+    REQ --> REQSYNC
     PAYLOAD --> PENDING
-    REQ -->|"Two-flop synchronization"| PENDING
+    REQSYNC --> PENDING
     PENDING -->|"Accepted frame start"| ACTIVE
     ACTIVE --> ACK
-    ACK -->|"Two-flop synchronization"| SHADOW
+    ACK --> ACKSYNC
+    ACKSYNC --> BUSY
 ```
 
 The detailed flow is:
