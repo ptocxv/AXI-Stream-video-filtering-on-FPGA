@@ -16,17 +16,10 @@ Runtime mode and threshold configuration is performed by a bare-metal applicatio
   - [Pynq-Z2 Hardware Model](#pynq-z2-hardware-model)
   - [Video and Stream Model](#video-and-stream-model)
   - [RTL Datapath](#rtl-datapath)
-    - [Grayscale conversion](#grayscale-conversion)
-    - [3x3 Window Generation](#3x3-window-generation)
-    - [Sobel Processing](#sobel-processing)
   - [Runtime Configuration](#runtime-configuration)
     - [UART Commands](#uart-commands)
   - [AXI4-Lite Register Map](#axi4-lite-register-map)
   - [Golden Model and Verification](#golden-model-and-verification)
-      - [Expected Transaction](#expected-transaction)
-      - [Scoreboard Behavior](#scoreboard-behavior)
-      - [Assertions](#assertions)
-      - [Verification Modes](#verification-modes)
   - [Clock-Domain Crossing](#clock-domain-crossing)
   - [Vivado and Pynq-Z2 Build](#vivado-and-pynq-z2-build)
     - [Current Block Design](#current-block-design)
@@ -34,12 +27,6 @@ Runtime mode and threshold configuration is performed by a bare-metal applicatio
   - [Measured Implementation Results](#measured-implementation-results)
     - [Timing](#timing)
     - [Utilisation](#utilisation)
-  - [Latency and Throughput Design Decisions](#latency-and-throughput-design-decisions)
-    - [Datapath Behavior](#datapath-behavior)
-    - [Spatial Latency](#spatial-latency)
-    - [Throughput](#throughput)
-    - [Backpressure Decision](#backpressure-decision)
-  - [Known Limitations](#known-limitations)
 
 ## System architecture
 
@@ -138,23 +125,17 @@ The PYNQ-Z2 uses a Zynq-7020 device containing an ARM Processing System and FPGA
 The live pixel path remains in the PL:
 
 ```text
-HDMI input
-→ PL video receiver
-→ PL processing pipeline
-→ PL video transmitter
-→ HDMI output
+HDMI input → PL video receiver → PL processing pipeline → PL video transmitter → HDMI output
 ```
 
 The PS does not process individual video pixels. It provides low-rate control values through memory-mapped AXI4-Lite transactions:
 
 ```text
 PuTTY
-→ PS UART
-→ bare-metal application
-→ Xil_Out32 / Xil_In32
+→ PS UART → bare-metal application → Xil_Out32 / Xil_In32
 → M_AXI_GP0
 → SmartConnect
-→ custom PL control peripheral
+→ custom PL control peripheral (video_control_axi)
 ```
 
 This separation allows the PL pipeline to sustain one pixel per enabled clock while the PS changes mode and threshold at human-interaction speed.
@@ -166,20 +147,11 @@ The video bridges convert between native parallel video and AXI4-Stream video.
 The custom processing path uses:
 
 ```text
-TDATA
-→ pixel or processing payload
-
-TVALID
-→ source is presenting a valid transaction
-
-TREADY
-→ receiver can accept the transaction
-
-TUSER
-→ first active pixel of a frame
-
-TLAST
-→ final active pixel of a line
+TDATA   →  pixel or processing payload
+TVALID  →  source is presenting a valid transaction
+TREADY  →  receiver can accept the transaction
+TUSER   →  first active pixel of a frame
+TLAST   →  final active pixel of a line
 ```
 
 A transfer occurs only when:
@@ -250,15 +222,9 @@ The ARM Cortex-A9 application accepts UART commands and modifies the video mode 
 
 ```text
 PuTTY command
-→ PS UART
-→ inbyte()
-→ main.c
-→ Xil_Out32()
-→ M_AXI_GP0
+→ PS UART → inbyte() → main.c → Xil_Out32() → M_AXI_GP0
 → SmartConnect
-→ video_control_axi
-→ video_config_cdc
-→ axis_filter_out
+→ video_control_axi → video_config_cdc → axis_filter_out
 ```
 
 ### UART commands
@@ -304,6 +270,7 @@ PuTTY command
 
 ## AXI4-Lite register map
 
+The detailed AXI4-Lite communication between the Zynq PS and the `video_control_axi` peripheral is doucmented in [`ps_axi_lite.md`](ps_axi_lite.md).
 `video_control_axi` is a custom AXI4-Lite slave implemented in the PL and clocked by the 50 MHz PS fabric clock.
 
 <table>
@@ -422,56 +389,7 @@ The SystemVerilog testbench:
 - Detects missing and unexpected extra outputs
 - Reports a final pass/fail summary
 
-### Expected transaction
-
-```systemverilog
-typedef struct packed {
-    logic [23:0] sobel_rgb;
-    logic [23:0] grayscale_rgb;
-    logic [23:0] original_rgb;
-    logic        user;
-    logic        last;
-} exp_t;
-```
-
-### Scoreboard behavior
-
-```text
-Accepted DUT output
-→ pop the next expected queue item
-→ compare Sobel
-→ compare grayscale
-→ compare original RGB
-→ compare TUSER
-→ compare TLAST
-```
-
-Four-state comparison operators are used so that `X` and `Z` values are reported as mismatches.
-
-### Assertions
-
-The current assertions check:
-
-- Output transaction stability during downstream backpressure
-- Input transaction stability while the DUT is not ready
-- `TUSER` is never asserted without `TVALID`
-- `TLAST` is never asserted without `TVALID`
-- Input control signals do not become unknown after reset
-- Output control signals do not become unknown after reset
-
-The scoreboard verifies accepted transaction contents. Assertions verify behavior between accepted transactions.
-
-### Verification modes
-
-```text
-Always-ready test
-→ arithmetic, spatial alignment, metadata, and transaction count
-
-Random-backpressure test
-→ stall stability, upstream backpressure, and ordered recovery
-```
-
-Detailed verification architecture and future improvements should be documented in [`verification.md`](verification.md).
+Detailed verification architecture and flow are documented in [`verification.md`](verification.md).
 
 ## Clock-domain crossing
 
@@ -514,32 +432,12 @@ flowchart LR
     ACKSYNC --> BUSY
 ```
 
-The detailed flow is:
-
-```text
-Software writes shadow registers
-→ software writes APPLY_CONFIG
-→ AXI peripheral freezes the payload
-→ request toggle changes
-→ request crosses into PixelClk
-→ destination detects the request transition
-→ stable payload is captured as pending
-→ pending waits for an accepted frame start
-→ pending becomes active
-→ acknowledgement is updated
-→ acknowledgement crosses to the AXI domain
-→ request and acknowledgement match
-→ busy clears
-```
-
 The toggle relationship is:
 
 ```text
-request != synchronized acknowledgement
-→ transaction is outstanding
+request != synchronized acknowledgement → transaction is outstanding
 
-request == synchronized acknowledgement
-→ transaction is complete
+request == synchronized acknowledgement → transaction is complete
 ```
 
 Only the single-bit request and acknowledgement signals use two-flip-flop synchronizers. The multi-bit payload remains frozen from request generation until acknowledgement return.
@@ -687,131 +585,3 @@ Open Vivado project
 <td>[0.00]%</td>
 </tr>
 </table>
-
-## Latency and throughput design decisions
-
-The pipeline is designed around throughput rather than minimum frame latency.
-
-### Datapath behavior
-
-<table>
-<tr>
-<th>Stage</th>
-<th>Latency role</th>
-<th>Sustained behavior</th>
-<th>Design reason</th>
-</tr>
-<tr>
-<td><code>axis_grayscale</code></td>
-<td>Registered fixed-point conversion</td>
-<td>One pixel per enabled cycle</td>
-<td>Separate grayscale arithmetic from spatial storage</td>
-</tr>
-<tr>
-<td><code>axis_window_3x3_generator</code></td>
-<td>Two-row and two-column spatial history plus registered output</td>
-<td>One window transaction per enabled cycle after filling</td>
-<td>Generate a 3x3 neighborhood without a full-frame buffer</td>
-</tr>
-<tr>
-<td><code>axis_sobel</code></td>
-<td>Five registered arithmetic stages</td>
-<td>One result per enabled cycle after filling</td>
-<td>Meet the approximately 6.734 ns PixelClk period</td>
-</tr>
-<tr>
-<td><code>axis_filter_out</code></td>
-<td>Registered output selection</td>
-<td>One selected pixel per enabled cycle</td>
-<td>Keep mode selection aligned with stream metadata</td>
-</tr>
-</table>
-
-### Spatial latency
-
-A complete 3x3 window requires the current input to reach:
-
-```text
-row >= 2
-column >= 2
-```
-
-For a 4x4 input:
-
-```text
-p0    p1    p2    p3
-p4    p5    p6    p7
-p8    p9    p10   p11
-p12   p13   p14   p15
-```
-
-the valid windows are completed by:
-
-```text
-p10 at (2,2)
-p11 at (2,3)
-p14 at (3,2)
-p15 at (3,3)
-```
-
-The first window is:
-
-```text
-p0   p1   p2
-p4   p5   p6
-p8   p9   p10
-```
-
-and represents center pixel `p5`.
-
-### Throughput
-
-When no downstream stall is present:
-
-```text
-Initiation interval = one accepted pixel per clock
-```
-
-At approximately 148.5 MHz:
-
-```text
-Peak active processing rate
-≈ 148.5 million pixels per second
-```
-
-The line buffers increase spatial latency, but they do not reduce steady-state pixel throughput.
-
-### Backpressure decision
-
-The current architecture uses global pipeline stalling instead of independently elastic stages.
-
-This simplifies alignment because all of the following freeze together:
-
-```text
-Sobel path
-grayscale path
-original-pixel path
-TUSER
-TLAST
-valid state
-line-buffer accesses
-```
-
-The trade-off is a potentially long combinational `TREADY` path and limited tolerance for prolonged stalls from the physical HDMI source.
-
-## Known limitations
-
-- The project uses an unconventional RBG byte order.
-- Original mode is spatially aligned with the Sobel center and is not a zero-latency bypass.
-- The top and left two-pixel border is forced to black.
-- The causal window architecture shifts meaningful center-pixel content relative to the output transaction coordinate.
-- The custom pipeline uses global stalling rather than per-stage elasticity.
-- The physical HDMI input cannot be paused indefinitely.
-- No VDMA or full-frame DDR buffer is present.
-- No frame-rate conversion is implemented.
-- No last-valid-frame replay is available after HDMI input loss.
-- Output operation assumes the configured video format and compatible input rate.
-- Software polls the configuration status rather than using an interrupt.
-- The bundled-data CDC relies on a registered payload that remains frozen until acknowledgement.
-- The current testbench verifies a project-specific processing wrapper rather than a complete reusable verification IP environment.
-- Full 1080p simulation requires significantly more time and simulator memory than small regression frames.
