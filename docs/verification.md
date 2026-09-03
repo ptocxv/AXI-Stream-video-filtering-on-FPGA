@@ -1,4 +1,4 @@
-# Golden model and verification
+# Verification
 
 This document describes how the FPGA video-processing core is verified using an independent Python golden model and a self-checking SystemVerilog testbench.
 
@@ -33,14 +33,21 @@ flowchart LR
 
 ## Expected transaction
 
+A packed struct is defined to bundle the video pipeline transaction data into a single, contiguous bit vector including: `sobel_rgb`, `grayscale_rgb`, and `original_rgb`, all aligned with the same `user` and `last` data.
+
 ```systemverilog
 typedef struct packed {
     logic [23:0] sobel_rgb;
     logic [23:0] grayscale_rgb;
     logic [23:0] original_rgb;
-    logic        user;
-    logic        last;
+    logic user;
+    logic last;
 } exp_t;
+```
+The unbounded queue `exp_q` holds a sequence of expected exp_t pixels waiting to be compared against what actually comes out of the hardware.
+
+```systemverilog
+exp_t exp_q[$];
 ```
 
 ## Scoreboard behavior
@@ -63,12 +70,12 @@ While the scoreboard verifies accepted transaction contents, the assertions veri
 
 The current assertions check 6 rules:
 
-- Output transaction stability during downstream backpressure
-- Input transaction stability while the DUT is not ready
-- `TUSER` is never asserted without `TVALID`
-- `TLAST` is never asserted without `TVALID`
-- Input control signals do not become unknown after reset
-- Output control signals do not become unknown after reset
+- #1: Output transaction stability during downstream backpressure
+- #2: Input transaction stability while the DUT is not ready
+- #3: `TUSER` is never asserted without `TVALID`
+- #4: `TLAST` is never asserted without `TVALID`
+- #5: Input control signals do not become unknown after reset
+- #6: Output control signals do not become unknown after reset
 
 ## Verification modes
 
