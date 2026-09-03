@@ -1,7 +1,7 @@
 # RTL Datapath
 This document focuses on the video processing core calculations and per-stage responsibilities. Detailed information about clock-domain-crossing configuration with video_control_axi peripheral is in ["cdc_configuration.md"](cdc_configuration.md).
 
-## Grayscale conversion
+## 1. Grayscale conversion
 
 The grayscale stage uses fixed-point integer arithmetic:
 
@@ -17,7 +17,7 @@ The coefficients approximate:
 
 The implementation avoids floating-point arithmetic and is pipelined for streaming operation.
 
-## 3x3 window generation
+## 2. Window 3x3 generation
 
 The window generator reconstructs:
 
@@ -146,7 +146,7 @@ The design does not discard border transactions:
 
 Preserving the full transaction count keeps the active frame dimensions compatible with downstream video timing.
 
-## Sobel processing
+## 3. Sobel processing
 
 The Sobel kernels are:
 
@@ -190,3 +190,60 @@ Partial gradient terms
 ```
 
 This division allows the pipeline to sustain one pixel per enabled clock at approximately 148.5 MHz.
+
+## 4. Filter out
+
+The `axis_filter_out` module receives the aligned outputs from the processing chain, together with the active mode and threshold values from `video_config_cdc`.
+
+Based on the active configuration, the module selects the final AXI4-Stream pixel sent toward the HDMI output:
+
+```text
+case(mode)
+        2'b00: begin
+            m_axis_tdata <= s_axis_tdata;
+            // ...control signals update
+        end
+        2'b01: begin
+            m_axis_tdata <= (s_axis_tdata[7:0] > threshold) ? 24'hffffff : 24'h000000;
+            // ...control signals update
+        end
+        2'b10: begin
+            m_axis_tdata <= grayscale_data;
+            // ...control signal update
+        end
+        2'b11: begin
+            m_axis_tdata <= rbg_data;
+            // ...control signal update
+        end
+        default: begin
+            m_axis_tdata <= 24'hbc1501;
+            // ...control signal update
+        end
+endcase
+```
+
+The active mode determines which processing result is selected. The active threshold is used when thresholded Sobel mode is selected.
+
+The module also generates an accepted frame-start event:
+
+```verilog
+assign sof_out = s_axis_tvalid && s_axis_tready && s_axis_tuser;
+```
+
+This event is fed back to `video_config_cdc` as `sof_fire`:
+
+```text
+if (config_pending_pixel && sof_fire) begin
+        // update active data
+        active_mode_pixel <= pending_mode_pixel;
+        active_threshold_pixel <= pending_threshold_pixel;
+        
+        // reset pending config mark
+        config_pending_pixel <= 1'b0;
+        
+        // acknowledge the request that has now become active.
+        cfg_ack_toggle_pixel <= req_seen_pixel;
+end
+```
+
+Using `TVALID`, `TREADY`, and `TUSER` ensures that configuration activation is tied to the actual AXI4-Stream handshake of the first frame pixel. A presented but stalled start-of-frame transaction does not activate the pending configuration until the transaction is accepted.
