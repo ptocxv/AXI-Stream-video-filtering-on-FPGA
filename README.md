@@ -4,7 +4,7 @@ SystemVerilog RTL, Python reference models, layered verification, and bare-metal
 
 The project receives HDMI video, converts active pixels into AXI4-Stream transactions, performs grayscale conversion and Sobel edge detection in the Programmable Logic, and transmits the selected result through HDMI output. The current real-silicon target is the **PYNQ-Z2 / Zynq-7020**, operating at **1920 × 1080 at 60 Hz** with an approximately **148.5 MHz pixel clock**.
 
-Runtime mode and threshold configuration is performed by a bare-metal application running on the ARM Cortex-A9. The Processing System accesses a custom AXI4-Lite peripheral through `M_AXI_GP0`, while a bundled-data clock-domain-crossing circuit transfers the configuration into the video clock domain.
+Runtime mode and threshold configuration is performed by a bare-metal application running on the ARM Cortex-A9, supporting 4 output modes: Grayscale conversion, Original RGBs, Sobel Magnitude, and Sobel Threshold. The Processing System accesses a custom AXI4-Lite peripheral through `M_AXI_GP0`, while a bundled-data clock-domain-crossing circuit transfers the configuration into the video clock domain. 
 
 ## Contents
 
@@ -15,8 +15,6 @@ Runtime mode and threshold configuration is performed by a bare-metal applicatio
     - [PL Video Processing Path](#pl-video-processing-path)
   - [Pynq-Z2 Hardware Model](#pynq-z2-hardware-model)
   - [Video and Stream Model](#video-and-stream-model)
-  - [Supported Output Modes](#supported-output-modes)
-  - [Data Representation](#data-representation)
   - [RTL Datapath](#rtl-datapath)
     - [Grayscale conversion](#grayscale-conversion)
     - [3x3 Window Generation](#3x3-window-generation)
@@ -210,55 +208,6 @@ When a valid output is blocked, the module freezes:
 - Grayscale and original-pixel side paths
 
 This preserves transaction and spatial alignment under backpressure.
-
-## Supported output modes
-
-<table>
-<tr>
-<th>Mode</th>
-<th>Value</th>
-<th>Output</th>
-</tr>
-<tr>
-<td>Sobel magnitude</td>
-<td><code>0</code></td>
-<td>Saturated <code>|Gx| + |Gy|</code> magnitude</td>
-</tr>
-<tr>
-<td>Thresholded Sobel</td>
-<td><code>1</code></td>
-<td>Binary black-and-white edge image</td>
-</tr>
-<tr>
-<td>Grayscale</td>
-<td><code>2</code></td>
-<td>Fixed-point grayscale value aligned to the Sobel center</td>
-</tr>
-<tr>
-<td>Original</td>
-<td><code>3</code></td>
-<td>Original RGB pixel aligned to the Sobel center</td>
-</tr>
-</table>
-
-The threshold is eight bits and can be adjusted from `0` to `255`.
-
-## Data representation
-
-- Input and output pixels are 24 bits wide.
-- The current project byte order is `RBG`, retained for compatibility with the existing video path.
-- `[23:16]` contains red.
-- `[15:8]` contains blue.
-- `[7:0]` contains green.
-- Internal grayscale samples are eight bits wide.
-- The 3x3 grayscale window contains nine eight-bit values and is therefore 72 bits wide.
-- Sobel magnitude is saturated to eight bits and replicated across all three output bytes.
-- Mode is represented by two bits.
-- Threshold is represented by eight bits.
-- `TUSER` marks the first transaction of the frame.
-- `TLAST` marks the final transaction of each active video line.
-
-The term `original` refers to the original RGB pixel spatially aligned with the Sobel window center. It is not an undelayed bypass of the HDMI input.
 
 ## RTL datapath
 
