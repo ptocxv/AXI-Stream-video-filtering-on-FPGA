@@ -884,7 +884,7 @@ Open Vivado project
 <th>Utilisation</th>
 </tr>
 <tr>
-<td>Slice LUTs</td>
+<td>LUTs</td>
 <td>[1520]</td>
 <td>53,200</td>
 <td>[2.86]%</td>
@@ -896,7 +896,7 @@ Open Vivado project
 <td>[0.14]%</td>
 </tr>
 <tr>
-<td>Slice registers</td>
+<td>Flip-Flops</td>
 <td>[2,211]</td>
 <td>106,400</td>
 <td>[2.08]%</td>
