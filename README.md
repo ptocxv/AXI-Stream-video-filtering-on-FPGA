@@ -475,6 +475,8 @@ Detailed verification architecture and future improvements should be documented 
 
 ## Clock-domain crossing
 
+This documents shows the overall methods used to solve clock-domain-crossing. More detailed configurations can be found in ["cdc_configuration.md"](cdc_configuration.md).
+
 The control path crosses between:
 
 ```text
