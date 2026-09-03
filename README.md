@@ -24,6 +24,7 @@ Runtime mode and threshold configuration is performed by a bare-metal applicatio
   - [Runtime Configuration](#runtime-configuration)
     - [UART Commands](#uart-commands)
   - [AXI4-Lite Register Map](#axi4-lite-register-map)
+  - [Golden Model and Verification](#golden-model-and-verification)
   - [Clock-Domain Crossing and Verification](#clock-domain-crossing)
     - [Expected Transaction](#expected-transaction)
     - [Scoreboard Behavior](#scoreboard-behavior)
@@ -613,66 +614,6 @@ req_toggle_axi
 update_busy_axi
 ```
 
-## Clock-domain crossing
-
-The control path crosses between:
-
-```text
-AXI control domain: 50 MHz
-Video domain: approximately 148.5 MHz
-```
-
-The configuration uses a bundled-data request/acknowledgement protocol.
-
-```mermaid
-flowchart LR
-    SHADOW["Shadow mode and threshold"]
-    PAYLOAD["Frozen AXI payload"]
-    REQ["Request toggle"]
-    PENDING["Pending PixelClk configuration"]
-    ACTIVE["Active mode and threshold"]
-    ACK["Acknowledgement toggle"]
-
-    SHADOW -->|"APPLY_CONFIG"| PAYLOAD
-    PAYLOAD --> PENDING
-    REQ -->|"Two-flop synchronization"| PENDING
-    PENDING -->|"Accepted frame start"| ACTIVE
-    ACTIVE --> ACK
-    ACK -->|"Two-flop synchronization"| SHADOW
-```
-
-The detailed flow is:
-
-```text
-Software writes shadow registers
-→ software writes APPLY_CONFIG
-→ AXI peripheral freezes the payload
-→ request toggle changes
-→ request crosses into PixelClk
-→ destination detects the request transition
-→ stable payload is captured as pending
-→ pending waits for an accepted frame start
-→ pending becomes active
-→ acknowledgement is updated
-→ acknowledgement crosses to the AXI domain
-→ request and acknowledgement match
-→ busy clears
-```
-
-The toggle relationship is:
-
-```text
-request != synchronized acknowledgement
-→ transaction is outstanding
-
-request == synchronized acknowledgement
-→ transaction is complete
-```
-
-Only the single-bit request and acknowledgement signals use two-flip-flop synchronizers. The multi-bit payload remains frozen from request generation until acknowledgement return.
-
-A metastable first synchronizer stage may delay recognition by one or more destination-clock cycles. The persistent toggle prevents the request from being lost, while delayed recognition provides additional settling time for the frozen payload.
-
 ## Golden model and verification
 
 The Python golden model is the functional reference for the processing core.
@@ -772,6 +713,66 @@ Random-backpressure test
 ```
 
 Detailed verification architecture and future improvements should be documented in docs/verification.md.
+
+## Clock-domain crossing
+
+The control path crosses between:
+
+```text
+AXI control domain: 50 MHz
+Video domain: approximately 148.5 MHz
+```
+
+The configuration uses a bundled-data request/acknowledgement protocol.
+
+```mermaid
+flowchart LR
+    SHADOW["Shadow mode and threshold"]
+    PAYLOAD["Frozen AXI payload"]
+    REQ["Request toggle"]
+    PENDING["Pending PixelClk configuration"]
+    ACTIVE["Active mode and threshold"]
+    ACK["Acknowledgement toggle"]
+
+    SHADOW -->|"APPLY_CONFIG"| PAYLOAD
+    PAYLOAD --> PENDING
+    REQ -->|"Two-flop synchronization"| PENDING
+    PENDING -->|"Accepted frame start"| ACTIVE
+    ACTIVE --> ACK
+    ACK -->|"Two-flop synchronization"| SHADOW
+```
+
+The detailed flow is:
+
+```text
+Software writes shadow registers
+→ software writes APPLY_CONFIG
+→ AXI peripheral freezes the payload
+→ request toggle changes
+→ request crosses into PixelClk
+→ destination detects the request transition
+→ stable payload is captured as pending
+→ pending waits for an accepted frame start
+→ pending becomes active
+→ acknowledgement is updated
+→ acknowledgement crosses to the AXI domain
+→ request and acknowledgement match
+→ busy clears
+```
+
+The toggle relationship is:
+
+```text
+request != synchronized acknowledgement
+→ transaction is outstanding
+
+request == synchronized acknowledgement
+→ transaction is complete
+```
+
+Only the single-bit request and acknowledgement signals use two-flip-flop synchronizers. The multi-bit payload remains frozen from request generation until acknowledgement return.
+
+A metastable first synchronizer stage may delay recognition by one or more destination-clock cycles. The persistent toggle prevents the request from being lost, while delayed recognition provides additional settling time for the frozen payload.
 
 ## Vivado and PYNQ-Z2 build
 
