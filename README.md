@@ -183,7 +183,7 @@ This preserves transaction and spatial alignment under backpressure.
 
 ## RTL datapath
 
-Detailed calculation, AXI-Stream valid-ready handshake, and per-stage responsibilities are documented in [`rtl_datapath.md`](rtl_datapath.md).
+Detailed calculation, AXI-Stream valid-ready handshake, and per-stage responsibilities are documented in [`rtl_datapath.md`](docs/rtl_datapath.md).
 
 <table>
 <tr>
@@ -270,7 +270,7 @@ PuTTY command
 
 ## AXI4-Lite register map
 
-The detailed AXI4-Lite communication between the Zynq PS and the `video_control_axi` peripheral is doucmented in [`ps_axi_lite.md`](ps_axi_lite.md).
+The detailed AXI4-Lite communication between the Zynq PS and the `video_control_axi` peripheral is doucmented in [`ps_axi_lite.md`](docs/ps_axi_lite.md).
 `video_control_axi` is a custom AXI4-Lite slave implemented in the PL and clocked by the 50 MHz PS fabric clock.
 
 <table>
@@ -389,11 +389,11 @@ The SystemVerilog testbench:
 - Detects missing and unexpected extra outputs
 - Reports a final pass/fail summary
 
-Detailed verification architecture and flow are documented in [`verification.md`](verification.md).
+Detailed verification architecture and flow are documented in [`verification.md`](docs/verification.md).
 
 ## Clock-domain crossing
 
-This documents shows the overall methods used to solve clock-domain-crossing. More detailed configurations can be found in [`cdc_configuration.md`](cdc_configuration.md).
+This documents shows the overall methods used to solve clock-domain-crossing. More detailed configurations can be found in [`cdc_configuration.md`](docs/cdc_configuration.md).
 
 The control path crosses between:
 
