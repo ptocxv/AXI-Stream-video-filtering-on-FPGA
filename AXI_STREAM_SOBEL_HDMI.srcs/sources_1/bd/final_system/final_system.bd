@@ -21,7 +21,6 @@
       "proc_sys_reset_0": "",
       "processing_system7_0": "",
       "axis_filter_out_0": "",
-      "processing_core_0": "",
       "video_config_cdc_0": "",
       "video_control_axi_0": "",
       "logic0_0": "",
@@ -30,7 +29,9 @@
       "logic1_2": "",
       "logic1_3": "",
       "logic0_1": "",
-      "logic0_2": ""
+      "logic0_2": "",
+      "ila_0": "",
+      "processing_core_wrap_0": ""
     },
     "interface_ports": {
       "DDC_0": {
@@ -2533,307 +2534,6 @@
           }
         }
       },
-      "processing_core_0": {
-        "parameters": {
-          "ACTIVE_SIM_BD": {
-            "value": "processing_core.bd"
-          },
-          "ACTIVE_SYNTH_BD": {
-            "value": "processing_core.bd"
-          },
-          "ENABLE_DFX": {
-            "value": "0"
-          },
-          "LIST_SIM_BD": {
-            "value": "processing_core.bd"
-          },
-          "LIST_SYNTH_BD": {
-            "value": "processing_core.bd"
-          },
-          "LOCK_PROPAGATE": {
-            "value": "0"
-          },
-          "TRAINING_MODULE": {
-            "value": "processing_core.bd",
-            "value_src": "auto"
-          }
-        },
-        "interface_ports": {
-          "m_axis_0": {
-            "mode": "Master",
-            "vlnv_bus_definition": "xilinx.com:interface:axis:1.0",
-            "vlnv": "xilinx.com:interface:axis_rtl:1.0",
-            "parameters": {
-              "CLK_DOMAIN": {
-                "value": "final_system_dvi2rgb_0_0_PixelClk",
-                "value_src": "default_prop"
-              },
-              "FREQ_HZ": {
-                "value": "100000000",
-                "value_src": "default_prop"
-              },
-              "HAS_TKEEP": {
-                "value": "0",
-                "value_src": "const_prop"
-              },
-              "HAS_TLAST": {
-                "value": "1",
-                "value_src": "const_prop"
-              },
-              "HAS_TREADY": {
-                "value": "1",
-                "value_src": "const_prop"
-              },
-              "HAS_TSTRB": {
-                "value": "0",
-                "value_src": "const_prop"
-              },
-              "INSERT_VIP": {
-                "value": "0",
-                "value_src": "default"
-              },
-              "LAYERED_METADATA": {
-                "value": "undef",
-                "value_src": "default"
-              },
-              "PHASE": {
-                "value": "0.0",
-                "value_src": "default_prop"
-              },
-              "TDATA_NUM_BYTES": {
-                "value": "3",
-                "value_src": "const_prop"
-              },
-              "TDEST_WIDTH": {
-                "value": "0",
-                "value_src": "const_prop"
-              },
-              "TID_WIDTH": {
-                "value": "0",
-                "value_src": "const_prop"
-              },
-              "TUSER_WIDTH": {
-                "value": "1",
-                "value_src": "const_prop"
-              }
-            },
-            "hdl_attributes": {
-              "LOCKED": {
-                "value": "FALSE",
-                "value_src": "default"
-              }
-            },
-            "port_maps": {
-              "TDATA": {
-                "physical_name": "m_axis_0_tdata",
-                "direction": "O",
-                "left": "23",
-                "right": "0"
-              },
-              "TLAST": {
-                "physical_name": "m_axis_0_tlast",
-                "direction": "O"
-              },
-              "TUSER": {
-                "physical_name": "m_axis_0_tuser",
-                "direction": "O"
-              },
-              "TVALID": {
-                "physical_name": "m_axis_0_tvalid",
-                "direction": "O"
-              },
-              "TREADY": {
-                "physical_name": "m_axis_0_tready",
-                "direction": "I"
-              }
-            }
-          },
-          "s_axis_0": {
-            "mode": "Slave",
-            "vlnv_bus_definition": "xilinx.com:interface:axis:1.0",
-            "vlnv": "xilinx.com:interface:axis_rtl:1.0",
-            "parameters": {
-              "CLK_DOMAIN": {
-                "value": "final_system_dvi2rgb_0_0_PixelClk",
-                "value_src": "default_prop"
-              },
-              "FREQ_HZ": {
-                "value": "100000000",
-                "value_src": "default_prop"
-              },
-              "HAS_TKEEP": {
-                "value": "0",
-                "value_src": "const_prop"
-              },
-              "HAS_TLAST": {
-                "value": "1",
-                "value_src": "const_prop"
-              },
-              "HAS_TREADY": {
-                "value": "1",
-                "value_src": "const_prop"
-              },
-              "HAS_TSTRB": {
-                "value": "0",
-                "value_src": "const_prop"
-              },
-              "INSERT_VIP": {
-                "value": "0",
-                "value_src": "strong"
-              },
-              "LAYERED_METADATA": {
-                "value": [
-                  "xilinx.com:interface:datatypes:1.0 {",
-                  "TDATA {datatype {name {attribs {resolve_type immediate dependency {} format string minimum {} maximum {}} value xilinx.com:video:G_B_R_444:1.0} bitwidth {attribs {resolve_type automatic dependency {}",
-                  "format long minimum {} maximum {}} value 24} bitoffset {attribs {resolve_type immediate dependency {} format long minimum {} maximum {}} value 0} array_type {name {attribs {resolve_type immediate",
-                  "dependency {} format string minimum {} maximum {}} value rows} size {attribs {resolve_type generated dependency active_rows format long minimum {} maximum {}} value 1} stride {attribs {resolve_type",
-                  "generated dependency active_rows_stride format long minimum {} maximum {}} value 24} datatype {name {attribs {resolve_type immediate dependency {} format string minimum {} maximum {}} value {}}",
-                  "bitwidth {attribs {resolve_type automatic dependency {} format long minimum {} maximum {}} value 24} bitoffset {attribs {resolve_type immediate dependency {} format long minimum {} maximum {}} value",
-                  "0} array_type {name {attribs {resolve_type immediate dependency {} format string minimum {} maximum {}} value cols} size {attribs {resolve_type generated dependency active_cols format long minimum {}",
-                  "maximum {}} value 1} stride {attribs {resolve_type generated dependency active_cols_stride format long minimum {} maximum {}} value 24} datatype {name {attribs {resolve_type immediate dependency {}",
-                  "format string minimum {} maximum {}} value {}} bitwidth {attribs {resolve_type automatic dependency {} format long minimum {} maximum {}} value 24} bitoffset {attribs {resolve_type immediate",
-                  "dependency {} format long minimum {} maximum {}} value 0} struct {field_G {name {attribs {resolve_type immediate dependency {} format string minimum {} maximum {}} value G} enabled {attribs",
-                  "{resolve_type immediate dependency {} format bool minimum {} maximum {}} value true} datatype {name {attribs {resolve_type immediate dependency {} format string minimum {} maximum {}} value {}}",
-                  "bitwidth {attribs {resolve_type generated dependency video_data_width format long minimum {} maximum {}} value 8} bitoffset {attribs {resolve_type immediate dependency {} format long minimum {}",
-                  "maximum {}} value 0} integer {signed {attribs {resolve_type immediate dependency {} format bool minimum {} maximum {}} value true}}}} field_B {name {attribs {resolve_type immediate dependency {}",
-                  "format string minimum {} maximum {}} value B} enabled {attribs {resolve_type generated dependency video_comp1_enabled format bool minimum {} maximum {}} value true} datatype {name {attribs",
-                  "{resolve_type immediate dependency {} format string minimum {} maximum {}} value {}} bitwidth {attribs {resolve_type generated dependency video_data_width format long minimum {} maximum {}} value 8}",
-                  "bitoffset {attribs {resolve_type generated dependency video_comp1_offset format long minimum {} maximum {}} value 8} integer {signed {attribs {resolve_type immediate dependency {} format bool minimum",
-                  "{} maximum {}} value true}}}} field_R {name {attribs {resolve_type immediate dependency {} format string minimum {} maximum {}} value R} enabled {attribs {resolve_type generated dependency",
-                  "video_comp2_enabled format bool minimum {} maximum {}} value true} datatype {name {attribs {resolve_type immediate dependency {} format string minimum {} maximum {}} value {}} bitwidth {attribs",
-                  "{resolve_type generated dependency video_data_width format long minimum {} maximum {}} value 8} bitoffset {attribs {resolve_type generated dependency video_comp2_offset format long minimum {} maximum",
-                  "{}} value 16} integer {signed {attribs {resolve_type immediate dependency {} format bool minimum {} maximum {}} value true}}}}}}}}}}} TDATA_WIDTH 24",
-                  "}"
-                ],
-                "value_src": "ip_prop"
-              },
-              "PHASE": {
-                "value": "0.0",
-                "value_src": "default_prop"
-              },
-              "TDATA_NUM_BYTES": {
-                "value": "3",
-                "value_src": "auto_prop"
-              },
-              "TDEST_WIDTH": {
-                "value": "0",
-                "value_src": "const_prop"
-              },
-              "TID_WIDTH": {
-                "value": "0",
-                "value_src": "const_prop"
-              },
-              "TUSER_WIDTH": {
-                "value": "1",
-                "value_src": "const_prop"
-              }
-            },
-            "hdl_attributes": {
-              "LOCKED": {
-                "value": "FALSE",
-                "value_src": "default"
-              }
-            },
-            "port_maps": {
-              "TDATA": {
-                "physical_name": "s_axis_0_tdata",
-                "direction": "I",
-                "left": "23",
-                "right": "0"
-              },
-              "TLAST": {
-                "physical_name": "s_axis_0_tlast",
-                "direction": "I"
-              },
-              "TUSER": {
-                "physical_name": "s_axis_0_tuser",
-                "direction": "I"
-              },
-              "TVALID": {
-                "physical_name": "s_axis_0_tvalid",
-                "direction": "I"
-              },
-              "TREADY": {
-                "physical_name": "s_axis_0_tready",
-                "direction": "O"
-              }
-            }
-          }
-        },
-        "ports": {
-          "clk_0": {
-            "type": "clk",
-            "direction": "I",
-            "parameters": {
-              "ASSOCIATED_BUSIF": {
-                "value": "m_axis_0:s_axis_0",
-                "value_src": "strong"
-              },
-              "ASSOCIATED_RESET": {
-                "value": "rst_0:rst",
-                "value_src": "strong"
-              },
-              "CLK_DOMAIN": {
-                "value": "final_system_dvi2rgb_0_0_PixelClk",
-                "value_src": "default_prop"
-              },
-              "FREQ_HZ": {
-                "value": "100000000",
-                "value_src": "default_prop"
-              },
-              "FREQ_TOLERANCE_HZ": {
-                "value": "0",
-                "value_src": "strong"
-              },
-              "INSERT_VIP": {
-                "value": "0",
-                "value_src": "strong"
-              },
-              "PHASE": {
-                "value": "0.0",
-                "value_src": "default_prop"
-              }
-            }
-          },
-          "rst_0": {
-            "type": "rst",
-            "direction": "I",
-            "parameters": {
-              "INSERT_VIP": {
-                "value": "0",
-                "value_src": "strong"
-              },
-              "POLARITY": {
-                "value": "ACTIVE_LOW",
-                "value_src": "strong"
-              }
-            }
-          },
-          "grayscale_data_0": {
-            "direction": "O",
-            "left": "23",
-            "right": "0"
-          },
-          "rbg_data_0": {
-            "direction": "O",
-            "left": "23",
-            "right": "0"
-          }
-        },
-        "post_compiled_compname": "processing_core_inst_0",
-        "architecture": "zynq",
-        "variant_info": {
-          "processing_core.bd": {
-            "scoped_diagram": "processing_core_inst_0.bd",
-            "design_checksum": "0x745E7ACD7D7BFCDE",
-            "ref_name": "processing_core",
-            "ref_subinst_path": "final_system_processing_core_0",
-            "ref_type": "Block Design",
-            "source_type": "all",
-            "active": "all"
-          }
-        }
-      },
       "video_config_cdc_0": {
         "vlnv": "xilinx.com:module_ref:video_config_cdc:1.0",
         "ip_revision": "1",
@@ -3035,6 +2735,259 @@
             "direction": "O"
           }
         }
+      },
+      "ila_0": {
+        "vlnv": "xilinx.com:ip:ila:6.2",
+        "ip_revision": "20",
+        "xci_name": "final_system_ila_0_0",
+        "xci_path": "ip\\final_system_ila_0_0\\final_system_ila_0_0.xci",
+        "inst_hier_path": "ila_0",
+        "has_run_ip_tcl": "true",
+        "parameters": {
+          "ALL_PROBE_SAME_MU": {
+            "value": "true"
+          },
+          "C_ADV_TRIGGER": {
+            "value": "true"
+          },
+          "C_DATA_DEPTH": {
+            "value": "8192"
+          },
+          "C_MONITOR_TYPE": {
+            "value": "Native"
+          },
+          "C_NUM_OF_PROBES": {
+            "value": "4"
+          },
+          "C_PROBE1_WIDTH": {
+            "value": "4"
+          },
+          "C_PROBE2_WIDTH": {
+            "value": "24"
+          },
+          "C_PROBE3_WIDTH": {
+            "value": "4"
+          }
+        }
+      },
+      "processing_core_wrap_0": {
+        "vlnv": "xilinx.com:module_ref:processing_core_wrapper:1.0",
+        "ip_revision": "1",
+        "xci_name": "final_system_processing_core_wrap_0_0",
+        "xci_path": "ip\\final_system_processing_core_wrap_0_0\\final_system_processing_core_wrap_0_0.xci",
+        "inst_hier_path": "processing_core_wrap_0",
+        "has_run_ip_tcl": "true",
+        "reference_info": {
+          "ref_type": "hdl",
+          "ref_name": "processing_core_wrapper",
+          "boundary_crc": "0x0"
+        },
+        "interface_ports": {
+          "m_axis_0": {
+            "mode": "Master",
+            "vlnv_bus_definition": "xilinx.com:interface:axis:1.0",
+            "vlnv": "xilinx.com:interface:axis_rtl:1.0",
+            "parameters": {
+              "TDATA_NUM_BYTES": {
+                "value": "3",
+                "value_src": "constant"
+              },
+              "TDEST_WIDTH": {
+                "value": "0",
+                "value_src": "constant"
+              },
+              "TID_WIDTH": {
+                "value": "0",
+                "value_src": "constant"
+              },
+              "TUSER_WIDTH": {
+                "value": "1",
+                "value_src": "constant"
+              },
+              "HAS_TREADY": {
+                "value": "1",
+                "value_src": "constant"
+              },
+              "HAS_TSTRB": {
+                "value": "0",
+                "value_src": "constant"
+              },
+              "HAS_TKEEP": {
+                "value": "0",
+                "value_src": "constant"
+              },
+              "HAS_TLAST": {
+                "value": "1",
+                "value_src": "constant"
+              }
+            },
+            "port_maps": {
+              "TDATA": {
+                "physical_name": "m_axis_0_tdata",
+                "direction": "O",
+                "left": "23",
+                "right": "0"
+              },
+              "TLAST": {
+                "physical_name": "m_axis_0_tlast",
+                "direction": "O"
+              },
+              "TUSER": {
+                "physical_name": "m_axis_0_tuser",
+                "direction": "O"
+              },
+              "TVALID": {
+                "physical_name": "m_axis_0_tvalid",
+                "direction": "O"
+              },
+              "TREADY": {
+                "physical_name": "m_axis_0_tready",
+                "direction": "I"
+              }
+            }
+          },
+          "s_axis_0": {
+            "mode": "Slave",
+            "vlnv_bus_definition": "xilinx.com:interface:axis:1.0",
+            "vlnv": "xilinx.com:interface:axis_rtl:1.0",
+            "parameters": {
+              "TDATA_NUM_BYTES": {
+                "value": "3",
+                "value_src": "constant"
+              },
+              "TDEST_WIDTH": {
+                "value": "0",
+                "value_src": "constant"
+              },
+              "TID_WIDTH": {
+                "value": "0",
+                "value_src": "constant"
+              },
+              "TUSER_WIDTH": {
+                "value": "1",
+                "value_src": "constant"
+              },
+              "HAS_TREADY": {
+                "value": "1",
+                "value_src": "constant"
+              },
+              "HAS_TSTRB": {
+                "value": "0",
+                "value_src": "constant"
+              },
+              "HAS_TKEEP": {
+                "value": "0",
+                "value_src": "constant"
+              },
+              "HAS_TLAST": {
+                "value": "1",
+                "value_src": "constant"
+              },
+              "LAYERED_METADATA": {
+                "value": [
+                  "xilinx.com:interface:datatypes:1.0 {",
+                  "TDATA {datatype {name {attribs {resolve_type immediate dependency {} format string minimum {} maximum {}} value xilinx.com:video:G_B_R_444:1.0} bitwidth {attribs {resolve_type automatic dependency {}",
+                  "format long minimum {} maximum {}} value 24} bitoffset {attribs {resolve_type immediate dependency {} format long minimum {} maximum {}} value 0} array_type {name {attribs {resolve_type immediate",
+                  "dependency {} format string minimum {} maximum {}} value rows} size {attribs {resolve_type generated dependency active_rows format long minimum {} maximum {}} value 1} stride {attribs {resolve_type",
+                  "generated dependency active_rows_stride format long minimum {} maximum {}} value 24} datatype {name {attribs {resolve_type immediate dependency {} format string minimum {} maximum {}} value {}}",
+                  "bitwidth {attribs {resolve_type automatic dependency {} format long minimum {} maximum {}} value 24} bitoffset {attribs {resolve_type immediate dependency {} format long minimum {} maximum {}} value",
+                  "0} array_type {name {attribs {resolve_type immediate dependency {} format string minimum {} maximum {}} value cols} size {attribs {resolve_type generated dependency active_cols format long minimum {}",
+                  "maximum {}} value 1} stride {attribs {resolve_type generated dependency active_cols_stride format long minimum {} maximum {}} value 24} datatype {name {attribs {resolve_type immediate dependency {}",
+                  "format string minimum {} maximum {}} value {}} bitwidth {attribs {resolve_type automatic dependency {} format long minimum {} maximum {}} value 24} bitoffset {attribs {resolve_type immediate",
+                  "dependency {} format long minimum {} maximum {}} value 0} struct {field_G {name {attribs {resolve_type immediate dependency {} format string minimum {} maximum {}} value G} enabled {attribs",
+                  "{resolve_type immediate dependency {} format bool minimum {} maximum {}} value true} datatype {name {attribs {resolve_type immediate dependency {} format string minimum {} maximum {}} value {}}",
+                  "bitwidth {attribs {resolve_type generated dependency video_data_width format long minimum {} maximum {}} value 8} bitoffset {attribs {resolve_type immediate dependency {} format long minimum {}",
+                  "maximum {}} value 0} integer {signed {attribs {resolve_type immediate dependency {} format bool minimum {} maximum {}} value true}}}} field_B {name {attribs {resolve_type immediate dependency {}",
+                  "format string minimum {} maximum {}} value B} enabled {attribs {resolve_type generated dependency video_comp1_enabled format bool minimum {} maximum {}} value true} datatype {name {attribs",
+                  "{resolve_type immediate dependency {} format string minimum {} maximum {}} value {}} bitwidth {attribs {resolve_type generated dependency video_data_width format long minimum {} maximum {}} value 8}",
+                  "bitoffset {attribs {resolve_type generated dependency video_comp1_offset format long minimum {} maximum {}} value 8} integer {signed {attribs {resolve_type immediate dependency {} format bool minimum",
+                  "{} maximum {}} value true}}}} field_R {name {attribs {resolve_type immediate dependency {} format string minimum {} maximum {}} value R} enabled {attribs {resolve_type generated dependency",
+                  "video_comp2_enabled format bool minimum {} maximum {}} value true} datatype {name {attribs {resolve_type immediate dependency {} format string minimum {} maximum {}} value {}} bitwidth {attribs",
+                  "{resolve_type generated dependency video_data_width format long minimum {} maximum {}} value 8} bitoffset {attribs {resolve_type generated dependency video_comp2_offset format long minimum {} maximum",
+                  "{}} value 16} integer {signed {attribs {resolve_type immediate dependency {} format bool minimum {} maximum {}} value true}}}}}}}}}}} TDATA_WIDTH 24",
+                  "}"
+                ],
+                "value_src": "ip_prop"
+              }
+            },
+            "port_maps": {
+              "TDATA": {
+                "physical_name": "s_axis_0_tdata",
+                "direction": "I",
+                "left": "23",
+                "right": "0"
+              },
+              "TLAST": {
+                "physical_name": "s_axis_0_tlast",
+                "direction": "I"
+              },
+              "TUSER": {
+                "physical_name": "s_axis_0_tuser",
+                "direction": "I"
+              },
+              "TVALID": {
+                "physical_name": "s_axis_0_tvalid",
+                "direction": "I"
+              },
+              "TREADY": {
+                "physical_name": "s_axis_0_tready",
+                "direction": "O"
+              }
+            }
+          }
+        },
+        "ports": {
+          "axis_control_out_ilain": {
+            "direction": "O",
+            "left": "3",
+            "right": "0"
+          },
+          "axis_control_out_ilaout": {
+            "direction": "O",
+            "left": "3",
+            "right": "0"
+          },
+          "axis_data_out_ilain": {
+            "direction": "O",
+            "left": "23",
+            "right": "0"
+          },
+          "axis_data_out_ilaout": {
+            "direction": "O",
+            "left": "23",
+            "right": "0"
+          },
+          "clk_0": {
+            "direction": "I",
+            "parameters": {
+              "FREQ_HZ": {
+                "value": "100000000",
+                "value_src": "default_prop"
+              },
+              "PHASE": {
+                "value": "0.0",
+                "value_src": "default_prop"
+              },
+              "CLK_DOMAIN": {
+                "value": "final_system_dvi2rgb_0_0_PixelClk",
+                "value_src": "default_prop"
+              }
+            }
+          },
+          "grayscale_data_0": {
+            "direction": "O",
+            "left": "23",
+            "right": "0"
+          },
+          "rbg_data_0": {
+            "direction": "O",
+            "left": "23",
+            "right": "0"
+          },
+          "rst_0": {
+            "direction": "I"
+          }
+        }
       }
     },
     "interface_nets": {
@@ -3050,9 +3003,9 @@
           "dvi2rgb_0/DDC"
         ]
       },
-      "processing_core_0_m_axis_0": {
+      "processing_core_wrap_0_m_axis_0": {
         "interface_ports": [
-          "processing_core_0/m_axis_0",
+          "processing_core_wrap_0/m_axis_0",
           "axis_filter_out_0/s_axis"
         ]
       },
@@ -3074,12 +3027,6 @@
           "smartconnect_0/S00_AXI"
         ]
       },
-      "s_axis_0_1": {
-        "interface_ports": [
-          "processing_core_0/s_axis_0",
-          "v_vid_in_axi4s_0/video_out"
-        ]
-      },
       "smartconnect_0_M00_AXI": {
         "interface_ports": [
           "smartconnect_0/M00_AXI",
@@ -3090,6 +3037,12 @@
         "interface_ports": [
           "v_tc_0/vtiming_out",
           "v_axi4s_vid_out_0/vtiming_in"
+        ]
+      },
+      "v_vid_in_axi4s_0_video_out": {
+        "interface_ports": [
+          "v_vid_in_axi4s_0/video_out",
+          "processing_core_wrap_0/s_axis_0"
         ]
       }
     },
@@ -3142,10 +3095,11 @@
           "v_axi4s_vid_out_0/aclk",
           "v_tc_0/clk",
           "v_vid_in_axi4s_0/aclk",
-          "processing_core_0/clk_0",
           "rgb2dvi_0/PixelClk",
           "axis_filter_out_0/clk",
-          "video_config_cdc_0/pixel_clk"
+          "video_config_cdc_0/pixel_clk",
+          "ila_0/clk",
+          "processing_core_wrap_0/clk_0"
         ]
       },
       "dvi2rgb_0_vid_pData": {
@@ -3225,15 +3179,39 @@
           "video_control_axi_0/s00_axi_aresetn"
         ]
       },
-      "processing_core_0_grayscale_data_0": {
+      "processing_core_wrap_0_axis_control_ILA_input": {
         "ports": [
-          "processing_core_0/grayscale_data_0",
+          "processing_core_wrap_0/axis_control_out_ilain",
+          "ila_0/probe1"
+        ]
+      },
+      "processing_core_wrap_0_axis_control_ILA_output": {
+        "ports": [
+          "processing_core_wrap_0/axis_control_out_ilaout",
+          "ila_0/probe3"
+        ]
+      },
+      "processing_core_wrap_0_axis_data_ILA_output": {
+        "ports": [
+          "processing_core_wrap_0/axis_data_out_ilaout",
+          "ila_0/probe2"
+        ]
+      },
+      "processing_core_wrap_0_axis_data_out_ilain": {
+        "ports": [
+          "processing_core_wrap_0/axis_data_out_ilain",
+          "ila_0/probe0"
+        ]
+      },
+      "processing_core_wrap_0_grayscale_data_0": {
+        "ports": [
+          "processing_core_wrap_0/grayscale_data_0",
           "axis_filter_out_0/grayscale_data"
         ]
       },
-      "processing_core_0_rbg_data_0": {
+      "processing_core_wrap_0_rbg_data_0": {
         "ports": [
-          "processing_core_0/rbg_data_0",
+          "processing_core_wrap_0/rbg_data_0",
           "axis_filter_out_0/rbg_data"
         ]
       },
@@ -3282,11 +3260,11 @@
           "v_axi4s_vid_out_0/aresetn",
           "v_tc_0/resetn",
           "v_vid_in_axi4s_0/aresetn",
-          "processing_core_0/rst_0",
           "dvi2rgb_0/aRst_n",
           "rgb2dvi_0/aRst_n",
           "video_config_cdc_0/pixel_resetn",
-          "axis_filter_out_0/rstn"
+          "axis_filter_out_0/rstn",
+          "processing_core_wrap_0/rst_0"
         ]
       },
       "v_axi4s_vid_out_0_sof_state_out": {
